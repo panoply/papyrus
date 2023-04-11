@@ -1,0 +1,436 @@
+@charset "UTF-8";
+:root {
+  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --papyrus-font-size: 1em;
+  --papyrus-line-height: 1.7;
+  --papyrus-code-padding-y: 0.3em;
+  --papyrus-code-bg: #181b20;
+  --papyrus-code-inline-bg: #eeebeb;
+  --papyrus-code-selection: #d7d7d783;
+  --papyrus-code-border-radius: 0.5em;
+  --papyrus-code-caret-color: #fff;
+  --papyrus-scrollbar-width: 2px;
+  --papyrus-scrollbar-track: #181b20;
+  --papyrus-scrollbar-bg: #384355;
+  --papyrus-scrollbar-thumb: #384355;
+  --papyrus-invisible-space-color: #42454D;
+  --papyrus-invisible-tab-color: #808080;
+  --papyrus-invisible-lf-color: #808080;
+  --papyrus-invisible-cr-color: #808080;
+  --papyrus-invisible-crlf-color: #808080;
+  --papyrus-line-number-width: 3.2em;
+  --papyrus-line-number-color: #363d49;
+  --papyrus-line-fence-color: #363d49;
+  --papyrus-line-highlight-bg: #f0f8ff0a;
+  --papyrus-line-highlight-number: #fafafa;
+}
+
+code.inline {
+  padding: 0.1em;
+  white-space: normal;
+  background: var(--papyrus-code-inline-bg);
+  border-radius: 0.3em;
+}
+
+@media print {
+  code[class*=language-],
+  pre[class*=language-] {
+    text-shadow: none;
+  }
+}
+/* -------------------------------------------- */
+/* EDITOR                                       */
+/* -------------------------------------------- */
+pre.papyrus {
+  position: relative !important;
+  color: inherit;
+  background: var(--papyrus-code-bg);
+  border-radius: var(--papyrus-code-border-radius);
+  /* CODE ELEMENT ------------------------------- */
+  /* HIDE INVISIBLES ---------------------------- */
+}
+pre.papyrus textarea.editor {
+  color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  resize: none !important;
+  caret-color: var(--papyrus-code-caret-color);
+}
+pre.papyrus > code[class*=language-],
+pre.papyrus textarea.editor {
+  position: absolute !important;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: var(--papyrus-code-padding-y) calc(var(--papyrus-line-number-width) * 1.3);
+  overflow: auto;
+  inset: 0;
+  font-size: var(--papyrus-font-size);
+  font-family: var(--papyrus-font-family);
+  line-height: var(--papyrus-line-height);
+  white-space: pre;
+  text-align: left;
+  word-wrap: normal;
+  word-break: normal;
+  word-spacing: normal;
+  tab-size: 2;
+  hyphens: none;
+}
+pre.papyrus > code[class*=language-]::-webkit-scrollbar-track,
+pre.papyrus textarea.editor::-webkit-scrollbar-track {
+  background-color: var(--papyrus-scrollbar-track);
+}
+pre.papyrus > code[class*=language-]::-webkit-scrollbar,
+pre.papyrus textarea.editor::-webkit-scrollbar {
+  width: var(--papyrus-scrollbar-width);
+  background-color: var(--papyrus-scrollbar-bg);
+}
+pre.papyrus > code[class*=language-]::-webkit-scrollbar-thumb,
+pre.papyrus textarea.editor::-webkit-scrollbar-thumb {
+  background-color: var(--papyrus-scrollbar-thumb);
+}
+pre.papyrus > code[class*=language-]::selection,
+pre.papyrus textarea.editor::selection {
+  text-shadow: none;
+  background-color: var(--papyrus-code-selection);
+  opacity: 0.01;
+}
+pre.papyrus::-webkit-scrollbar-track {
+  background-color: var(--papyrus-scrollbar-track);
+}
+pre.papyrus::-webkit-scrollbar {
+  width: var(--papyrus-scrollbar-width);
+  background-color: var(--papyrus-scrollbar-bg);
+}
+pre.papyrus::-webkit-scrollbar-thumb {
+  background-color: var(--papyrus-scrollbar-thumb);
+}
+pre.papyrus::selection {
+  text-shadow: none;
+  background: var(--papyrus-code-bg);
+}
+pre.papyrus.no-cr .rc, pre.papyrus.no-lf .lf, pre.papyrus.no-crlf .crlf, pre.papyrus.no-tab .tab, pre.papyrus.no-space .space, pre.papyrus.no-invisibles .tab,
+pre.papyrus.no-invisibles .cr,
+pre.papyrus.no-invisibles .lf,
+pre.papyrus.no-invisibles .space {
+  visibility: hidden;
+  opacity: 0;
+}
+/* -------------------------------------------- */
+/* BLOCKS                                       */
+/* -------------------------------------------- */
+:not(pre) > code[class*=language-] {
+  width: 100%;
+  padding: 0.1em;
+  white-space: normal;
+  background: var(--papyrus-code-bg);
+  border-radius: 0.3em;
+}
+
+/* -------------------------------------------- */
+/* LINE NUMBERS                                 */
+/* -------------------------------------------- */
+.line-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  padding-top: var(--papyrus-code-padding-y);
+  padding-bottom: var(--papyrus-code-padding-y);
+  user-select: none;
+  pointer-events: none;
+}
+.line-numbers::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--papyrus-line-number-width);
+  display: block;
+  height: 100%;
+  border-right: 0.01em solid var(--papyrus-line-fence-color);
+  content: "";
+}
+.line-numbers span.ln {
+  display: flex;
+  padding-left: calc(var(--papyrus-line-number-width) / 3);
+  counter-increment: linenumber;
+}
+.line-numbers span.ln.highlight {
+  background-color: var(--papyrus-line-highlight-bg);
+}
+.line-numbers span.ln.highlight::before {
+  color: var(--papyrus-line-highlight-number);
+  transition: color 0.1s ease-in;
+}
+.line-numbers span.ln::before {
+  display: block;
+  width: calc(var(--papyrus-line-number-width) / 2);
+  padding-right: 0.8em;
+  color: var(--papyrus-line-number-color);
+  text-align: right;
+  content: counter(linenumber);
+}
+
+.token {
+  /* -------------------------------------------- */
+  /* INVISIBLES                                   */
+  /* -------------------------------------------- */
+}
+.token.tab:not(:empty), .token.cr, .token.lf, .token.space {
+  position: relative;
+}
+.token.tab:not(:empty)::before, .token.cr::before, .token.lf::before, .token.space::before {
+  position: absolute;
+  opacity: 1;
+}
+.token.tab:not(:empty)::before {
+  color: var(--papyrus-invisible-tab-color);
+  content: "⇥";
+}
+.token.cr::before {
+  color: var(--papyrus-invisible-cr-color);
+  content: "␍";
+}
+.token.crlf::before {
+  color: var(--papyrus-invisible-crlf-color);
+  content: "␍␊";
+}
+.token.lf::before {
+  color: var(--papyrus-invisible-lf-color);
+  content: "␊";
+}
+.token.space::before {
+  color: var(--papyrus-invisible-space-color);
+  content: "·";
+}
+
+/* stylelint-disable color-hex-length */
+code.language-html {
+  color: #FAFAFA;
+}
+code.language-html .token.comment {
+  color: #888888;
+}
+code.language-html .token.punctuation {
+  color: #BECAFF;
+}
+code.language-html .token.tag {
+  color: #FF93BC;
+}
+code.language-html .token.attr-equals {
+  color: #FF93BC;
+}
+code.language-html .token.attr-name {
+  color: #91EBC2;
+}
+code.language-html .token.attr-value {
+  color: #FFF9A6;
+}
+
+/* stylelint-disable color-hex-length */
+:root {
+  --papyrus-liquid-fallback: #fafafa;
+  --papyrus-liquid-delimiters: #fafafa;
+  --papyrus-liquid-boolean: #ff80f4;
+  --papyrus-liquid-number: #935eff;
+  --papyrus-liquid-tag-name: #E91E63;
+  --papyrus-liquid-parameter: #ff953c;
+  --papyrus-liquid-object-name: #81d4fa;
+  --papyrus-liquid-object-prop: #fafafa;
+  --papyrus-liquid-filter-name: #3defb9;
+  --papyrus-liquid-string: #FFF9A6;
+  --papyrus-liquid-comment: #888;
+  --papyrus-markup-text-content: #FAFAFA;
+  --papyrus-markup-delimiter: #BECAFF;
+  --papyrus-markup-tag-name: #FF93BC;
+  --papyrus-markup-equals: #FF93BC;
+  --papyrus-markup-attr-name: #91EBC2;
+  --papyrus-markup-attr-value: #FFF9A6;
+  --papyrus-markup-comment: #888888;
+}
+
+code.language-liquid .token.comment {
+  color: var(--papyrus-markup-comment);
+}
+code.language-liquid .token.punctuation {
+  color: var(--papyrus-markup-delimiter);
+}
+code.language-liquid .token.tag {
+  color: var(--papyrus-markup-tag-name);
+}
+code.language-liquid .token.attr-equals {
+  color: var(--papyrus-markup-equals);
+}
+code.language-liquid .token.attr-name {
+  color: var(--papyrus-markup-attr-name);
+}
+code.language-liquid .token.attr-value {
+  color: var(--papyrus-markup-attr-value);
+}
+code.language-liquid .token.liquid {
+  color: var(--papyrus-liquid-fallback);
+}
+code.language-liquid .token.liquid-markup-string {
+  color: var(--papyrus-liquid-string);
+}
+code.language-liquid .token.liquid-markup-string .liquid-delimiters {
+  color: var(--papyrus-liquid-comment);
+}
+code.language-liquid .token.liquid-delimiters {
+  color: var(--papyrus-liquid-delimiters);
+}
+code.language-liquid .token.liquid-comment {
+  color: var(--papyrus-liquid-comment);
+}
+code.language-liquid .token.liquid-boolean {
+  color: var(--papyrus-liquid-boolean);
+}
+code.language-liquid .token.liquid-number {
+  color: var(--papyrus-liquid-number);
+}
+code.language-liquid .token.liquid-parameter {
+  color: var(--papyrus-liquid-parameter);
+}
+code.language-liquid .token.liquid-object {
+  color: var(--papyrus-liquid-object-name);
+}
+code.language-liquid .token.liquid-property {
+  color: var(--papyrus-liquid-object-prop);
+}
+code.language-liquid .token.liquid-filter {
+  color: var(--papyrus-liquid-filter-name);
+}
+code.language-liquid .token.liquid-string {
+  color: var(--papyrus-liquid-string);
+}
+code.language-liquid .token.liquid-punctuation, code.language-liquid .token.liquid-operator, code.language-liquid .token.liquid-tagged, code.language-liquid .token.liquid-tag {
+  color: var(--papyrus-liquid-tag-name);
+}
+
+:root {
+  --papyrus-ts-fallback: #fafafa;
+  --papyrus-ts-types: #177fd4;
+  --papyrus-ts-boolean: #ff80f4;
+  --papyrus-ts-number: #935eff;
+  --papyrus-ts-operator: #E91E63;
+  --papyrus-ts-parameter: #ff953c;
+  --papyrus-ts-method: #7ef0ff;
+  --papyrus-ts-function-name: #9EE34F;
+  --papyrus-ts-filter-name: #3defb9;
+  --papyrus-ts-string: #FFF9A6;
+  --papyrus-ts-comment: #888;
+}
+
+code.language-typescript,
+code.language-ts,
+code.language-javascript,
+code.language-js {
+  color: var(--papyrus-ts-fallback);
+}
+code.language-typescript .token.parameter-type, code.language-typescript .token.return-type, code.language-typescript .token.semi,
+code.language-ts .token.parameter-type,
+code.language-ts .token.return-type,
+code.language-ts .token.semi,
+code.language-javascript .token.parameter-type,
+code.language-javascript .token.return-type,
+code.language-javascript .token.semi,
+code.language-js .token.parameter-type,
+code.language-js .token.return-type,
+code.language-js .token.semi {
+  color: var(--papyrus-ts-types);
+}
+code.language-typescript .token.punctuation,
+code.language-ts .token.punctuation,
+code.language-javascript .token.punctuation,
+code.language-js .token.punctuation {
+  color: var(--papyrus-ts-types);
+}
+code.language-typescript .token.comment,
+code.language-ts .token.comment,
+code.language-javascript .token.comment,
+code.language-js .token.comment {
+  color: var(--papyrus-ts-comment);
+}
+code.language-typescript .token.parameter-optional, code.language-typescript .token.parameter,
+code.language-ts .token.parameter-optional,
+code.language-ts .token.parameter,
+code.language-javascript .token.parameter-optional,
+code.language-javascript .token.parameter,
+code.language-js .token.parameter-optional,
+code.language-js .token.parameter {
+  color: var(--papyrus-ts-parameter);
+}
+code.language-typescript .token.type-object, code.language-typescript .token.type-array,
+code.language-ts .token.type-object,
+code.language-ts .token.type-array,
+code.language-javascript .token.type-object,
+code.language-javascript .token.type-array,
+code.language-js .token.type-object,
+code.language-js .token.type-array {
+  color: #30adc3;
+}
+code.language-typescript .token.types,
+code.language-ts .token.types,
+code.language-javascript .token.types,
+code.language-js .token.types {
+  color: var(--papyrus-ts-types);
+}
+code.language-typescript .token.method, code.language-typescript .token.keyword, code.language-typescript .token.browser-objects, code.language-typescript .token.variable,
+code.language-ts .token.method,
+code.language-ts .token.keyword,
+code.language-ts .token.browser-objects,
+code.language-ts .token.variable,
+code.language-javascript .token.method,
+code.language-javascript .token.keyword,
+code.language-javascript .token.browser-objects,
+code.language-javascript .token.variable,
+code.language-js .token.method,
+code.language-js .token.keyword,
+code.language-js .token.browser-objects,
+code.language-js .token.variable {
+  color: var(--papyrus-ts-method);
+}
+code.language-typescript .token.op, code.language-typescript .token.tag, code.language-typescript .token.punctuation-chars, code.language-typescript .token.operator, code.language-typescript .token.module,
+code.language-ts .token.op,
+code.language-ts .token.tag,
+code.language-ts .token.punctuation-chars,
+code.language-ts .token.operator,
+code.language-ts .token.module,
+code.language-javascript .token.op,
+code.language-javascript .token.tag,
+code.language-javascript .token.punctuation-chars,
+code.language-javascript .token.operator,
+code.language-javascript .token.module,
+code.language-js .token.op,
+code.language-js .token.tag,
+code.language-js .token.punctuation-chars,
+code.language-js .token.operator,
+code.language-js .token.module {
+  color: var(--papyrus-ts-operator);
+}
+code.language-typescript .token.function,
+code.language-ts .token.function,
+code.language-javascript .token.function,
+code.language-js .token.function {
+  color: var(--papyrus-ts-function-name);
+}
+code.language-typescript .token.number,
+code.language-ts .token.number,
+code.language-javascript .token.number,
+code.language-js .token.number {
+  color: var(--papyrus-ts-number);
+}
+code.language-typescript .token.nil, code.language-typescript .token.boolean,
+code.language-ts .token.nil,
+code.language-ts .token.boolean,
+code.language-javascript .token.nil,
+code.language-javascript .token.boolean,
+code.language-js .token.nil,
+code.language-js .token.boolean {
+  color: var(--papyrus-ts-boolean);
+}
+
+/*# sourceMappingURL=potion.css.map */

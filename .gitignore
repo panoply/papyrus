@@ -1,0 +1,6 @@
+.env
+node_modules/
+versions/
+.pnpm-debug.log
+dist
+

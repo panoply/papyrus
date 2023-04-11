@@ -1,0 +1,64 @@
+{
+  "name": "papyrus",
+  "version": "0.1.0",
+  "description": "Embedded code editor leveraging PrismJS",
+  "author": {
+    "name": "Νίκος Σαβίδης ",
+    "email": "n.savvidis@gmx.com"
+  },
+  "license": "MIT",
+  "type": "module",
+  "types": "./index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./iife": {
+      "default": "./dist/index.iife.js"
+    }
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/panoply/liquify/master/packages/papyrus"
+  },
+  "bugs": {
+    "url": "https://github.com/panoply/liquify/issues"
+  },
+  "scripts": {
+    "dev": "concurrently \"pnpm run scss:dev\" \"tsup --watch\"",
+    "build": "rm -rf dist && pnpm run scss:build && NODE_ENV=production tsup --minify",
+    "scss:dev": "sass ./src/theme/potion.scss:./docs/public/potion.css --watch",
+    "scss:build": "sass ./src/theme/potion.scss:./potion.css --no-source-map --style=compressed",
+    "pack": "cd versions; pnpm pack ../ && cd .."
+  },
+  "stylelint": {
+    "extends": "@liquify/stylelint-config"
+  },
+  "prettier": "@liquify/prettier-config",
+  "eslintConfig": {
+    "ignorePatterns": [
+      "dist/*"
+    ],
+    "extends": [
+      "@liquify/eslint-config"
+    ]
+  },
+  "devDependencies": {
+    "@liquify/eslint-config": "workspace:^",
+    "@liquify/prettier-config": "workspace:^",
+    "@liquify/stylelint-config": "workspace:^",
+    "@liquify/tsconfig": "workspace:^",
+    "ava": "^5.2.0",
+    "esbuild-plugin-prismjs": "^1.0.8"
+  },
+  "dependencies": {
+    "indent-textarea": "^3.0.0",
+    "morphdom": "^2.7.0",
+    "prismjs": "^1.29.0",
+    "text-field-edit": "^3.2.0"
+  }
+}

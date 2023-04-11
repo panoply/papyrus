@@ -1,0 +1,293 @@
+:root {
+  // FONT FAMILY
+  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --papyrus-font-size: 1em;
+  --papyrus-line-height: 1.7;
+
+
+  // CODE REGION
+  --papyrus-code-padding-y: 0.3em;
+  --papyrus-code-bg: #181b20;
+  --papyrus-code-inline-bg: #eeebeb;
+  --papyrus-code-selection: #d7d7d783;
+  --papyrus-code-border-radius: 0.5em;
+  --papyrus-code-caret-color: #fff;
+
+  // SCROLLBAR
+  --papyrus-scrollbar-width: 2px;
+  --papyrus-scrollbar-track: #181b20;
+  --papyrus-scrollbar-bg: #384355;
+  --papyrus-scrollbar-thumb: #384355;
+
+  // INVISIBLE CHARACTERS
+  --papyrus-invisible-space-color: #42454D;
+  --papyrus-invisible-tab-color: #808080;
+  --papyrus-invisible-lf-color: #808080;
+  --papyrus-invisible-cr-color: #808080;
+  --papyrus-invisible-crlf-color: #808080;
+
+  // LINE NUMBERS
+  --papyrus-line-number-width: 3.2em;
+  --papyrus-line-number-color: #363d49;
+  --papyrus-line-fence-color: #363d49;
+  --papyrus-line-highlight-bg: #f0f8ff0a;
+  --papyrus-line-highlight-number: #fafafa;
+}
+
+
+code {
+  &.inline {
+    padding: 0.1em;
+    white-space: normal;
+    background: var(--papyrus-code-inline-bg);
+    border-radius: 0.3em;
+  }
+}
+
+
+@media print {
+  code[class*="language-"],
+  pre[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+/* -------------------------------------------- */
+/* EDITOR                                       */
+/* -------------------------------------------- */
+
+pre.papyrus {
+  position: relative !important;
+  color: inherit;
+  background: var(--papyrus-code-bg);
+  border-radius: var(--papyrus-code-border-radius);
+
+  // text-shadow: 0 0.04rem rgb(0 0 0);
+
+
+  /* CODE ELEMENT ------------------------------- */
+
+  textarea.editor {
+    color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    resize: none  !important;
+    caret-color: var(--papyrus-code-caret-color);
+  }
+
+
+  > code[class*="language-"],
+  textarea.editor {
+    position: absolute !important;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: var(--papyrus-code-padding-y) calc(var(--papyrus-line-number-width) * 1.3);
+    overflow: auto;
+    inset: 0;
+    font-size: var(--papyrus-font-size);
+    font-family: var(--papyrus-font-family);
+    line-height: var(--papyrus-line-height);
+    white-space: pre;
+    text-align: left;
+    word-wrap: normal;
+    word-break: normal;
+    word-spacing: normal;
+    tab-size: 2;
+    hyphens: none;
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--papyrus-scrollbar-track);
+    }
+
+    &::-webkit-scrollbar {
+      width: var(--papyrus-scrollbar-width);
+      background-color: var(--papyrus-scrollbar-bg);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--papyrus-scrollbar-thumb);
+    }
+
+    &::selection {
+      text-shadow: none;
+      background-color: var(--papyrus-code-selection);
+      opacity: .01;
+    }
+
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--papyrus-scrollbar-track);
+  }
+
+  &::-webkit-scrollbar {
+    width: var(--papyrus-scrollbar-width);
+    background-color: var(--papyrus-scrollbar-bg);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--papyrus-scrollbar-thumb);
+  }
+
+  &::selection {
+    text-shadow: none;
+    background: var(--papyrus-code-bg);
+  }
+
+
+  /* HIDE INVISIBLES ---------------------------- */
+
+  %hide {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.no-invisibles {
+    .tab,
+    .cr,
+    .lf,
+    .space {
+      @extend %hide;
+    }
+  }
+
+  &.no-space {
+    .space { @extend %hide; }
+  }
+
+  &.no-tab {
+    .tab { @extend %hide; }
+  }
+
+  &.no-crlf {
+    .crlf { @extend %hide; }
+  }
+
+  &.no-lf {
+    .lf { @extend %hide; }
+  }
+
+  &.no-cr {
+    .rc {@extend %hide; }
+  }
+
+}
+
+/* -------------------------------------------- */
+/* BLOCKS                                       */
+/* -------------------------------------------- */
+
+
+:not(pre) > code[class*="language-"] {
+  width: 100%;
+  padding: 0.1em;
+  white-space: normal;
+  background: var(--papyrus-code-bg);
+  border-radius: 0.3em;
+}
+
+/* -------------------------------------------- */
+/* LINE NUMBERS                                 */
+/* -------------------------------------------- */
+
+
+.line-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
+  padding-top: var(--papyrus-code-padding-y);
+  padding-bottom: var(--papyrus-code-padding-y);
+  user-select: none;
+  pointer-events: none;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--papyrus-line-number-width);
+    display: block;
+    height: 100%;
+    border-right: 0.01em solid var(--papyrus-line-fence-color);
+    content: "";
+  }
+
+  span.ln {
+    display: flex;
+    padding-left: calc(var(--papyrus-line-number-width) / 3);
+    counter-increment: linenumber;
+
+    &.highlight {
+      background-color: var(--papyrus-line-highlight-bg);
+
+      &::before {
+        color: var(--papyrus-line-highlight-number);
+        transition: color 0.1s ease-in;
+      }
+    }
+
+    &::before {
+      display: block;
+      width: calc(var(--papyrus-line-number-width) / 2);
+      padding-right: 0.8em;
+      color: var(--papyrus-line-number-color);
+      text-align: right;
+      content: counter(linenumber);
+    }
+  }
+}
+
+.token {
+
+  /* -------------------------------------------- */
+  /* INVISIBLES                                   */
+  /* -------------------------------------------- */
+
+
+  &.tab:not(:empty),
+  &.cr,
+  &.lf,
+  &.space {
+    position: relative;
+  }
+
+  &.tab:not(:empty)::before,
+  &.cr::before,
+  &.lf::before,
+  &.space::before {
+    position: absolute;
+    opacity: 1;
+  }
+
+
+  &.tab:not(:empty)::before {
+    color: var(--papyrus-invisible-tab-color);
+    content: "\21E5";
+  }
+
+  &.cr::before {
+    color: var(--papyrus-invisible-cr-color);
+    content: "\240D";
+  }
+
+  &.crlf::before {
+    color: var(--papyrus-invisible-crlf-color);
+    content: "\240D\240A";
+  }
+
+  &.lf::before {
+    color: var(--papyrus-invisible-lf-color);
+    content: "\240A";
+  }
+
+  &.space::before {
+    color: var(--papyrus-invisible-space-color);
+    content: "\00B7";
+  }
+
+
+}

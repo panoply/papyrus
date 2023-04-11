@@ -1,0 +1,82 @@
+code.language-javascript,
+code.language-js {
+  color: $white;
+
+  .token {
+    &.parameter-type,
+    &.return-type,
+    &.semi {
+      color: $gray-300;
+    }
+
+    &.punctuation {
+      color: $gray-400;
+    }
+
+    &.comment {
+      color: $gray-600;
+    }
+
+    &.parameter-optional,
+    &.parameter {
+      color: $orange;
+    }
+
+    &.type-object,
+    &.type-array {
+      color: #30adc3;
+    }
+
+    &.types {
+      color: $sea;
+    }
+
+    &.method,
+    &.keyword,
+    &.browser-objects,
+    &.variable {
+      color: $cyan;
+    }
+
+    &.op,
+    &.tag,
+    &.punctuation-chars,
+    &.operator,
+    &.module {
+      color: $pink;
+    }
+
+    &.function {
+      color: $green;
+    }
+
+    &.number {
+      color: $salmon;
+    }
+
+    &.nil,
+    &.boolean {
+      color: $purple;
+    }
+
+    &.attr-name {
+      color: $green;
+    }
+
+    &.attr-value {
+      color: $yellow;
+    }
+
+    &.style {
+      color: $cyan;
+    }
+
+    &.script {
+      color: $cyan;
+
+      .token.keyword {
+        color: $cyan;
+      }
+    }
+  }
+}

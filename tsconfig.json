@@ -1,0 +1,23 @@
+{
+  "extends": "@liquify/tsconfig",
+  "exclude": [
+    "node_modules/**",
+    "package",
+    "docs"
+  ],
+  "include": [
+    "src/**/**.ts"
+  ],
+  "compilerOptions": {
+    "incremental": false,
+    "declaration": true,
+    "lib": [
+      "es2020",
+      "dom",
+      "dom.iterable"
+    ],
+    "removeComments": false,
+    "emitDeclarationOnly": true,
+    "baseUrl": ".",
+  }
+}

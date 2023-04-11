@@ -1,0 +1,82 @@
+{
+  "name": "papyrus-docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Papyrus Documentation",
+  "license": "ISC",
+  "scripts": {
+    "dev": "concurrently \"pnpm run scss:watch\" \"pnpm run tsup:watch\" \"http-server ./public\"",
+    "build": "pnpm run tsup:build && pnpm run scss:build",
+    "netlify:deploy": "netlify deploy",
+    "tsup:watch": "tsup --watch",
+    "tsup:build": "tsup --minify",
+    "scss:watch": "sass --load-path=node_modules/ src/style.scss public/style.css --watch",
+    "scss:build": "sass --load-path=node_modules/ src/style.scss public/style.css --no-source-map",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "module": "./public/bundle.min.js",
+  "eslintConfig": {
+    "root": true,
+    "ignorePatterns": [
+      "index.js",
+      "docs/public"
+    ],
+    "extends": [
+      "@liquify/eslint-config"
+    ],
+    "rules": {
+      "no-prototype-builtins": "off",
+      "multiline-ternary": "off"
+    }
+  },
+  "tsup": {
+    "entry": {
+      "bundle.min": "./src/index.ts"
+    },
+    "noExternal": [
+      "mithril",
+      "relapse",
+      "papyrus",
+      "language-literals"
+    ],
+    "outDir": "./public/",
+    "clean": false,
+    "bundle": true,
+    "treeshake": true,
+    "splitting": false,
+    "minify": "terser",
+    "platform": "browser",
+    "target": "es6",
+    "format": [
+      "esm"
+    ]
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@brixtol/bootstrap"
+      ]
+    }
+  },
+  "dependencies": {
+    "codejar": "^3.7.0",
+    "language-literals": "^0.0.2",
+    "mithril": "^2.2.2",
+    "papyrus": "link:..",
+    "prismjs": "^1.29.0",
+    "relapse": "^0.5.0"
+  },
+  "devDependencies": {
+    "@brixtol/bootstrap": "^1.4.3",
+    "@liquify/eslint-config": "workspace:^",
+    "@liquify/prettier-config": "workspace:^",
+    "@liquify/stylelint-config": "workspace:^",
+    "@liquify/tsconfig": "workspace:^",
+    "concurrently": "^8.0.1",
+    "http-server": "^14.1.1",
+    "mithril": "^2.2.2",
+    "sass": "^1.61.0",
+    "terser": "^5.16.8",
+    "tsup": "^6.7.0"
+  }
+}

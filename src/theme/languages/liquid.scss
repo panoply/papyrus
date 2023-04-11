@@ -1,0 +1,131 @@
+/* stylelint-disable color-hex-length */
+$papyrus-liquid-fallback: #fafafa;
+$papyrus-liquid-delimiters: #fafafa;
+$papyrus-liquid-boolean: #ff80f4;
+$papyrus-liquid-number: #935eff;
+$papyrus-liquid-tag-name: #E91E63;
+$papyrus-liquid-parameter: #ff953c;
+$papyrus-liquid-object-name: #81d4fa;
+$papyrus-liquid-object-propp: #fafafa;
+$papyrus-liquid-filter-name: #3defb9;
+$papyrus-liquid-string: #FFF9A6;
+$papyrus-liquid-comment: #888888;
+
+$papyrus-markup-text-content: #FAFAFA;
+$papyrus-markup-delimiter: #BECAFF;
+$papyrus-markup-tag-name: #FF93BC;
+$papyrus-markup-equals: #FF93BC;
+$papyrus-markup-attr-name: #91EBC2;
+$papyrus-markup-attr-value: #FFF9A6;
+$papyrus-markup-comment: #888888;
+
+:root {
+  --papyrus-liquid-fallback: #fafafa;
+  --papyrus-liquid-delimiters: #fafafa;
+  --papyrus-liquid-boolean: #ff80f4;
+  --papyrus-liquid-number: #935eff;
+  --papyrus-liquid-tag-name: #E91E63;
+  --papyrus-liquid-parameter: #ff953c;
+  --papyrus-liquid-object-name: #81d4fa;
+  --papyrus-liquid-object-prop: #fafafa;
+  --papyrus-liquid-filter-name: #3defb9;
+  --papyrus-liquid-string: #FFF9A6;
+  --papyrus-liquid-comment: #888;
+  --papyrus-markup-text-content: #FAFAFA;
+  --papyrus-markup-delimiter: #BECAFF;
+  --papyrus-markup-tag-name: #FF93BC;
+  --papyrus-markup-equals: #FF93BC;
+  --papyrus-markup-attr-name: #91EBC2;
+  --papyrus-markup-attr-value: #FFF9A6;
+  --papyrus-markup-comment: #888888;
+}
+
+
+code.language-liquid {
+
+  .token {
+
+
+    &.comment {
+      color: var(--papyrus-markup-comment);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-markup-delimiter);
+    }
+
+    &.tag {
+      color: var(--papyrus-markup-tag-name);
+    }
+
+    &.attr-equals {
+      color: var(--papyrus-markup-equals);
+    }
+
+    &.attr-name {
+      color: var(--papyrus-markup-attr-name);
+    }
+
+    &.attr-value {
+      color: var(--papyrus-markup-attr-value);
+    }
+
+
+    &.liquid {
+      color: var(--papyrus-liquid-fallback);
+
+      &-markup-string {
+        color: var(--papyrus-liquid-string);
+
+        .liquid-delimiters {
+          color: var(--papyrus-liquid-comment);
+        }
+      }
+
+      &-delimiters {
+        color: var(--papyrus-liquid-delimiters);
+      }
+
+      &-comment {
+        color: var(--papyrus-liquid-comment);
+      }
+
+      &-boolean {
+        color: var(--papyrus-liquid-boolean);
+      }
+
+      &-number {
+        color: var(--papyrus-liquid-number);
+      }
+
+      &-parameter {
+        color: var(--papyrus-liquid-parameter);
+      }
+
+      &-object {
+        color: var(--papyrus-liquid-object-name);
+      }
+
+      &-property {
+        color: var(--papyrus-liquid-object-prop);
+      }
+
+      &-filter {
+        color: var(--papyrus-liquid-filter-name);
+      }
+
+      &-string {
+        color: var(--papyrus-liquid-string);
+      }
+
+      // PINK
+      &-punctuation,
+      &-operator,
+      &-tagged,
+      &-tag {
+        color: var(--papyrus-liquid-tag-name);
+      }
+
+    }
+  }
+}

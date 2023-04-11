@@ -1,0 +1,10 @@
+# DIRECTORIES
+test
+scripts
+src
+versions
+
+# FILES
+index.html
+tsconfig.json
+tsup.config.ts

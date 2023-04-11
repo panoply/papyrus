@@ -1,0 +1,14 @@
+$papyrus-text-content: #FAFAFA;
+$papyrus-html-delimiter: #BECAFF;
+
+code.language-json {
+  .token {
+    &.property {
+      color: $white;
+    }
+
+    &.operator {
+      color: $red;
+    }
+  }
+}

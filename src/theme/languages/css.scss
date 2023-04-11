@@ -1,0 +1,64 @@
+&.selector,
+&.inserted {
+  color: $green;
+}
+
+&.atrule,
+&.attr-value,
+&.keyword,
+&.important,
+&.deleted {
+  color: $pink;
+}
+
+&.regex,
+&.statement {
+  color: $cyan;
+}
+
+&.placeholder,
+&.variable {
+  color: $white;
+}
+
+&.important,
+&.statement,
+&.bold {
+  font-weight: bold;
+}
+
+&.punctuation {
+  color: $white;
+}
+
+&.entity {
+  cursor: help;
+}
+
+&.italic {
+  font-style: italic;
+}
+
+&.namespace {
+  opacity: 0.7;
+}
+
+&.comment,
+&.prolog,
+&.doctype,
+&.cdata {
+  color: #ccc;
+}
+
+&.operator,
+&.boolean,
+&.number {
+  color: $purple;
+}
+
+&.attr-name,
+&.string,
+&.entity,
+&.url {
+  color: $yellow;
+}

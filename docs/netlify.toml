@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm run build"
+
+
+# REQUEST HEADERS
+# ---------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
