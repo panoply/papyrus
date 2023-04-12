@@ -1,24 +1,24 @@
 # 𓁁 Papyrus
 
-Papyrus is a bare bones text editor leveraging [prismjs](https://prismjs.com) for highlighting. The module assumes pre-defined theme styling for the applied highlighting and defaults to using the [Potion](#) color palette. You can leverage an existing prism [themes](#) or take advantage of the extended token captures papyrus provides using the generator application:
+An embedded code editor with textarea enhancements leveraging [PrismJS](https://prismjs.com). Papyrus is a drop-in solution for code sample showcasing and offers syntax highlighting theme customizations by extending upon existing prism language grammars.
 
-Generate a custom theme: [papyrus.js.og](#)
+Generate a theme: [papyrus.js.og](https://papyrus.js.org)
 
-### Why?
+### Reasoning
 
-Papyrus is merely a wrapper around [prismjs](https://prismjs.com) and was developed for drop-in usage within Liquify projects. The main purpose for its existence is to align coloring with that applied in [vscode potion theme](#). It helps alleviate some of cumbersome configuration incurred for showcasing code snippets in documentation and websites.
+Papyrus was created to help alleviate some of cumbersome configuration incurred for showcasing code snippets in documentation and websites. PrismJS is dope and does dope shit, but I wanted something more flexible and integrated.
 
-### Benefits?
+### Benefits
 
-Papyrus extends upon the default grammars provided by prism which allows for more control of syntax highlighting. It comes pre-packaged with support with a refined set of languages common in font-end development. In addition, papyrus ships with a couple of the most common used plugins pre-installed.
+Papyrus extends upon the default grammars provided by prism which allows for more control of syntax highlighting. It comes pre-packaged and supports only a small subset of languages common in font-end development and offers text editor capabilities out of the box along with highly customizable theming solution.
 
 ### Limitations
 
-Papyrus performs consistently at around 5k~loc but anything exceeding that will result in bottlenecks. If you require editor support for large files use Monaco or CodeMirror. Because Papyrus is appropriating PrismJS grammars and neither modules are designed for high level edge cases.
+Papyrus is appropriating PrismJS grammars and neither modules are designed for high level edge cases but can perform consistently at around 5k~loc. If you require support for large files which exceed 5k~loc you can leverage [workers](#workers) or alternatively maybe choose [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/).
 
 ### Languages
 
-The papyrus build of PrismJS includes support for the following languages:
+Papyrus supports only a small subset of languages:
 
 - html
 - shell
@@ -33,26 +33,43 @@ The papyrus build of PrismJS includes support for the following languages:
 - tsx
 - yaml
 
-### Plugins
-
-The papyrus build of PrismJS includes support for the following plugins:
-
-- line-numbers
-- show-invisibles
-- treeview
-- command-line
-
 # Installation
 
-The module ships with all languages and plugins included. It is using [prismjs](https://prismjs.com) version **1.29.0** in the distributed bundle.
+Papyrus is using [PrismJS](https://prismjs.com) version **1.29.0** in the distributed bundle.
 
 ```bash
 pnpm add papyrus
 ```
 
+# Options
+
+Papyrus defaults to using the following options.
+
+| Option          | Default | Description                                                 |
+| --------------- | ------- | ----------------------------------------------------------- |
+| `autoSave`      | `false` | Saves text edits to local storage between refreshes         |
+| `editor`        | `true`  | Enable/Disable the text editor feature                      |
+| `indentSize`    | `2`     | The size of indentation                                     |
+| `indentChar`    | `none`  | The indentation character, also accepts `tab` or `space`    |
+| `input`         | `''`    | The input code, fallbacks to `<code>` inner HTML            |
+| `language`      | `null`  | The language id, fallbacks to `<code>` class name reference |
+| `lineHighlight` | `true`  | Whether or not to highlight lines                           |
+| `lineIndent`    | `true`  | Whether or not to preserve indentation levels on newlines   |
+| `lineNumbers`   | `true`  | Whether or not to show line numbers                         |
+| `locLimit`      | `1500`  | The maximum lines of code to allow                          |
+| `showSpace`     | `false` | Show invisible whitespace characters                        |
+| `showTab`       | `false` | Show invisible tab characters                               |
+| `showCRLF`      | `false` | Show invisible LF + CR character combinator sequences       |
+| `showLF`        | `false` | Show invisible LF (newline) characters                      |
+| `showCR`        | `false` | Show invisible CR (carriage return) characters              |
+| `spellcheck`    | `false` | Allow spellchecking in the text editor                      |
+| `tabIndent`     | `false` | Allow tab indentation on selections                         |
+| `trimStart`     | `true`  | Strip leading extraneous newlines and whitespace            |
+| `trimEnd`       | `true`  | Strip ending extraneous newlines and whitespace             |
+
 # Usage
 
-The module acts a wrapper around Prism and aims to make the applied syntax highlighting as simple as possible. There are 3 different distribution bundles available depending on how you wish to invoke and use Papyrus. You can leverage attributes to customizing the applied highlighting operations using `data-papyrus-*` annotations or alternatively use the default function on the export namespace.
+The module acts a wrapper around PrismJS and aims to make the applied syntax highlighting as simple as possible. There are 3 different distribution bundles available depending on how you wish to invoke and use Papyrus. You can leverage attributes to customizing the applied highlighting operations using `data-papyrus-*` annotations or alternatively use the default function on the export namespace.
 
 <!--prettier-ignore-->
 ```html
@@ -89,7 +106,7 @@ import papyrus from 'papyrus';
 //
 const code = papyrus({
   autoSave: true,
-  readonly: true,
+  editor: false,
   indentChar: 'none',
   indentSize: 2,
   input: '',
@@ -97,17 +114,16 @@ const code = papyrus({
   lineHighlight: true,
   lineIndent: true,
   lineNumbers: true,
-  lineLimit: 1000,
+  locLimit: 1500,
   tabIndent: false,
-  spellCheck: false,
-  trim: true,
-  invisibles: {
-    tab: false,
-    crlf: false,
-    space: false,
-    cr: false,
-    lf: false
-  }
+  spellcheck: false,
+  showCRLF: false,
+  showSpace: false,
+  showCR: false,
+  showLF: false,
+  showTab: false,
+  trimEnd: true,
+  trimStart: true
 });
 
 code[0].enable() // activate editor mode
@@ -121,7 +137,7 @@ import papyrus from 'papyrus';
 
 const p = papyrus.editor(document.querySelector('pre'), {
   autoSave: true,
-  readonly: false,
+  editor: false,
   indentChar: 'none',
   indentSize: 2,
   input: '',
@@ -129,49 +145,42 @@ const p = papyrus.editor(document.querySelector('pre'), {
   lineHighlight: true,
   lineIndent: true,
   lineNumbers: true,
-  lineLimit: 1000,
+  locLimit: 1500,
   tabIndent: false,
-  spellCheck: false,
-  trim: true,
-  invisibles: {
-    tab: false,
-    crlf: false,
-    space: false,
-    cr: false,
-    lf: false
-  }
+  spellcheck: false,
+  showCRLF: false,
+  showSpace: false,
+  showCR: false,
+  showLF: false,
+  showTab: false,
+  trimEnd: true,
+  trimStart: true
 })
 
-// The Language Name as per the `class="language-xxx"`
-p.language: Languages;
+// GETTERS / SETTER
+//
+p.language: Languages;               // The Language Name as per the `class="language-xxx"`
 
-// The number of lines
-p.lines: number;
+// READ ONLY
+//
+readonly p.lines: number;                     // The number of lines
+readonly p.pre: HTMLPreElement;               // The HTML `<pre>` element
+readonly p.code: HTMLElement;                 // The HTML `<code>` element
+readonly p.textarea: HTMLTextAreaElement;     // The HTML `<textarea>` element
+readonly p.raw: string;                       // The raw string of the `textarea`
 
-// The HTML `<pre>` element
-p.pre(): HTMLPreElement;
-
-// The HTML `<code>` element
-p.code: HTMLElement;
-
-// The HTML `<textarea>` element
-p.textarea: HTMLTextAreaElement;
-
-// The raw string of the `textarea`
-p.raw: string;
+// METHODS
 
 // Update the input, optionally provide a language id to change the language mode.
 p.update(input: string, language?: Languages): void
 
-// Disable editor
+// Disable editor mode, makes code input readonly
 p.disable(): void
 
-// Enable editor
+// Enable editor, makes code editable
 p.enable(): void
 
 ```
-
-### CJS
 
 # Methods
 
@@ -180,6 +189,12 @@ The default export exposes the following methods:
 ```ts
 import papyrus from 'papyrus';
 
-// LIQUID SPECIFIC HIGHLIGHTING
-//
+// Highlight/activate editor mode - BROWSER ONLY
+papyrus(options?: {})
+
+// Editor Mode
+papyrus.editor(element: HTMLPreElement, options?: {})
+
+// Highlight string
+papyrus.highlight(code: string, options?: {})
 ```
