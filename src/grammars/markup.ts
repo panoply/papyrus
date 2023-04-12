@@ -67,5 +67,3 @@ export default <Prism.Grammar>{
     inside: grammar
   }
 };
-
-console.log(grammar);
