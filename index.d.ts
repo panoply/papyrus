@@ -14,29 +14,6 @@ export type Languages = (
   | 'yaml'
 )
 
-export interface InvisibleChars {
-  /**
-   * Whether or not space invisibles should show
-   */
-  space?: boolean;
-  /**
-   * Whether or not tab invisibles should show
-   */
-  tab?: boolean;
-  /**
-   * Whether or not CR invisibles should show
-   */
-  cr?: boolean;
-  /**
-   * Whether or not LF invisibles should show
-   */
-  lf?: boolean;
-  /**
-   * Whether or not CRLF invisibles should show
-   */
-  crlf?: boolean;
-}
-
 export interface IOptions {
   /**
    * The language name
@@ -49,17 +26,23 @@ export interface IOptions {
    */
   input?: string;
   /**
-   * Whether of not input should be trimmed
+   * Whether or not leading should be trimmed
    *
    * @default true
    */
-  trim?: boolean;
+  trimStart?: boolean;
+  /**
+   * Whether or not ending should be trimmed
+   *
+   * @default true
+   */
+  trimEnd?: boolean;
   /**
    * Whether or not editor mode is enabled.
    *
    * @default true
    */
-  readonly?: boolean;
+  editor?: boolean;
   /**
    * Whether or not autoSave is enabled.
    *
@@ -69,9 +52,11 @@ export interface IOptions {
   /**
    * The number of allowed lines
    *
-   * @default 1000
+   * **Maximum of 5000**
+   *
+   * @default 1500
    */
-  lineLimit?: number;
+  locLimit?: number;
   /**
    * Whether or not to highlight the active line
    *
@@ -87,21 +72,9 @@ export interface IOptions {
   /**
    * Autoclosing pairs
    *
-   * @default
-   * [
-   *  ['{', '}'],
-   *  ['[', ']'],
-   *  ['"', '"'],
-   *  ["'", "'"],
-   * ]
-   */
-  autoClose?: string[];
-  /**
-   * Autoclosing pairs
-   *
    * @default false
    */
-  spellCheck?: boolean;
+  spellcheck?: boolean;
   /**
    * Preserve newline indentation
    *
@@ -129,11 +102,35 @@ export interface IOptions {
    */
   indentSize?: number;
   /**
-   * Invisible Options
+   * Show Invisible whitespace characters, eg: ` `
    *
    * @default false
    */
-  invisibles?: boolean | InvisibleChars
+  showSpace?: boolean;
+  /**
+   * Show Invisible tab characters, eg: `\t`
+   *
+   * @default false
+   */
+  showTab?: boolean;
+  /**
+   * Show CRLF characters
+   *
+   * @default false
+   */
+  showCRLF?: boolean;
+  /**
+   * Show LF characters
+   *
+   * @default false
+   */
+  showLF?: boolean;
+  /**
+   * Show LF characters
+   *
+   * @default false
+   */
+  showCR?: boolean;
 }
 
 export interface IModel {
