@@ -3,18 +3,24 @@
 /* eslint-disable no-case-declarations */
 
 import Prism from 'prismjs';
-import { InvisibleChars } from '../../index';
+import { IOptions } from '../../index';
 
-export function invisible (options: InvisibleChars) {
+export function invisible (options: IOptions) {
 
-  const invisibles: { [K in keyof InvisibleChars]?: RegExp } = {};
+  const invisibles: {
+    cr?: RegExp;
+    lf?: RegExp;
+    space?: RegExp;
+    crlf?: RegExp;
+    tab?: RegExp;
+  } = {
+    tab: /\t/
+  };
 
-  if (options.cr) invisibles.cr = /\r/;
-  if (options.lf) invisibles.lf = /\n/;
-  if (options.space) invisibles.space = / /;
-  if (options.crlf) invisibles.crlf = /\r\n/;
-
-  invisibles.tab = /\t/;
+  if (options.showCR) invisibles.cr = /\r/;
+  if (options.showLF) invisibles.lf = /\n/;
+  if (options.showSpace) invisibles.space = / /;
+  if (options.showCRLF) invisibles.crlf = /\r\n/;
 
   /**
    * Handles the recursive calling of `addInvisibles` for one token.
@@ -26,7 +32,7 @@ export function invisible (options: InvisibleChars) {
 
     switch (type) {
       case 'RegExp':
-        var inside = {};
+        var inside: any = {};
         tokens[name] = { pattern: value, inside };
         addInvisibles(inside);
         break;
