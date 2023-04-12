@@ -8,10 +8,8 @@ import { enableTabToIndent } from 'indent-textarea';
 import { insert, set } from 'text-field-edit';
 import Script from './grammars/script';
 import Markup from './grammars/markup';
-// import { onkeydown } from './editor/indent';
 import morphdom from 'morphdom';
 import { IOptions, IModel, Languages } from '../index';
-import { getLineCount, getLineNumbers } from './editor/lines';
 import { invisible } from './editor/invisible';
 
 Prism.manual = true;
@@ -46,11 +44,32 @@ function getLanguageFromClass (className: string) {
 
 }
 
+/**
+ * Returns the number of newline occurances
+ */
+function getLineCount (code: string) {
+
+  return code.split('\n').length;
+
+}
+
+/**
+ * Returns the newline counter node
+ */
+function getLineNumbers (count: number) {
+
+  let nl = '';
+
+  for (let i = 0; i < count; i++) nl += `<span class="ln" data-line="${i + 1}"></span>`;
+  return `<span class="line-numbers">${nl}</span>`;
+
+}
+
 function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
 
   const options = Object.assign(<IOptions>{
     autoSave: true,
-    readonly: false,
+    editor: false,
     indentChar: 'none',
     indentSize: 2,
     input: '',
@@ -58,46 +77,19 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     lineHighlight: true,
     lineIndent: true,
     lineNumbers: true,
-    lineLimit: 1000,
+    locLimit: 1500,
     tabIndent: false,
-    spellCheck: false,
-    trim: true,
-    invisibles: false
+    spellcheck: false,
+    showCRLF: false,
+    showSpace: false,
+    showCR: false,
+    showLF: false,
+    showTab: false,
+    trimEnd: true,
+    trimStart: true
   }, config);
 
-  if ('invisibles' in options) {
-    if (typeof options.invisibles === 'boolean') {
-      if (options.invisibles === true) {
-        options.invisibles = {
-          cr: true,
-          crlf: true,
-          lf: true,
-          space: true,
-          tab: true
-        };
-      } else {
-        options.invisibles = false;
-      }
-    } else {
-
-      options.invisibles = Object.assign({
-        cr: false,
-        crlf: false,
-        lf: false,
-        space: true,
-        tab: false
-      }, options.invisibles);
-
-    }
-  } else {
-    options.invisibles = {
-      cr: false,
-      crlf: false,
-      lf: false,
-      space: true,
-      tab: false
-    };
-  }
+  const tab = ' '.repeat(options.indentSize);
 
   const code = pre.querySelector('code');
   if (!code) {
@@ -111,15 +103,31 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     return null;
   }
 
-  if (options.invisibles !== false) invisible(options.invisibles)(Prism.languages[language]);
-
-  let online: number = -1;
   let textarea: HTMLTextAreaElement = null;
   let selected: HTMLSpanElement;
-  let lines = -1;
+  let atline: number = -1;
+  let lines: number = -1;
   let scroll: number = 0;
-  let input = options.trim ? code.textContent.trim() : code.textContent;
+  let input: string;
 
+  if (options.trimStart && options.trimStart) {
+    input = code.textContent.trim();
+  } else if (options.trimStart === true && options.trimEnd === false) {
+    input = code.textContent.trimStart();
+  } else if (options.trimStart === false && options.trimEnd === true) {
+    input = code.textContent.trimEnd();
+  }
+
+  if ((
+    options.showCRLF === false &&
+    options.showSpace === false &&
+    options.showCRLF === false &&
+    options.showTab === false
+  ) === false) invisible(options)(Prism.languages[language]);
+
+  /**
+   * Disable Text Editor
+   */
   function disable () {
 
     const text = pre.querySelector('.editor');
@@ -127,6 +135,9 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     if (text) text.remove();
   }
 
+  /**
+   * Enable Text Editor
+   */
   function enable () {
 
     textarea = pre.querySelector('textarea');
@@ -134,26 +145,37 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     if (!textarea) {
       textarea = document.createElement('textarea');
       textarea.classList.add('editor');
-      textarea.spellcheck = options.spellCheck;
+      textarea.spellcheck = options.spellcheck;
       if (options.tabIndent) enableTabToIndent(textarea);
     }
 
     if (textarea) {
       if (options.input.length > 0) {
-        if (input === '') {
-          input = options.trim ? options.input.trim() : options.input;
+        if (input.trim() === '') {
+
+          if (options.trimStart && options.trimStart) {
+            input = options.input.trim();
+          } else if (options.trimStart === true && options.trimEnd === false) {
+            input = options.input.trimStart();
+          } else if (options.trimStart === false && options.trimEnd === true) {
+            input = options.input.trimEnd();
+          }
+
           textarea.value = input;
+
         } else {
+
           textarea.value = input;
+
         }
       } else {
+
         textarea.value = input;
+
       }
     }
 
-    if (options.readonly === false) {
-      pre.appendChild(textarea);
-    }
+    if (options.editor) pre.appendChild(textarea);
 
     scroll = textarea.scrollTop;
 
@@ -165,9 +187,12 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
 
   }
 
-  if (!options.readonly) enable();
+  if (options.editor) enable();
 
-  if (options.lineNumbers) lines = getLineCount(input);
+  if (options.lineNumbers) {
+    code.classList.add('line-numbers');
+    lines = getLineCount(input);
+  }
 
   /**
    * onclick event callback
@@ -177,12 +202,12 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     const { value, selectionStart } = textarea;
     const number = value.slice(0, selectionStart).split('\n').length;
 
-    if (online === -1) online = number;
-    if (online !== number) {
-      online = number;
+    if (atline === -1) atline = number;
+    if (atline !== number) {
+      atline = number;
       selected.classList.remove('highlight');
     } else {
-      online = number;
+      atline = number;
     }
 
     selected = code.querySelector(`span[data-line="${number}"]`);
@@ -190,16 +215,31 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
 
   }
 
-  /**
-   * highlight input
-   */
-  function highlight () {
+  function onupdate () {
 
-    const output = Prism.highlight(input, Prism.languages[language], language);
+    if (lines > options.locLimit) {
+      return '<code><span class="papyrus-loc-limit">LOC LIMIT EXCEEDED</span></code>';
+    }
 
-    return options.lineNumbers
-      ? `<code class="language-${language}">${output}${getLineNumbers(lines)}</code>`
-      : `<code class="language-${language}">${output}</code>`;
+    const highlight = Prism.highlight(input, Prism.languages[language], language);
+    const output = options.lineNumbers
+      ? `<code>${highlight}${getLineNumbers(lines)}</code>`
+      : `<code>${highlight}</code>`;
+
+    morphdom(code, output, {
+      childrenOnly: true,
+      onBeforeElChildrenUpdated: (from, to) => {
+        if (from.classList.contains('highlight')) return false;
+        if (from.isEqualNode(to)) return false;
+        return true;
+      },
+      onBeforeElUpdated: (from, to) => {
+        if (from.classList.contains('highlight')) return false;
+        if (from.isEqualNode(to)) return false;
+        return true;
+      }
+    });
+
   }
 
   /**
@@ -215,7 +255,7 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
   /**
    * oninput event callback
    */
-  function oninput () {
+  function oninput (this: HTMLTextAreaElement, event: InputEvent) {
 
     input = textarea.value;
 
@@ -226,88 +266,49 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
       code.scrollTop = scroll;
     }
 
-    if (options.lineNumbers) lines = newlines;
+    lines = newlines;
 
-    if (input.indexOf('\t') > -1) {
-      if (typeof options.invisibles === 'boolean') {
-        if (options.invisibles === true) input = input.replace(/\t/g, ' ');
-      } else if (options.invisibles.tab === false) {
-        input = input.replace(/\t/g, ' ');
-      }
-    }
+    if (input.indexOf('\t') > -1 && options.showTab === false) input = input.replace(/\t/g, tab);
 
-    morphdom(code, highlight(), {
-      onBeforeElUpdated: (from, to) => {
-
-        if (from.classList.contains('highlight')) return false;
-
-        if (from.isEqualNode(to)) return false;
-
-        return true;
-
-      }
-    });
-
+    onupdate();
     onscroll();
 
   }
 
-  function onkeydown (this: HTMLTextAreaElement, event: KeyboardEvent) {
+  function onkeydown (event: KeyboardEvent) {
 
     if (event.key === 'Enter') {
 
       if (event.altKey || event.ctrlKey) return;
-      event.preventDefault(); // We will add newline ourselves.
-
-      const start = this.selectionStart;
-      const line = this.value.slice(0, start).split('\n').pop();
-      const newline = '\n' + line.match(/^\s*/)[0];
-
-      insert(this, newline);
-      // document.execCommand('insertText', false, newline);
-
-      onclick();
-
-    } else if (event.key === 'Tab') {
 
       event.preventDefault();
 
-      // insert(this, ' '.repeat(options.indentSize));
-      document.execCommand('insertText', false, ' '.repeat(options.indentSize));
+      const start = textarea.selectionStart;
+      const line = textarea.value.slice(0, start).split('\n').pop();
+      const newline = '\n' + line.match(/^\s*/)[0];
 
-    } else {
-
+      insert(textarea, newline);
       onclick();
 
-      const reverse = (step: number) => (this.selectionEnd = this.selectionEnd - step);
+    } else if (event.key === 'Backspace') {
 
-      switch (event.key) {
-        case '{':
-          insert(this, '}');
-          reverse(1);
-          break;
-        case '[':
-          insert(this, ']');
-          reverse(1);
-          break;
-        case '"':
-          insert(this, '"');
-          reverse(1);
-          break;
-        case "'":
-          insert(this, "'");
-          reverse(1);
-          break;
-        case '<':
-          insert(this, '>');
-          reverse(1);
-          break;
+      const line = textarea.value.slice(0, textarea.selectionStart).split('\n').pop();
+
+      if (line.trim().length === 0) {
+        event.preventDefault();
+        textarea.setSelectionRange(textarea.selectionStart - line.length, textarea.selectionEnd, 'backward');
+        document.execCommand('delete', false);
+        onscroll();
       }
 
+    } else if (event.key === 'Tab') {
+      event.preventDefault();
+      insert(textarea, tab);
+      onscroll();
     }
   }
 
-  morphdom(code, highlight());
+  onupdate();
 
   const state: IModel = {
     enable,
@@ -315,16 +316,16 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     get pre () { return pre; },
     get code () { return code; },
     get textarea () { return textarea; },
-    get raw () { return textarea.value; },
+    get raw () { return input; },
     get lines () { return lines; },
     get language () { return language; },
     set language (newLanguage) {
 
       if (language !== newLanguage) {
         pre.classList.remove(`language-${language}`);
-        pre.classList.add(`language-${language}`);
+        pre.classList.add(`language-${newLanguage}`);
         code.classList.remove(`language-${language}`);
-        code.classList.add(`language-${language}`);
+        code.classList.add(`language-${newLanguage}`);
         language = newLanguage;
       }
 
@@ -336,9 +337,8 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
         set(textarea, input);
       }
 
-      morphdom(code, highlight());
-
-      console.warn(`𓁁 Papyprus: Updated Language: ${language}`);
+      onupdate();
+      console.info(`𓁁 Papyprus: Updated Language: ${language}`);
 
     }
   };
@@ -361,7 +361,7 @@ const papyrus = function papyrus (options?: IOptions) {
 
   });
 
-  console.info('𓁁');
+  console.info('𓁁 Papyrus Initialized');
 
   return model;
 
@@ -388,17 +388,15 @@ function highlight (code: string, options: IOptions) {
     'tsx',
     'yaml'
   ].includes(options.language)) {
-    console.error(`𓁁 Papyprus does not support "${options.language}"`);
+
+    console.error(`𓁁 Papyprus: Unsupported language "${options.language}"`);
     return code;
+
   }
 
   if (!('lineNumbers' in options)) options.lineNumbers = true;
 
-  return Prism.highlight(
-    code,
-    Prism.languages[options.language],
-    options.language
-  );
+  return Prism.highlight(code, Prism.languages[options.language], options.language);
 
 };
 
