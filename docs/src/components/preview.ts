@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { IAttrs, Languages } from '../attrs';
-import papyrus from 'papyrus';
+import papyrus, { IModel } from 'papyrus';
 
 export const Preview: m.Component<IAttrs, {
   editor: IModel,
@@ -66,7 +66,7 @@ export const Preview: m.Component<IAttrs, {
               if (state.language !== attrs.language) {
 
                 state.language = attrs.language;
-                state.editor.update(attrs.language, attrs.state.sample);
+                state.editor.update(attrs.state.sample, attrs.language);
                 console.log('update');
 
               } else if (attrs.preview.opened !== state.tab) {
@@ -96,10 +96,12 @@ export const Preview: m.Component<IAttrs, {
               state.tab = 0;
               state.language = attrs.language;
               state.editor = papyrus.editor(dom.parentElement as HTMLPreElement, {
-                readonly: false,
+                editor: true,
                 input: attrs.state.sample,
                 language: attrs.language,
-                lineNumbers: true
+                lineNumbers: true,
+                tabIndent: true,
+                showSpace: true
               });
 
               console.log(state.editor);

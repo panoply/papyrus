@@ -4,6 +4,7 @@
   --papyrus-font-size: 1em;
   --papyrus-line-height: 1.7;
   --papyrus-code-padding-y: 0.3em;
+  --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
   --papyrus-code-inline-bg: #eeebeb;
   --papyrus-code-selection: #d7d7d783;
@@ -18,9 +19,10 @@
   --papyrus-invisible-lf-color: #808080;
   --papyrus-invisible-cr-color: #808080;
   --papyrus-invisible-crlf-color: #808080;
-  --papyrus-line-number-width: 3.2em;
+  --papyrus-line-number-width: 3.3em;
   --papyrus-line-number-color: #363d49;
   --papyrus-line-fence-color: #363d49;
+  --papyrus-line-fence-width: 0.01em;
   --papyrus-line-highlight-bg: #f0f8ff0a;
   --papyrus-line-highlight-number: #fafafa;
 }
@@ -47,7 +49,6 @@ pre.papyrus {
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
   /* CODE ELEMENT ------------------------------- */
-  /* HIDE INVISIBLES ---------------------------- */
 }
 pre.papyrus textarea.editor {
   color: transparent !important;
@@ -57,16 +58,79 @@ pre.papyrus textarea.editor {
   resize: none !important;
   caret-color: var(--papyrus-code-caret-color);
 }
-pre.papyrus > code[class*=language-],
-pre.papyrus textarea.editor {
+pre.papyrus textarea.editor::-webkit-scrollbar, pre.papyrus textarea.editor::-webkit-scrollbar-thumb, pre.papyrus textarea.editor::-webkit-scrollbar-track {
+  visibility: hidden;
+  opacity: 0;
+}
+pre.papyrus textarea.editor::selection {
+  text-shadow: none;
+  background-color: var(--papyrus-code-selection);
+  opacity: 0.01;
+}
+pre.papyrus code[class*=language-] {
+  /* -------------------------------------------- */
+  /* LINE NUMBERS                                 */
+  /* -------------------------------------------- */
+}
+pre.papyrus code[class*=language-].line-numbers,
+pre.papyrus code[class*=language-] + textarea.editor {
+  padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
+}
+pre.papyrus code[class*=language-] > .papyrus-loc-limit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+pre.papyrus code[class*=language-] > .line-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  padding-top: var(--papyrus-code-padding-y);
+  padding-right: var(--papyrus-code-padding-x);
+  padding-bottom: var(--papyrus-code-padding-y);
+  user-select: none;
+  pointer-events: none;
+}
+pre.papyrus code[class*=language-] > .line-numbers::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--papyrus-line-number-width));
+  display: block;
+  height: 100%;
+  border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+  content: "";
+}
+pre.papyrus code[class*=language-] > .line-numbers span.ln {
+  display: flex;
+  padding-left: calc(var(--papyrus-line-number-width) / 5);
+  counter-increment: linenumber;
+}
+pre.papyrus code[class*=language-] > .line-numbers span.ln.highlight {
+  background-color: var(--papyrus-line-highlight-bg);
+}
+pre.papyrus code[class*=language-] > .line-numbers span.ln.highlight::before {
+  color: var(--papyrus-line-highlight-number);
+  transition: color 0.1s ease-in;
+}
+pre.papyrus code[class*=language-] > .line-numbers span.ln::before {
+  display: block;
+  width: calc(var(--papyrus-line-number-width) / 2);
+  color: var(--papyrus-line-number-color);
+  text-align: right;
+  content: counter(linenumber);
+}
+pre.papyrus textarea.editor,
+pre.papyrus code[class*=language-] {
   position: absolute !important;
   z-index: 100;
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: var(--papyrus-code-padding-y) calc(var(--papyrus-line-number-width) * 1.3);
+  padding: var(--papyrus-code-padding-y) calc(var(--papyrus-code-padding-x));
   overflow: auto;
-  inset: 0;
   font-size: var(--papyrus-font-size);
   font-family: var(--papyrus-font-family);
   line-height: var(--papyrus-line-height);
@@ -77,25 +141,7 @@ pre.papyrus textarea.editor {
   word-spacing: normal;
   tab-size: 2;
   hyphens: none;
-}
-pre.papyrus > code[class*=language-]::-webkit-scrollbar-track,
-pre.papyrus textarea.editor::-webkit-scrollbar-track {
-  background-color: var(--papyrus-scrollbar-track);
-}
-pre.papyrus > code[class*=language-]::-webkit-scrollbar,
-pre.papyrus textarea.editor::-webkit-scrollbar {
-  width: var(--papyrus-scrollbar-width);
-  background-color: var(--papyrus-scrollbar-bg);
-}
-pre.papyrus > code[class*=language-]::-webkit-scrollbar-thumb,
-pre.papyrus textarea.editor::-webkit-scrollbar-thumb {
-  background-color: var(--papyrus-scrollbar-thumb);
-}
-pre.papyrus > code[class*=language-]::selection,
-pre.papyrus textarea.editor::selection {
-  text-shadow: none;
-  background-color: var(--papyrus-code-selection);
-  opacity: 0.01;
+  inset: 0;
 }
 pre.papyrus::-webkit-scrollbar-track {
   background-color: var(--papyrus-scrollbar-track);
@@ -111,13 +157,7 @@ pre.papyrus::selection {
   text-shadow: none;
   background: var(--papyrus-code-bg);
 }
-pre.papyrus.no-cr .rc, pre.papyrus.no-lf .lf, pre.papyrus.no-crlf .crlf, pre.papyrus.no-tab .tab, pre.papyrus.no-space .space, pre.papyrus.no-invisibles .tab,
-pre.papyrus.no-invisibles .cr,
-pre.papyrus.no-invisibles .lf,
-pre.papyrus.no-invisibles .space {
-  visibility: hidden;
-  opacity: 0;
-}
+
 /* -------------------------------------------- */
 /* BLOCKS                                       */
 /* -------------------------------------------- */
@@ -132,48 +172,6 @@ pre.papyrus.no-invisibles .space {
 /* -------------------------------------------- */
 /* LINE NUMBERS                                 */
 /* -------------------------------------------- */
-.line-numbers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  padding-top: var(--papyrus-code-padding-y);
-  padding-bottom: var(--papyrus-code-padding-y);
-  user-select: none;
-  pointer-events: none;
-}
-.line-numbers::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--papyrus-line-number-width);
-  display: block;
-  height: 100%;
-  border-right: 0.01em solid var(--papyrus-line-fence-color);
-  content: "";
-}
-.line-numbers span.ln {
-  display: flex;
-  padding-left: calc(var(--papyrus-line-number-width) / 3);
-  counter-increment: linenumber;
-}
-.line-numbers span.ln.highlight {
-  background-color: var(--papyrus-line-highlight-bg);
-}
-.line-numbers span.ln.highlight::before {
-  color: var(--papyrus-line-highlight-number);
-  transition: color 0.1s ease-in;
-}
-.line-numbers span.ln::before {
-  display: block;
-  width: calc(var(--papyrus-line-number-width) / 2);
-  padding-right: 0.8em;
-  color: var(--papyrus-line-number-color);
-  text-align: right;
-  content: counter(linenumber);
-}
-
 .token {
   /* -------------------------------------------- */
   /* INVISIBLES                                   */

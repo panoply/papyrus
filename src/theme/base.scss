@@ -7,6 +7,7 @@
 
   // CODE REGION
   --papyrus-code-padding-y: 0.3em;
+  --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
   --papyrus-code-inline-bg: #eeebeb;
   --papyrus-code-selection: #d7d7d783;
@@ -27,9 +28,10 @@
   --papyrus-invisible-crlf-color: #808080;
 
   // LINE NUMBERS
-  --papyrus-line-number-width: 3.2em;
+  --papyrus-line-number-width: 3.3em;
   --papyrus-line-number-color: #363d49;
   --papyrus-line-fence-color: #363d49;
+  --papyrus-line-fence-width: 0.01em;
   --papyrus-line-highlight-bg: #f0f8ff0a;
   --papyrus-line-highlight-number: #fafafa;
 }
@@ -62,6 +64,7 @@ pre.papyrus {
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
 
+
   // text-shadow: 0 0.04rem rgb(0 0 0);
 
 
@@ -74,19 +77,97 @@ pre.papyrus {
     outline: none !important;
     resize: none  !important;
     caret-color: var(--papyrus-code-caret-color);
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    &::selection {
+      text-shadow: none;
+      background-color: var(--papyrus-code-selection);
+      opacity: .01;
+    }
+  }
+
+  code[class*="language-"] {
+
+    &.line-numbers,
+    + textarea.editor {
+      padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
+    }
+
+    > .papyrus-loc-limit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* -------------------------------------------- */
+    /* LINE NUMBERS                                 */
+    /* -------------------------------------------- */
+
+    > .line-numbers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
+      padding-top: var(--papyrus-code-padding-y);
+      padding-right: var(--papyrus-code-padding-x);
+      padding-bottom: var(--papyrus-code-padding-y);
+      user-select: none;
+      pointer-events: none;
+
+      &::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--papyrus-line-number-width));
+        display: block;
+        height: 100%;
+        border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+        content: "";
+      }
+
+      span.ln {
+        display: flex;
+        padding-left: calc(var(--papyrus-line-number-width) / 5);
+        counter-increment: linenumber;
+
+        &.highlight {
+          background-color: var(--papyrus-line-highlight-bg);
+
+          &::before {
+            color: var(--papyrus-line-highlight-number);
+            transition: color 0.1s ease-in;
+          }
+        }
+
+        &::before {
+          display: block;
+          width: calc(var(--papyrus-line-number-width) / 2);
+          color: var(--papyrus-line-number-color);
+          text-align: right;
+          content: counter(linenumber);
+        }
+      }
+    }
+
   }
 
 
-  > code[class*="language-"],
-  textarea.editor {
+  textarea.editor,
+  code[class*="language-"] {
     position: absolute !important;
     z-index: 100;
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: var(--papyrus-code-padding-y) calc(var(--papyrus-line-number-width) * 1.3);
+    padding: var(--papyrus-code-padding-y) calc(var(--papyrus-code-padding-x));
     overflow: auto;
-    inset: 0;
     font-size: var(--papyrus-font-size);
     font-family: var(--papyrus-font-family);
     line-height: var(--papyrus-line-height);
@@ -97,27 +178,9 @@ pre.papyrus {
     word-spacing: normal;
     tab-size: 2;
     hyphens: none;
-
-    &::-webkit-scrollbar-track {
-      background-color: var(--papyrus-scrollbar-track);
-    }
-
-    &::-webkit-scrollbar {
-      width: var(--papyrus-scrollbar-width);
-      background-color: var(--papyrus-scrollbar-bg);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--papyrus-scrollbar-thumb);
-    }
-
-    &::selection {
-      text-shadow: none;
-      background-color: var(--papyrus-code-selection);
-      opacity: .01;
-    }
-
+    inset: 0;
   }
+
 
   &::-webkit-scrollbar-track {
     background-color: var(--papyrus-scrollbar-track);
@@ -137,44 +200,8 @@ pre.papyrus {
     background: var(--papyrus-code-bg);
   }
 
-
-  /* HIDE INVISIBLES ---------------------------- */
-
-  %hide {
-    visibility: hidden;
-    opacity: 0;
-  }
-
-  &.no-invisibles {
-    .tab,
-    .cr,
-    .lf,
-    .space {
-      @extend %hide;
-    }
-  }
-
-  &.no-space {
-    .space { @extend %hide; }
-  }
-
-  &.no-tab {
-    .tab { @extend %hide; }
-  }
-
-  &.no-crlf {
-    .crlf { @extend %hide; }
-  }
-
-  &.no-lf {
-    .lf { @extend %hide; }
-  }
-
-  &.no-cr {
-    .rc {@extend %hide; }
-  }
-
 }
+
 
 /* -------------------------------------------- */
 /* BLOCKS                                       */
@@ -193,53 +220,6 @@ pre.papyrus {
 /* LINE NUMBERS                                 */
 /* -------------------------------------------- */
 
-
-.line-numbers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
-  padding-top: var(--papyrus-code-padding-y);
-  padding-bottom: var(--papyrus-code-padding-y);
-  user-select: none;
-  pointer-events: none;
-
-  &::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--papyrus-line-number-width);
-    display: block;
-    height: 100%;
-    border-right: 0.01em solid var(--papyrus-line-fence-color);
-    content: "";
-  }
-
-  span.ln {
-    display: flex;
-    padding-left: calc(var(--papyrus-line-number-width) / 3);
-    counter-increment: linenumber;
-
-    &.highlight {
-      background-color: var(--papyrus-line-highlight-bg);
-
-      &::before {
-        color: var(--papyrus-line-highlight-number);
-        transition: color 0.1s ease-in;
-      }
-    }
-
-    &::before {
-      display: block;
-      width: calc(var(--papyrus-line-number-width) / 2);
-      padding-right: 0.8em;
-      color: var(--papyrus-line-number-color);
-      text-align: right;
-      content: counter(linenumber);
-    }
-  }
-}
 
 .token {
 

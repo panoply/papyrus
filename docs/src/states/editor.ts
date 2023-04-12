@@ -26,8 +26,23 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-code-padding-y',
         input: {
           type: 'range',
-          default: '0.3',
-          value: '0.3',
+          default: '0.4',
+          value: '0.4',
+          min: '0',
+          max: '5',
+          step: '0.1',
+          unit: 'em'
+        }
+      }
+      ,
+      {
+        label: 'Padding X',
+        sass: '$papyrus-code-padding-x',
+        css: '--papyrus-code-padding-x',
+        input: {
+          type: 'range',
+          default: '0.4',
+          value: '0.4',
           min: '0',
           max: '5',
           step: '0.1',
@@ -200,9 +215,9 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-line-number-width',
         input: {
           type: 'range',
-          default: '3.2',
-          value: '3.2',
-          min: '0.1',
+          default: '3.4',
+          value: '3.4',
+          min: '1',
           max: '7',
           step: '0.1',
           unit: 'em'
