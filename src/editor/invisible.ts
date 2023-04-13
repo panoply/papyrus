@@ -3,9 +3,16 @@
 /* eslint-disable no-case-declarations */
 
 import Prism from 'prismjs';
-import { IOptions } from '../../index';
+import { IOptions, Languages } from '../../index';
 
-export function invisible (options: IOptions) {
+export function invisible (prism: typeof Prism, options: IOptions, language: Languages) {
+
+  if ((
+    options.showCRLF === false &&
+    options.showSpace === false &&
+    options.showCRLF === false &&
+    options.showTab === false
+  )) return;
 
   const invisibles: {
     cr?: RegExp;
@@ -28,8 +35,8 @@ export function invisible (options: IOptions) {
   function handleToken (tokens: object | object[], name: string | number) {
 
     const value = tokens[name];
-    const type = Prism.util.type(value);
-
+    const type = prism.util.type(value);
+    console.log(value, name);
     switch (type) {
       case 'RegExp':
         var inside: any = {};
@@ -73,5 +80,5 @@ export function invisible (options: IOptions) {
 
   };
 
-  return addInvisibles;
+  addInvisibles(prism.languages[language]);
 }

@@ -14,7 +14,7 @@ Papyrus extends upon the default grammars provided by prism which allows for mor
 
 ### Limitations
 
-Papyrus is appropriating PrismJS grammars and neither modules are designed for high level edge cases but can perform consistently at around 5k~loc. If you require support for large files which exceed 5k~loc you can leverage [workers](#workers) or alternatively maybe choose [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/).
+Papyrus is appropriating PrismJS grammars and neither modules are designed for high level edge cases but can perform consistently at around 5k~loc. If you require support for large files which exceed 5k~loc maybe choose [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/).
 
 ### Languages
 
@@ -35,10 +35,10 @@ Papyrus supports only a small subset of languages:
 
 # Installation
 
-Papyrus is using [PrismJS](https://prismjs.com) version **1.29.0** in the distributed bundle.
+Papyrus requires you to install [PrismJS](https://prismjs.com).
 
 ```bash
-pnpm add papyrus
+pnpm add papyrus prismjs
 ```
 
 # Options
@@ -130,12 +130,12 @@ code[0].enable() // activate editor mode
 
 ```
 
-The `editor` import returns an instance which allow you to work with the code regions.
+The `mount` import returns an instance which allow you to work with the code regions. This is the manual equivalent of calling the default `papyrus() method.`
 
 ```ts
 import papyrus from 'papyrus';
 
-const p = papyrus.editor(document.querySelector('pre'), {
+const p = papyrus.mount(document.querySelector('pre'), {
   autoSave: true,
   editor: false,
   indentChar: 'none',
@@ -192,8 +192,10 @@ import papyrus from 'papyrus';
 // Highlight/activate editor mode - BROWSER ONLY
 papyrus(options?: {})
 
-// Editor Mode
-papyrus.editor(element: HTMLPreElement, options?: {})
+papyrus.potion(prism)
+
+// Editor Mode - BROWSER ONLY
+papyrus.mount(element: HTMLPreElement, options?: {})
 
 // Highlight string
 papyrus.highlight(code: string, options?: {})

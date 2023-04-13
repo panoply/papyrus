@@ -3,6 +3,8 @@
   --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --papyrus-font-size: 1em;
   --papyrus-line-height: 1.7;
+  --papyrus-height: auto;
+  --papyrus-width: 100%;
   --papyrus-code-padding-y: 0.3em;
   --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
@@ -45,6 +47,8 @@ code.inline {
 /* -------------------------------------------- */
 pre.papyrus {
   position: relative !important;
+  width: var(--papyrus-width);
+  height: var(--papyrus-height);
   color: inherit;
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);

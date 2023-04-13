@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+import type Prism from 'prismjs';
 
 export type Languages = (
   | 'html'
@@ -133,6 +135,31 @@ export interface IOptions {
   showCR?: boolean;
 }
 
+export interface IRenderOptions extends Omit<IOptions, 'input'> {
+  /**
+   * The language name
+   */
+  language: Languages;
+  /**
+   * Whether or not to insert pre elmement
+   *
+   * @default true
+   */
+  insertPreElement?: boolean;
+  /**
+   * Whether or not to insert code token
+   *
+   * @default true
+   */
+  insertCodeElement?: boolean;
+  /**
+   * Whether or not to insert textarea
+   *
+   * @default true
+   */
+  insertTextArea?: boolean;
+}
+
 export interface IModel {
   /**
    * The Language Name as per the `class="language-xxx"`
@@ -178,24 +205,196 @@ export interface IModel {
 }
 
 /**
- * **PAPYRUS 𓁁**
+ * #### PAPYRUS 𓁁
  *
  * An embedded code editor leveraging PrismJS.
  */
 export const Papyrus: {
   /**
-   * Browser Usage
+   * #### Prism ⟁
+   *
+   * Define the PrismJS instance
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * papyrus.prism = prism
+   *
+   * // Somewhere else in your bundle
+   * papyrus({
+   *   editor: false,
+   *   lineNumbers: true,
+   *   // etc etc ...
+   * });
+   *
    */
-  (options: Omit<IOptions, 'language'>): IModel[];
+  prism: typeof Prism
   /**
-   * Text Editor Support
+   * #### BROWSER USAGE
+   *
+   * The default export is designed for usange in browser environments.
+   * This method will initialize the editor by selecting all `<pre>` elements
+   * using a `papyrus` className. When child `<code>` elements contain a `language-*`
+   * className, Papyrus will assume language mode in accordance, otherwise provide
+   * a language name in the options.
+   *
+   * ```html
+   * <!-- # 1 - Inferring Language Mode via class name -->
+   * <pre class="papyrus">
+   *   <code class="language-css">
+   *    .selector {
+   *      color: #fff;
+   *    }
+   *   </code>
+   * </pre>
+   *
+   * ---
+   *
+   * <!-- # 2 - Language Mode will be passed in options -->
+   * <pre class="papyrus">
+   *   <code>
+   *    const foo = "bar";
+   *   </code>
+   * </pre>
+   * ```
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * // Using the above markup example
+   * //
+   * const code = papyrus(prism, {
+   *  // When <code> element has no language-* class, code will be treated as JavaScript
+   *   language: 'javascript',
+   * });
+   *
+   * // Returns an array of code elements in the DOM
+   * //
+   * code[0] // Returns the papyrus model for # 1
+   * code[1] // Returns the papyrus model for # 2
    */
-  editor(dom: HTMLPreElement, options?: IOptions): IModel;
+  (prismjs: typeof Prism, options?: Omit<IOptions, 'language'>): IModel[];
+  (options?: Omit<IOptions, 'language'>): IModel[];
   /**
-   * Highlight Code
+   * #### POTION 🧝🏽‍♀️
+   *
+   * Extends PrismJS grammars to support Potion theming. Potion theming exposes
+   * additional token captures.
+   *
+   * This method Expects an instance of PrismJS to be passed.
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * // BROWSER USAGE
+   * //
+   * papyrus.potion(prism)({
+   *  editor: true,
+   *  lineNumbers: true,
+   *  showSpace: true,
+   *  // etc etc ....
+   * })
+   *
+   * // NODE USAGE
+   * //
+   * papyrus.potion(prism).highlight('{{ object.prop }}', {
+   *   language: 'liquid',
+   *   lineNumbers: true,
+   *   // etc etc ....
+   * })
    */
-  highlight(code: string, options: IOptions): string;
-
+  potion(prism: typeof Prism): Omit<typeof Papyrus, 'potion'>;
+  /**
+   * #### MOUNT
+   *
+   * The editor method can be used when you want to manually control
+   * highlighting and execution of Papyrus. Unlike the default method,
+   * you will need to provide the `<pre>` HTML element.
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * // Provide PrismJS context manually
+   * //
+   * // The mount method requires PrismJS context.
+   * // You can manually set this, eg:
+   *
+   * papyrus.prism = prism
+   *
+   * const code = papyrus.mount(document.querySelector('pre'), {
+   *  editor: true,
+   *  lineNumbers: true,
+   *  showSpace: true,
+   *  // etc etc ....
+   * });
+   *
+   * // Returns a model, you can access different methods
+   * //
+   * code.pre: HTMLPreElement;
+   * code.code: HTMLElement;
+   * code.language: Language
+   *
+   * // You can also enable/disable editor modes
+   * //
+   * code.enable();
+   * code.disable();
+   *
+   * // You may also update the input
+   * //
+   * code.update('{ "foo": "bar" }')
+   *
+   * // Optionally, provide a language id to switch modes
+   * //
+   * code.update('const foo: string = "bar";', 'typescript')
+   *
+   */
+  mount(prism: typeof Prism): (dom: HTMLPreElement, options?: IOptions) => IModel;
+  mount(dom: HTMLPreElement, options?: IOptions): IModel;
+  /**
+   * #### RENDER
+   *
+   * This method is typically for NodeJS usage. It will return the generated
+   * papyrus nodes according to options as a string. Use this when generating
+   * static sites with an SSG.
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * const input = `
+   * <hr>
+   * `;
+   *
+   * const output = papyrus.render(input, {
+   *   language: 'html',  // Required
+   *   editor: true,
+   *   lineNumbers: true,
+   *   trimEnd: false,   // optionally disable trims
+   *   trimStart: false  // optionally disable trims
+   * })
+   *
+   *  // The return value of `output` is:
+   *
+   *  `
+   *  <pre class="papyrus">
+   *  <code class="language-html">
+   *  <span class="token delimiter"><</span>
+   *  <span class="token tag">hr</span>
+   *  <span class="token delimiter">></span>
+   *  <span class="line-numbers">
+   *  <span class="ln" data-line="1"></span>
+   *  </span>
+   *  </code>
+   *  <textarea class="editor"></textarea>
+   *  </pre>
+   * `;
+   */
+  render(code: string, options: IRenderOptions): string;
+  render(prism: typeof Prism): (code: string, options: IRenderOptions) => string;
 };
 
 export default Papyrus;

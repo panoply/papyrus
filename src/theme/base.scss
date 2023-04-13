@@ -4,6 +4,10 @@
   --papyrus-font-size: 1em;
   --papyrus-line-height: 1.7;
 
+  // EDITOR SIZING
+  --papyrus-height: auto;
+  --papyrus-width: 100%;
+
 
   // CODE REGION
   --papyrus-code-padding-y: 0.3em;
@@ -60,10 +64,11 @@ code {
 
 pre.papyrus {
   position: relative !important;
+  width: var(--papyrus-width);
+  height: var(--papyrus-height);
   color: inherit;
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
-
 
   // text-shadow: 0 0.04rem rgb(0 0 0);
 

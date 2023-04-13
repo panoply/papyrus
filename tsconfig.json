@@ -6,6 +6,7 @@
     "docs"
   ],
   "include": [
+    "tsup.config.ts",
     "src/**/**.ts"
   ],
   "compilerOptions": {

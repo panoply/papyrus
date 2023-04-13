@@ -59,20 +59,5 @@ export default <Prism.Grammar> {
     global: true,
     greedy: true,
     pattern: /([,:])\s*(\w+)(?=:)/i
-  },
-  'liquid-style': {
-    inside: Prism.languages.style,
-    lookbehind: true,
-    pattern: /(\{%-?\s*style(?:sheet)?\s*-?%\})([\s\S]+?)(?=\{%-?\s*endstyle(?:sheet)?\s*-?%\})/
-  },
-  'liquid-javascript': {
-    inside: Prism.languages.script,
-    lookbehind: true,
-    pattern: /(\{%-?\s*javascript\s*-?%\})([\s\S]*?)(?=\{%-?\s*endjavascript\s*-?%\})/
-  },
-  'liquid-schema': {
-    inside: Prism.languages.json,
-    lookbehind: true,
-    pattern: /(\{%-?\s*schema\s*-?%\})([\s\S]+?)(?=\{%-?\s*endschema\s*-?%\})/
   }
 };

@@ -9,23 +9,60 @@ import { insert, set } from 'text-field-edit';
 import Script from './grammars/script';
 import Markup from './grammars/markup';
 import morphdom from 'morphdom';
-import { IOptions, IModel, Languages } from '../index';
+import { IOptions, IModel, Languages, Papyrus, IRenderOptions } from '../index';
 import { invisible } from './editor/invisible';
 
-Prism.manual = true;
-Prism.languages.insertBefore('js', 'keyword', Script);
-Prism.languages.insertBefore('ts', 'keyword', Script);
-Prism.languages.liquid = Prism.languages.extend('markup', Markup);
-Prism.languages.html = Prism.languages.extend('markup', Markup);
+const papyrus: Partial<typeof Papyrus> = function run (options = {}) {
+
+  if (arguments.length === 0) {
+    if (papyrus.prism === null) {
+      if (getPrismJS()) return;
+    }
+  } else if (arguments.length === 1) {
+    if ('disableWorkerMessageHandler' in arguments[0]) {
+      papyrus.prism = arguments[0];
+      return run;
+    }
+  }
+
+  const model: IModel[] = [];
+
+  document.querySelectorAll('pre').forEach((pre) => {
+
+    if (!pre.classList.contains('papyrus')) pre.classList.add('papyrus');
+
+    const dom = mountDom(pre, options);
+
+    if (dom === null) return;
+
+    model.push(dom);
+  });
+
+  console.info('𓁁 Papyrus Initialized');
+
+  return model;
+
+};
+
+function getPrismJS () {
+
+  if (globalThis.Prism) {
+    papyrus.prism = globalThis.Prism;
+    return false;
+  }
+
+  console.error('𓁁 Papyrus: Unable to obtain PrismJS context');
+  return true;
+
+}
 
 /**
  * Extract the Language ID reference from className
  */
-function getLanguageFromClass (className: string) {
+function getLanguageFromClass (className: string, options: IOptions) {
 
   const language = className.indexOf('language-');
-
-  return {
+  const langName = {
     html: 'html',
     shell: 'shell',
     css: 'css',
@@ -41,6 +78,15 @@ function getLanguageFromClass (className: string) {
     tsx: 'tsx',
     yaml: 'yaml'
   }[className.slice(language + 9).split(' ')[0].trimEnd()] as Languages;
+
+  if (langName) {
+    if (options.language === null) options.language = langName;
+    return langName;
+  }
+
+  if (options.language !== null) return options.language;
+
+  return langName;
 
 }
 
@@ -65,11 +111,12 @@ function getLineNumbers (count: number) {
 
 }
 
-function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
+function mergeOptions (config: IOptions) {
 
-  const options = Object.assign(<IOptions>{
+  return Object.assign(<IOptions>{
     autoSave: true,
-    editor: false,
+    prism: null,
+    editor: true,
     indentChar: 'none',
     indentSize: 2,
     input: '',
@@ -89,6 +136,43 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     trimStart: true
   }, config);
 
+}
+
+function trimInput (input: string, options: IOptions) {
+
+  if (options.trimStart && options.trimStart) {
+    return input.trim();
+  } else if (options.trimStart === true && options.trimEnd === false) {
+    return input.trimStart();
+  } else if (options.trimStart === false && options.trimEnd === true) {
+    return input.trimEnd();
+  }
+
+  return input;
+}
+
+function mountPrism () {
+
+  if (arguments.length === 1) {
+
+    if (arguments[0] instanceof HTMLPreElement) {
+      return mountDom(arguments[0]);
+    }
+
+    if ('disableWorkerMessageHandler' in arguments[0]) {
+      papyrus.prism = arguments[0];
+      return mountDom;
+    }
+  }
+
+  return mountDom(arguments[0], arguments[1]);
+
+}
+
+function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
+
+  const { prism } = papyrus;
+  const options = mergeOptions(config);
   const tab = ' '.repeat(options.indentSize);
 
   const code = pre.querySelector('code');
@@ -97,9 +181,9 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
     return null;
   }
 
-  let language = getLanguageFromClass(code.className);
+  let language = getLanguageFromClass(code.className, options);
   if (!language) {
-    console.warn(`𓁁 Papyprus: Unsupported Language ${language}`);
+    console.warn(`𓁁 Papyprus: Unsupported or Missing Language ${language}`);
     return null;
   }
 
@@ -108,22 +192,9 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
   let atline: number = -1;
   let lines: number = -1;
   let scroll: number = 0;
-  let input: string;
+  let input: string = trimInput(code.textContent, options);
 
-  if (options.trimStart && options.trimStart) {
-    input = code.textContent.trim();
-  } else if (options.trimStart === true && options.trimEnd === false) {
-    input = code.textContent.trimStart();
-  } else if (options.trimStart === false && options.trimEnd === true) {
-    input = code.textContent.trimEnd();
-  }
-
-  if ((
-    options.showCRLF === false &&
-    options.showSpace === false &&
-    options.showCRLF === false &&
-    options.showTab === false
-  ) === false) invisible(options)(Prism.languages[language]);
+  invisible(prism, options, language);
 
   /**
    * Disable Text Editor
@@ -221,7 +292,8 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
       return '<code><span class="papyrus-loc-limit">LOC LIMIT EXCEEDED</span></code>';
     }
 
-    const highlight = Prism.highlight(input, Prism.languages[language], language);
+    const grammar = prism.languages[language] || prism.languages.plaintext;
+    const highlight = prism.highlight(input, grammar, language);
     const output = options.lineNumbers
       ? `<code>${highlight}${getLineNumbers(lines)}</code>`
       : `<code>${highlight}</code>`;
@@ -258,7 +330,6 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
   function oninput (this: HTMLTextAreaElement, event: InputEvent) {
 
     input = textarea.value;
-
     const newlines = getLineCount(input);
 
     if (options.lineIndent && lines < newlines) {
@@ -347,60 +418,114 @@ function setDomNodes (pre: HTMLPreElement, config: IOptions): IModel {
 
 }
 
-const papyrus = function papyrus (options?: IOptions) {
+/* -------------------------------------------- */
+/* EXPORTS                                      */
+/* -------------------------------------------- */
 
-  const model: IModel[] = [];
+/**
+ * Apply potion grammar extension
+ */
+function potion () {
 
-  document.body.querySelectorAll('pre').forEach((pre) => {
+  if ('disableWorkerMessageHandler' in arguments[0]) {
 
-    const dom = setDomNodes(pre, options);
+    const prism = arguments[0] as typeof Prism;
 
-    if (dom === null) return;
+    Markup['liquid-style'] = {
+      inside: prism.languages.css,
+      lookbehind: true,
+      pattern: /(\{%-?\s*style(?:sheet)?\s*-?%\})([\s\S]+?)(?=\{%-?\s*endstyle(?:sheet)?\s*-?%\})/
+    };
 
-    model.push(dom);
+    Markup['liquid-javascript'] = {
+      inside: prism.languages.javascript,
+      lookbehind: true,
+      pattern: /(\{%-?\s*javascript\s*-?%\})([\s\S]*?)(?=\{%-?\s*endjavascript\s*-?%\})/
+    };
 
-  });
+    Markup['liquid-schema'] = {
+      inside: prism.languages.json,
+      lookbehind: true,
+      pattern: /(\{%-?\s*schema\s*-?%\})([\s\S]+?)(?=\{%-?\s*endschema\s*-?%\})/
+    };
 
-  console.info('𓁁 Papyrus Initialized');
+    prism.manual = true;
+    prism.languages.insertBefore('js', 'keyword', Script);
+    prism.languages.insertBefore('ts', 'keyword', Script);
+    prism.languages.liquid = prism.languages.extend('markup', Markup);
+    prism.languages.html = prism.languages.extend('markup', Markup);
 
-  return model;
+    papyrus.prism = prism;
 
-};
+  }
 
-function highlight (code: string, options: IOptions) {
+  return papyrus;
 
+}
+
+function render () {
+
+  if (arguments.length === 0) throw new Error('𓁁 Papyrus: Missing code parameter');
+
+  if (typeof arguments[0] !== 'string' && 'disableWorkerMessageHandler' in arguments[0]) {
+    papyrus.prism = arguments[0];
+    return render;
+  } else if (papyrus.prism === null) {
+    if (getPrismJS()) return arguments[0];
+  }
+
+  if (arguments.length < 2) {
+    console.error('𓁁 Papyrus: Render method requires options argument');
+    return arguments[0];
+  }
+
+  const options = mergeOptions(arguments[1]) as IRenderOptions;
+  const code = trimInput(arguments[0], options);
+
+  if (!('insertCodeElement' in options)) options.insertPreElement = true;
+  if (!('insertPreElement' in options)) options.insertCodeElement = true;
+  if (!('insertTextArea' in options)) options.insertTextArea = true;
   if (!options.language) {
     console.error('𓁁 Papyrus: Missing Language Reference');
     return code;
   }
 
-  if (![
-    'html',
-    'shell',
-    'css',
-    'scss',
-    'liquid',
-    'xml',
-    'json',
-    'javascript',
-    'typescript',
-    'jsx',
-    'tsx',
-    'yaml'
-  ].includes(options.language)) {
+  const output: string[] = [];
 
-    console.error(`𓁁 Papyprus: Unsupported language "${options.language}"`);
-    return code;
-
+  if (options.insertPreElement) {
+    if (options.lineNumbers) {
+      output.push('<pre class="papyrus line-numbers">');
+    } else {
+      output.push('<pre class="papyrus">');
+    }
   }
 
-  if (!('lineNumbers' in options)) options.lineNumbers = true;
+  if (options.insertCodeElement) {
+    output.push(`<code class="language-${options.language}">`);
+  }
 
-  return Prism.highlight(code, Prism.languages[options.language], options.language);
+  const highlight = papyrus.prism.highlight(code, papyrus.prism.languages[options.language], options.language);
+
+  if (options.lineNumbers) {
+    const lineNumbers = getLineNumbers(getLineCount(code));
+    output.push(highlight, lineNumbers, '</code>');
+  } else {
+    output.push(highlight, '</code>');
+  }
+
+  if (options.editor && options.insertTextArea) {
+    output.push('<textarea class="editor">', code, '</textarea>');
+  }
+
+  output.push('</pre>');
+
+  return output.join('');
 
 };
 
-papyrus.highlight = highlight;
-papyrus.editor = setDomNodes;
+papyrus.prism = null;
+papyrus.render = render;
+papyrus.mount = mountPrism as typeof Papyrus['mount'];
+papyrus.potion = potion as typeof Papyrus['potion'];
 
 export default papyrus;
