@@ -1,12 +1,12 @@
 # 𓁁 Papyrus
 
-An embedded code editor with textarea enhancements leveraging [PrismJS](https://prismjs.com). Papyrus is a drop-in solution for code sample showcasing and offers syntax highlighting theme customizations by extending upon existing prism language grammars.
+An embedded code editor with textarea enhancements leveraging [PrismJS](https://prismjs.com). Papyrus is a drop-in solution for code sample showcasing and offers syntax highlighting theme customizations.
 
-Generate a theme: [papyrus.js.og](https://papyrus.js.org)
+Documentation + Custom Theming: [papyrus.js.og](https://papyrus.js.org)
 
 ### Reasoning
 
-Papyrus was created to help alleviate some of cumbersome configuration incurred for showcasing code snippets in documentation and websites. PrismJS is dope and does dope shit, but I wanted something more flexible and integrated.
+Papyrus was created to help alleviate some of cumbersome configuration incurred for showcasing code snippets in documentation and websites. PrismJS is dope and does dope shit, but I wanted something more flexible and integrated which provided basic editing capabilities.
 
 ### Benefits
 
@@ -16,29 +16,12 @@ Papyrus extends upon the default grammars provided by prism which allows for mor
 
 Papyrus is appropriating PrismJS grammars and neither modules are designed for high level edge cases but can perform consistently at around 5k~loc. If you require support for large files which exceed 5k~loc maybe choose [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/).
 
-### Languages
-
-Papyrus supports only a small subset of languages:
-
-- html
-- shell
-- css
-- scss
-- liquid
-- xml
-- json
-- javascript
-- typescript
-- jsx
-- tsx
-- yaml
-
 # Installation
 
 Papyrus requires you to install [PrismJS](https://prismjs.com).
 
 ```bash
-pnpm add papyrus prismjs
+pnpm add papyrus
 ```
 
 # Options
@@ -159,7 +142,7 @@ const p = papyrus.mount(document.querySelector('pre'), {
 
 // GETTERS / SETTER
 //
-p.language: Languages;               // The Language Name as per the `class="language-xxx"`
+p.language: Languages;   // The Language Name as per the `class="language-xxx"`
 
 // READ ONLY
 //
@@ -189,9 +172,10 @@ The default export exposes the following methods:
 ```ts
 import papyrus from 'papyrus';
 
-// Highlight/activate editor mode - BROWSER ONLY
+// BROWSER ONLY - Highlight/activate editor mode
 papyrus(options?: {})
 
+// Potion Theming
 papyrus.potion(prism)
 
 // Editor Mode - BROWSER ONLY
