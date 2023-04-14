@@ -36,7 +36,6 @@ export function invisible (prism: typeof Prism, options: IOptions, language: Lan
 
     const value = tokens[name];
     const type = prism.util.type(value);
-    console.log(value, name);
     switch (type) {
       case 'RegExp':
         var inside: any = {};

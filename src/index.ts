@@ -25,25 +25,22 @@ const papyrus: Partial<typeof Papyrus> = function run (options = {}) {
     }
   }
 
-  const model: IModel[] = [];
+  if (!('models' in papyrus)) papyrus.models = new Map();
 
   document.querySelectorAll('pre').forEach((pre) => {
-
     if (!pre.classList.contains('papyrus')) pre.classList.add('papyrus');
-
-    const dom = mountDom(pre, options);
-
-    if (dom === null) return;
-
-    model.push(dom);
+    mountDom(pre, options);
   });
 
   console.info('𓁁 Papyrus Initialized');
 
-  return model;
+  return Array.from(papyrus.models);
 
 };
 
+/**
+ * **Utility** ~ Attempt to get PrismJS instance
+ */
 function getPrismJS () {
 
   if (globalThis.Prism) {
@@ -52,12 +49,13 @@ function getPrismJS () {
   }
 
   console.error('𓁁 Papyrus: Unable to obtain PrismJS context');
+
   return true;
 
 }
 
 /**
- * Extract the Language ID reference from className
+ * **Utility** ~ Extract the Language ID reference from className
  */
 function getLanguageFromClass (className: string, options: IOptions) {
 
@@ -91,7 +89,7 @@ function getLanguageFromClass (className: string, options: IOptions) {
 }
 
 /**
- * Returns the number of newline occurances
+ * **Utility** ~ Returns the number of newline occurances
  */
 function getLineCount (code: string) {
 
@@ -100,7 +98,7 @@ function getLineCount (code: string) {
 }
 
 /**
- * Returns the newline counter node
+ * **Utility** ~ Returns the newline counter node
  */
 function getLineNumbers (count: number) {
 
@@ -111,6 +109,9 @@ function getLineNumbers (count: number) {
 
 }
 
+/**
+ * **Utility** ~ Merge options
+ */
 function mergeOptions (config: IOptions) {
 
   return Object.assign(<IOptions>{
@@ -138,6 +139,9 @@ function mergeOptions (config: IOptions) {
 
 }
 
+/**
+ * **Utility** ~ Trim Code Input
+ */
 function trimInput (input: string, options: IOptions) {
 
   if (options.trimStart && options.trimStart) {
@@ -152,6 +156,8 @@ function trimInput (input: string, options: IOptions) {
 }
 
 function mountPrism () {
+
+  if (!('models' in papyrus)) papyrus.models = new Map();
 
   if (arguments.length === 1) {
 
@@ -170,6 +176,8 @@ function mountPrism () {
 }
 
 function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
+
+  if (!pre.hasAttribute('id')) pre.id = Math.random().toString(36).slice(2);
 
   const { prism } = papyrus;
   const options = mergeOptions(config);
@@ -223,26 +231,12 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
     if (textarea) {
       if (options.input.length > 0) {
         if (input.trim() === '') {
-
-          if (options.trimStart && options.trimStart) {
-            input = options.input.trim();
-          } else if (options.trimStart === true && options.trimEnd === false) {
-            input = options.input.trimStart();
-          } else if (options.trimStart === false && options.trimEnd === true) {
-            input = options.input.trimEnd();
-          }
-
-          textarea.value = input;
-
+          input = textarea.value = trimInput(options.input, options);
         } else {
-
           textarea.value = input;
-
         }
       } else {
-
         textarea.value = input;
-
       }
     }
 
@@ -261,7 +255,7 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   if (options.editor) enable();
 
   if (options.lineNumbers) {
-    code.classList.add('line-numbers');
+    code.classList.add('lines');
     lines = getLineCount(input);
   }
 
@@ -294,17 +288,13 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
 
     const grammar = prism.languages[language] || prism.languages.plaintext;
     const highlight = prism.highlight(input, grammar, language);
+
     const output = options.lineNumbers
       ? `<code>${highlight}${getLineNumbers(lines)}</code>`
       : `<code>${highlight}</code>`;
 
     morphdom(code, output, {
       childrenOnly: true,
-      onBeforeElChildrenUpdated: (from, to) => {
-        if (from.classList.contains('highlight')) return false;
-        if (from.isEqualNode(to)) return false;
-        return true;
-      },
       onBeforeElUpdated: (from, to) => {
         if (from.classList.contains('highlight')) return false;
         if (from.isEqualNode(to)) return false;
@@ -320,8 +310,14 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   function onscroll () {
 
     code.scrollTop = scroll = textarea.scrollTop;
-    code.scrollLeft = textarea.scrollLeft;
-
+    const left = code.scrollLeft = textarea.scrollLeft;
+    if (left > 0) {
+      pre.classList.add('no-fence');
+      // pre.setAttribute('style', `--papyrus-line-scroll-left: -${left}px`);
+    //  code.lastElementChild.setAttribute('style', `--papyrus-line-scroll-left: ${left}px`);
+    } else {
+      pre.classList.remove('no-fence');
+    }
   };
 
   /**
@@ -330,6 +326,7 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   function oninput (this: HTMLTextAreaElement, event: InputEvent) {
 
     input = textarea.value;
+
     const newlines = getLineCount(input);
 
     if (options.lineIndent && lines < newlines) {
@@ -343,6 +340,8 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
 
     onupdate();
     onscroll();
+
+    // tokens = prism.tokenize(input, prism.languages[language]);
 
   }
 
@@ -393,18 +392,36 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
     set language (newLanguage) {
 
       if (language !== newLanguage) {
-        pre.classList.remove(`language-${language}`);
-        pre.classList.add(`language-${newLanguage}`);
+
+        // pre.classList.remove(`language-${language}`);
+        // pre.classList.add(`language-${newLanguage}`);
         code.classList.remove(`language-${language}`);
         code.classList.add(`language-${newLanguage}`);
+
+        if (options.lineNumbers) {
+          if (!code.classList.contains('lines')) {
+            code.classList.add('lines');
+          }
+        } else {
+          if (code.classList.contains('lines')) {
+            code.classList.remove('lines');
+          }
+        }
+
         language = newLanguage;
+
       }
 
     },
-    update (input, newLanguage) {
+    update (newInput, newLanguage) {
+
+      input = newInput;
+      lines = getLineCount(input);
 
       if (newLanguage) {
         state.language = newLanguage;
+        textarea.value = input;
+      } else {
         set(textarea, input);
       }
 
@@ -414,13 +431,11 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
     }
   };
 
+  papyrus.models.set(pre.id, state);
+
   return state;
 
 }
-
-/* -------------------------------------------- */
-/* EXPORTS                                      */
-/* -------------------------------------------- */
 
 /**
  * Apply potion grammar extension
@@ -523,7 +538,17 @@ function render () {
 
 };
 
+function getModel (id?: string) {
+
+  if (!id) return [ ...papyrus.models.values() ][0];
+
+  if (papyrus.models.has(id)) return papyrus.models.get(id);
+
+  return [ ...papyrus.models.values() ][0];
+}
+
 papyrus.prism = null;
+papyrus.get = getModel;
 papyrus.render = render;
 papyrus.mount = mountPrism as typeof Papyrus['mount'];
 papyrus.potion = potion as typeof Papyrus['potion'];
