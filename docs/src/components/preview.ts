@@ -52,7 +52,7 @@ export const Preview: m.Component<IAttrs, {
       , m(
         'pre.papyrus.w-100'
         , {
-          class: `language-${attrs.language}`,
+
           style: {
             height: '80vh'
           }
@@ -68,7 +68,6 @@ export const Preview: m.Component<IAttrs, {
 
                 state.language = attrs.language;
                 state.editor.update(attrs.state.sample, attrs.language);
-                console.log('update');
 
               } else if (attrs.preview.opened !== state.tab) {
 
@@ -102,7 +101,7 @@ export const Preview: m.Component<IAttrs, {
                 language: attrs.language,
                 lineNumbers: true,
                 tabIndent: true,
-                showSpace: true
+                showSpace: false
               });
 
             }

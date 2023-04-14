@@ -231,6 +231,32 @@ export const Papyrus: {
    */
   prism: typeof Prism
   /**
+   * Papyrus models within the DOM - Use the `papyus.get()` method
+   * to obtain models.
+   */
+  models: Map<string, IModel>
+  /**
+   *
+   * Retrive an active instance.
+   *
+   * @example
+   * import prism from 'prismjs';
+   * import papyrus from 'papyrus';
+   *
+   * // Returns the current model in DOM
+   * //
+   * papyrus.get(): IModel
+   *
+   * // Returns a papyrus model by id annotation.
+   * // Requires, an ID be passed on pre element, eg:
+   * //
+   * // <pre id="foo" class="papyrus"></pre>
+   * //
+   * papyrus.get('foo'): IModel;
+   *
+   */
+  get(id?: string): IModel;
+  /**
    * #### BROWSER USAGE
    *
    * The default export is designed for usange in browser environments.

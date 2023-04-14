@@ -6528,7 +6528,7 @@ textarea.fm-lg {
 }
 
 .fm-color {
-  width: 4em;
+  width: 7.4em;
   height: calc(1.5em + 0.75rem + 2px);
   padding: 0.375rem;
 }
@@ -7059,7 +7059,7 @@ textarea.fm-input.is-valid {
 }
 
 .fm-color.is-valid {
-  width: calc(4em + calc(1.5em + 0.75rem));
+  width: calc(7.4em + calc(1.5em + 0.75rem));
 }
 
 .fm-check-input.is-valid {
@@ -7189,7 +7189,7 @@ textarea.fm-input.is-invalid {
 }
 
 .fm-color.is-invalid {
-  width: calc(4em + calc(1.5em + 0.75rem));
+  width: calc(7.4em + calc(1.5em + 0.75rem));
 }
 
 .fm-check-input.is-invalid {
@@ -7245,15 +7245,45 @@ textarea.fm-input.is-invalid {
   border-radius: 0;
 }
 
+.info-btn {
+  color: #8a8a8a;
+}
+.info-btn.active, .info-btn:hover {
+  color: black;
+}
+
+.info-block {
+  display: block;
+  padding-bottom: 20px;
+  color: #737373;
+  font-size: 0.595rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 .shadow {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .fm-color {
+  position: relative;
   margin: 0;
   padding: 5px 0;
   background: none;
   border: none;
+}
+.fm-color::after {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--invert-color);
+  font-weight: 500;
+  font-size: 0.6rem;
+  font-family: system-ui;
+  letter-spacing: 0.01rem;
+  text-transform: uppercase;
+  content: attr(aria-label);
+  inset: 0;
 }
 
 .hover-lang {
@@ -7268,6 +7298,6 @@ textarea.fm-input.is-invalid {
 }
 
 code.inline {
-  background-color: #eee;
+  background-color: #eeeeee;
   border: 1px solid #e7e7e7;
 }

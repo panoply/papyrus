@@ -90,6 +90,10 @@ export interface IColor {
    */
   readonly default: string;
   /**
+   * The color format to assign.
+   */
+  format: 'rgb' | 'hex'
+  /**
    * The user defined value
    */
   value: string;
@@ -97,9 +101,17 @@ export interface IColor {
 
 export interface IToken<T extends IColor | ISelect | ISwitch | IRange> {
   /**
+   * Toggle info
+   */
+  toggle?: boolean;
+  /**
    * Label of the token input
    */
   label: string;
+  /**
+   * An optional description for the token
+   */
+  describe?: string;
   /**
    * CSS Variable
    */
@@ -339,6 +351,12 @@ export interface IAttrs {
     map: Map<string, string>;
     css: string;
     sass: string;
+  }
+  /**
+   * Update cache
+   */
+  cache: {
+    save(): void;
   }
   /**
    * The state models

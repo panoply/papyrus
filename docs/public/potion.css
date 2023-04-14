@@ -1,17 +1,20 @@
 @charset "UTF-8";
+/* stylelint-disable color-function-notation */
 :root {
-  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --papyrus-font-size-root: 15px;
   --papyrus-font-size: 1em;
+  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --papyrus-line-height: 1.7;
   --papyrus-height: auto;
   --papyrus-width: 100%;
+  --papyrus-selection-bg: 255, 255, 255;
+  --papyrus-selection-alpha: 0.3;
   --papyrus-code-padding-y: 0.3em;
   --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
   --papyrus-code-inline-bg: #eeebeb;
-  --papyrus-code-selection: #d7d7d783;
   --papyrus-code-border-radius: 0.5em;
-  --papyrus-code-caret-color: #fff;
+  --papyrus-code-caret-color: #ffffff;
   --papyrus-scrollbar-width: 2px;
   --papyrus-scrollbar-track: #181b20;
   --papyrus-scrollbar-bg: #384355;
@@ -25,7 +28,9 @@
   --papyrus-line-number-color: #363d49;
   --papyrus-line-fence-color: #363d49;
   --papyrus-line-fence-width: 0.01em;
-  --papyrus-line-highlight-bg: #f0f8ff0a;
+  --papyrus-line-scroll-left: 0;
+  --papyrus-line-highlight-alpha: 0.05;
+  --papyrus-line-highlight-bg: 171, 190, 206;
   --papyrus-line-highlight-number: #fafafa;
 }
 
@@ -49,10 +54,25 @@ pre.papyrus {
   position: relative !important;
   width: var(--papyrus-width);
   height: var(--papyrus-height);
-  color: inherit;
+  font-size: var(--papyrus-font-size-root);
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
+  /* LINE FENCE --------------------------------- */
   /* CODE ELEMENT ------------------------------- */
+}
+pre.papyrus.no-fence::before {
+  border: none;
+}
+pre.papyrus::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--papyrus-line-number-width);
+  display: block;
+  height: 100%;
+  background-color: var(--papyrus-code-bg);
+  border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+  content: "";
 }
 pre.papyrus textarea.editor {
   color: transparent !important;
@@ -62,21 +82,12 @@ pre.papyrus textarea.editor {
   resize: none !important;
   caret-color: var(--papyrus-code-caret-color);
 }
-pre.papyrus textarea.editor::-webkit-scrollbar, pre.papyrus textarea.editor::-webkit-scrollbar-thumb, pre.papyrus textarea.editor::-webkit-scrollbar-track {
-  visibility: hidden;
-  opacity: 0;
-}
-pre.papyrus textarea.editor::selection {
-  text-shadow: none;
-  background-color: var(--papyrus-code-selection);
-  opacity: 0.01;
-}
 pre.papyrus code[class*=language-] {
   /* -------------------------------------------- */
   /* LINE NUMBERS                                 */
   /* -------------------------------------------- */
 }
-pre.papyrus code[class*=language-].line-numbers,
+pre.papyrus code[class*=language-].lines,
 pre.papyrus code[class*=language-] + textarea.editor {
   padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
 }
@@ -89,31 +100,24 @@ pre.papyrus code[class*=language-] > .line-numbers {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 200;
   display: block;
   width: 100%;
+  height: 100%;
   padding-top: var(--papyrus-code-padding-y);
-  padding-right: var(--papyrus-code-padding-x);
   padding-bottom: var(--papyrus-code-padding-y);
   user-select: none;
   pointer-events: none;
 }
-pre.papyrus code[class*=language-] > .line-numbers::after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(var(--papyrus-line-number-width));
-  display: block;
-  height: 100%;
-  border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
-  content: "";
-}
 pre.papyrus code[class*=language-] > .line-numbers span.ln {
+  z-index: 200;
   display: flex;
   padding-left: calc(var(--papyrus-line-number-width) / 5);
+  line-height: var(--papyrus-line-height);
   counter-increment: linenumber;
 }
 pre.papyrus code[class*=language-] > .line-numbers span.ln.highlight {
-  background-color: var(--papyrus-line-highlight-bg);
+  background-color: rgba(var(--papyrus-line-highlight-bg), var(--papyrus-line-highlight-alpha));
 }
 pre.papyrus code[class*=language-] > .line-numbers span.ln.highlight::before {
   color: var(--papyrus-line-highlight-number);
@@ -146,20 +150,26 @@ pre.papyrus code[class*=language-] {
   tab-size: 2;
   hyphens: none;
   inset: 0;
+  /* SCROLLBARS --------------------------------- */
 }
-pre.papyrus::-webkit-scrollbar-track {
+pre.papyrus textarea.editor::-webkit-scrollbar-track,
+pre.papyrus code[class*=language-]::-webkit-scrollbar-track {
   background-color: var(--papyrus-scrollbar-track);
 }
-pre.papyrus::-webkit-scrollbar {
+pre.papyrus textarea.editor::-webkit-scrollbar,
+pre.papyrus code[class*=language-]::-webkit-scrollbar {
   width: var(--papyrus-scrollbar-width);
+  height: var(--papyrus-scrollbar-width);
   background-color: var(--papyrus-scrollbar-bg);
 }
-pre.papyrus::-webkit-scrollbar-thumb {
+pre.papyrus textarea.editor::-webkit-scrollbar-thumb,
+pre.papyrus code[class*=language-]::-webkit-scrollbar-thumb {
   background-color: var(--papyrus-scrollbar-thumb);
 }
-pre.papyrus::selection {
+pre.papyrus textarea.editor::selection,
+pre.papyrus code[class*=language-]::selection {
   text-shadow: none;
-  background: var(--papyrus-code-bg);
+  background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
 }
 
 /* -------------------------------------------- */

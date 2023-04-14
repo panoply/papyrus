@@ -36,7 +36,10 @@
     "pack": "cd versions; pnpm pack ../ && cd .."
   },
   "stylelint": {
-    "extends": "@liquify/stylelint-config"
+    "extends": "@liquify/stylelint-config",
+    "rules": {
+      "color-hex-length": "long"
+    }
   },
   "prettier": "@liquify/prettier-config",
   "eslintConfig": {

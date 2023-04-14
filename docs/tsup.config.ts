@@ -9,7 +9,9 @@ export default defineConfig({
     'relapse',
     'prismjs',
     'papyrus',
-    'language-literals'
+    'invert-color',
+    'language-literals',
+    'lz-string'
   ],
   outDir: './public/',
   clean: false,

@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "codejar": "^3.7.0",
+    "invert-color": "^2.0.0",
     "language-literals": "^0.0.2",
     "mithril": "^2.2.2",
     "papyrus": "link:..",

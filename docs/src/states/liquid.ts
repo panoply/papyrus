@@ -17,6 +17,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-delimiters',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#fafafa',
             value: '#fafafa'
           }
@@ -27,8 +28,9 @@ export const liquid: IState = {
           css: '--papyrus-liquid-comment',
           input: {
             type: 'color',
-            default: '#888',
-            value: '#888'
+            format: 'hex',
+            default: '#888888',
+            value: '#888888'
           }
         },
         {
@@ -37,6 +39,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-boolean',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#ff80f4',
             value: '#ff80f4'
           }
@@ -47,6 +50,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-number',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#935eff',
             value: '#935eff'
           }
@@ -57,6 +61,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-parameter',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#ff953c',
             value: '#ff953c'
           }
@@ -67,6 +72,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-object-name',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#81d4fa',
             value: '#81d4fa'
           }
@@ -77,6 +83,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-filter-name',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#3defb9',
             value: '#3defb9'
           }
@@ -87,6 +94,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-string',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#FFF9A6',
             value: '#FFF9A6'
           }
@@ -97,6 +105,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-operator',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#E91E63',
             value: '#E91E63'
           }
@@ -107,6 +116,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-tag-name',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#E91E63',
             value: '#E91E63'
           }
@@ -117,6 +127,7 @@ export const liquid: IState = {
           css: '--papyrus-liquid-punctuation',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#E91E63',
             value: '#E91E63'
           }
@@ -134,6 +145,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-text-content',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#FAFAFA',
             value: '#FAFAFA'
           }
@@ -144,6 +156,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-delimiter',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#BECAFF',
             value: '#BECAFF'
           }
@@ -154,6 +167,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-tag-name',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#FF93BC',
             value: '#FF93BC'
           }
@@ -164,6 +178,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-attr-name',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#91EBC2',
             value: '#91EBC2'
           }
@@ -174,6 +189,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-equals',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#FF93BC',
             value: '#FF93BC'
           }
@@ -184,6 +200,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-attr-value',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#FFF9A6',
             value: '#FFF9A6'
           }
@@ -194,6 +211,7 @@ export const liquid: IState = {
           css: '--papyrus-markup-comment',
           input: {
             type: 'color',
+            format: 'hex',
             default: '#888888',
             value: '#888888'
           }

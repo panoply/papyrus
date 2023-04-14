@@ -78,7 +78,7 @@ function replace (model: IModel) {
 
 function render () {
 
-  const model = {
+  const model = localStorage.getItem('cache') !== null ? JSON.parse(localStorage.getItem('cache')) : {
     editor,
     liquid,
     html,
@@ -119,8 +119,19 @@ function render () {
       return model[attrs.language];
     },
     model,
-    style: replace(model)
+    style: replace(model),
+    cache: {
+      save () {
+        localStorage.removeItem('cache');
+        localStorage.setItem('cache', JSON.stringify(model));
+      },
+      merge () {
+
+      }
+    }
   };
+
+  attrs.cache.merge();
 
   m.route(document.body, '/', {
     '/': Landing,

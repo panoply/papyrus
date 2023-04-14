@@ -2,6 +2,28 @@ import { IToken, IColor, IRange } from '../attrs';
 
 export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
   [
+    'Base' /* --------------------------------- */
+    ,
+    [
+      {
+        label: 'Root',
+        describe: 'Papyrus uses <strong>em</strong> units. This is the base font <strong>px</strong> size that is used to scale the code regions fonts, lines and other typography stylings.',
+        sass: '$papyrus-font-size-root',
+        css: '--papyrus-font-size-root',
+        input: {
+          type: 'range',
+          default: '15',
+          value: '15',
+          min: '2',
+          max: '30',
+          step: '1',
+          unit: 'px'
+        }
+      }
+    ]
+  ]
+  ,
+  [
     'Sizing' /* --------------------------------- */
     ,
     [
@@ -91,6 +113,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-body-bg',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#181b20',
           value: '#181b20'
         }
@@ -101,6 +124,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-code-bg',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#181b20',
           value: '#181b20'
         }
@@ -132,6 +156,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-scrollbar-bg',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#384355',
           value: '#384355'
         }
@@ -143,6 +168,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-scrollbar-thumb',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#384355',
           value: '#384355'
         }
@@ -154,8 +180,42 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-scrollbar-track',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#181b20',
           value: '#181b20'
+        }
+      }
+    ]
+  ]
+  ,
+  [
+    'Selection' /* ----------------------------- */
+    ,
+    [
+      {
+        label: 'Alpha',
+        sass: '$papyrus-selection-alpha',
+        css: '--papyrus-selection-alpha',
+        input: {
+          type: 'range',
+          default: '0.3',
+          value: '0.3',
+          min: '0.1',
+          max: '1',
+          step: '0.01',
+          unit: ''
+        }
+      }
+      ,
+      {
+        label: 'Background',
+        sass: '$papyrus-selection-bg',
+        css: '--papyrus-selection-bg',
+        input: {
+          type: 'color',
+          format: 'rgb',
+          default: '255,255,255',
+          value: '255,255,255'
         }
       }
     ]
@@ -167,15 +227,18 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
     ,
     [
       {
-        label: 'Number',
-        sass: '$papyrus-line-highlight-number',
-        css: '--papyrus-line-highlight-number',
+        label: 'Alpha',
+        sass: '$papyrus-line-highlight-alpha',
+        css: '--papyrus-line-highlight-alpha',
         input: {
-          type: 'color',
-          default: '#fafafa',
-          value: '#fafafa'
+          type: 'range',
+          default: '0.05',
+          value: '0.1',
+          min: '0.01',
+          max: '1',
+          step: '0.01',
+          unit: ''
         }
-
       }
       ,
       {
@@ -184,20 +247,22 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-line-highlight-bg',
         input: {
           type: 'color',
-          default: '#f0f8ff0a',
-          value: '#f0f8ff0a'
+          format: 'rgb',
+          default: '171, 190, 206',
+          value: '171, 190, 206'
         }
 
       }
       ,
       {
-        label: 'Selection',
-        sass: '$papyrus-code-selection',
-        css: '--papyrus-code-selection',
+        label: 'Number',
+        sass: '$papyrus-line-highlight-number',
+        css: '--papyrus-line-highlight-number',
         input: {
           type: 'color',
-          default: '#d7d7d783',
-          value: '#d7d7d783'
+          format: 'hex',
+          default: '#fafafa',
+          value: '#fafafa'
         }
 
       }
@@ -230,6 +295,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-line-number-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#363d49',
           value: '#363d49'
         }
@@ -241,6 +307,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-line-fence-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#363d49',
           value: '#363d49'
         }
@@ -257,6 +324,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-invisible-space-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#42454D',
           value: '#42454D'
         }
@@ -268,6 +336,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-invisible-tab-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#808080',
           value: '#808080'
         }
@@ -279,6 +348,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-invisible-lf-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#808080',
           value: '#808080'
         }
@@ -290,6 +360,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-invisible-cr-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#808080',
           value: '#808080'
         }
@@ -301,6 +372,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-invisible-crlf-color',
         input: {
           type: 'color',
+          format: 'hex',
           default: '#808080',
           value: '#808080'
         }
