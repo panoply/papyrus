@@ -1,3 +1,5 @@
+import { IOptions } from 'papyrus';
+
 export type Languages = (
   | 'html'
   | 'shell'
@@ -111,7 +113,7 @@ export interface IToken<T extends IColor | ISelect | ISwitch | IRange> {
   /**
    * An optional description for the token
    */
-  describe?: string;
+  description?: string;
   /**
    * CSS Variable
    */
@@ -138,18 +140,10 @@ export interface IState {
   /**
    * Token Inputs
    */
-  tokens: Array<[ string, IToken<IColor | ISelect | ISwitch | IRange>[]]>;
-  /**
-   * The theme variable reference
-   */
-  theme: Map<string, string>
+  tokens: IToken<IColor | ISelect | ISwitch | IRange>[];
 }
 
 export interface IModel {
-  /**
-   * Editor Model
-   */
-  editor: Array<[ string, IToken<IColor | ISelect | ISwitch | IRange>[]]>;
   /**
    * HTML
    */
@@ -221,104 +215,12 @@ export interface IPreview {
   }>;
 }
 
-export interface IEditor {
-  /**
-   * Whether or not editor mode is enabled.
-   *
-   * @default true
-   */
-  enabled: boolean;
-  /**
-   * Whether or not autoSave is enabled.
-   *
-   * @default true
-   */
-  autoSave: boolean;
-  /**
-   * The number of allowed lines
-   *
-   * @default 1000
-   */
-  lineLimit: boolean;
-  /**
-   * Whether or not editor mode is is set to toggle.
-   *
-   * @default false
-   */
-  toggle: boolean;
-  /**
-   * Whether or not line numbers show
-   *
-   * @default true
-   */
-  lineNumbers: boolean;
-  /**
-   * Autoclosing pairs
-   *
-   * @default
-   * [
-   *  ['{', '}'],
-   *  ['[', ']'],
-   *  ['"', '"'],
-   *  ["'", "'"],
-   * ]
-   */
-  autoClose: string[];
-  /**
-   * Autoclosing pairs
-   *
-   * @default false
-   */
-  spellCheck: boolean;
-  /**
-   * Preserve newline indentation
-   *
-   * @default true
-   */
-  lineIndent: boolean;
-  /**
-   * Whether or not tabbed indentation is enabled
-   *
-   * @default true
-   */
-  tabIndent: boolean;
-  /**
-   * The indentation characted
-   *
-   * @default 'space'
-   */
-  indentChar: 'tab' | 'space' | 'none';
-  /**
-   * The indentation size
-   *
-   * @default 2
-   */
-  indentSize: number;
-  /**
-   * Invisible Options
-   */
-  invisibles: {
-    /**
-     * Whether or not space invisibles should show
-     */
-    space: boolean;
-    /**
-     * Whether or not tab invisibles should show
-     */
-    tab: boolean;
-    /**
-     * Whether or not CR invisibles should show
-     */
-    cr: boolean;
-    /**
-     * Whether or not LF invisibles should show
-     */
-    lf: boolean;
-    /**
-     * Whether or not CRLF invisibles should show
-     */
-    crlf: boolean;
-  }
+export type IEditor = Array<[ string, IToken<IColor | ISelect | ISwitch | IRange>[]]>
+
+interface ICacheGet {
+
+  (store: 'editor'): IEditor,
+  (store: 'tokens'): IState
 
 }
 
@@ -338,7 +240,7 @@ export interface IAttrs {
   /**
    * Editor Options
    */
-  editor?: IEditor;
+  papyrus?: IOptions;
   /**
    * The current state model
    */
@@ -356,10 +258,16 @@ export interface IAttrs {
    * Update cache
    */
   cache: {
-    save(): void;
+    save(store: 'editor' | 'tokens'): void;
+    reset(language?: Languages): void;
+    get: ICacheGet
   }
+  /**
+   * The editor model
+   */
+  get editor(): IEditor;
   /**
    * The state models
    */
-  model: IModel
+  get model(): IModel
 }

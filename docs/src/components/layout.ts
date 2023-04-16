@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { IAttrs, Languages } from 'src/attrs';
+import { IAttrs, Languages } from '../attrs';
 import { Options } from './options';
 import { Preview } from './preview';
 import { Sidebar } from './sidebar';
@@ -31,11 +31,9 @@ export function Layout (attrs: IAttrs) {
       m(
         '.row'
         ,
-        [
-          m(Sidebar, attrs),
-          m(Options, attrs),
-          m(Preview, attrs)
-        ]
+        m(Sidebar, attrs),
+        m(Options, attrs),
+        m(Preview, attrs)
       )
     )
   };

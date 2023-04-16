@@ -15,9 +15,11 @@ export const Sidebar: m.Component<IAttrs> = {
         width: '70px'
       }
     }
-    , m(
+    ,
+
+    m(
       '.d-block.rel'
-      , Object.entries(attrs.model).map(([ language, value ]) => language === 'editor' ? null : m(
+      , Object.entries(attrs.model).map(([ language, value ]) => m(
         m.route.Link
         , {
           href: `/${language}`,
@@ -30,5 +32,6 @@ export const Sidebar: m.Component<IAttrs> = {
         }, file(language as Languages)
       ))
     )
+
   )
 };

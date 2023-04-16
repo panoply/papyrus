@@ -112,6 +112,7 @@ pre.papyrus {
 
   code[class*="language-"] {
     // text-shadow: 0 0.04rem rgb(0 0 0);
+    color: var(--papyrus-code-color);
 
     &.lines,
     + textarea.editor {

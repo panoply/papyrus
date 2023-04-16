@@ -83,6 +83,7 @@ pre.papyrus textarea.editor {
   caret-color: var(--papyrus-code-caret-color);
 }
 pre.papyrus code[class*=language-] {
+  color: var(--papyrus-code-color);
   /* -------------------------------------------- */
   /* LINE NUMBERS                                 */
   /* -------------------------------------------- */
@@ -220,106 +221,254 @@ pre.papyrus code[class*=language-]::selection {
 }
 
 /* stylelint-disable color-hex-length */
-code.language-html {
-  color: #FAFAFA;
-}
-code.language-html .token.comment {
-  color: #888888;
-}
-code.language-html .token.punctuation {
-  color: #BECAFF;
-}
-code.language-html .token.tag {
-  color: #FF93BC;
-}
-code.language-html .token.attr-equals {
-  color: #FF93BC;
-}
-code.language-html .token.attr-name {
-  color: #91EBC2;
-}
-code.language-html .token.attr-value {
-  color: #FFF9A6;
+:root {
+  --papyrus-html-text-content: #FAFAFA;
+  --papyrus-html-doctype: #FAFAFA;
+  --papyrus-html-delimiter: #BECAFF;
+  --papyrus-html-tag-name: #FF93BC;
+  --papyrus-html-equals: #FF93BC;
+  --papyrus-html-attr-name: #91EBC2;
+  --papyrus-html-attr-value: #FFF9A6;
+  --papyrus-html-comment: #888888;
 }
 
-/* stylelint-disable color-hex-length */
+.token.doctype-tag {
+  color: var(--papyrus-html-doctype);
+}
+.token.doctype .token.name {
+  color: var(--papyrus-html-delimiter);
+}
+.token.name {
+  color: var(--papyrus-html-tag-name);
+}
+.token.comment {
+  color: var(--papyrus-html-comment);
+}
+.token.punctuation {
+  color: var(--papyrus-html-delimiter);
+}
+.token.tag {
+  color: var(--papyrus-html-tag-name);
+}
+.token.attr-equals {
+  color: var(--papyrus-html-equals);
+}
+.token.attr-name {
+  color: var(--papyrus-html-attr-name);
+}
+.token.attr-value {
+  color: var(--papyrus-html-attr-value);
+}
+
 :root {
+  /* -------------------------------------------- */
+  /* LIQUID TOKENS                                */
+  /* -------------------------------------------- */
   --papyrus-liquid-fallback: #fafafa;
   --papyrus-liquid-delimiters: #fafafa;
+  --papyrus-liquid-tag: #E91E63;
+  --papyrus-liquid-output: #81d4fa;
   --papyrus-liquid-boolean: #ff80f4;
   --papyrus-liquid-number: #935eff;
-  --papyrus-liquid-tag-name: #E91E63;
+  --papyrus-liquid-punctuation: #E91E63;
+  --papyrus-liquid-operator: #E91E63;
   --papyrus-liquid-parameter: #ff953c;
   --papyrus-liquid-object-name: #81d4fa;
   --papyrus-liquid-object-prop: #fafafa;
   --papyrus-liquid-filter-name: #3defb9;
   --papyrus-liquid-string: #FFF9A6;
-  --papyrus-liquid-comment: #888;
-  --papyrus-markup-text-content: #FAFAFA;
-  --papyrus-markup-delimiter: #BECAFF;
-  --papyrus-markup-tag-name: #FF93BC;
-  --papyrus-markup-equals: #FF93BC;
-  --papyrus-markup-attr-name: #91EBC2;
-  --papyrus-markup-attr-value: #FFF9A6;
-  --papyrus-markup-comment: #888888;
+  --papyrus-liquid-comment: #888888;
+  /* -------------------------------------------- */
+  /* LIQUID IN STRINGS                            */
+  /* -------------------------------------------- */
+  --papyrus-liquid-string-delimiters: #888888;
+  --papyrus-liquid-string-object-name: #81d4fa;
 }
 
-code.language-liquid .token.comment {
-  color: var(--papyrus-markup-comment);
+.token {
+  /* -------------------------------------------- */
+  /* MARKUP TOKENS                                */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /* LIQUID TOKENS                                */
+  /* -------------------------------------------- */
 }
-code.language-liquid .token.punctuation {
-  color: var(--papyrus-markup-delimiter);
-}
-code.language-liquid .token.tag {
-  color: var(--papyrus-markup-tag-name);
-}
-code.language-liquid .token.attr-equals {
-  color: var(--papyrus-markup-equals);
-}
-code.language-liquid .token.attr-name {
-  color: var(--papyrus-markup-attr-name);
-}
-code.language-liquid .token.attr-value {
-  color: var(--papyrus-markup-attr-value);
-}
-code.language-liquid .token.liquid {
+.token.markup, .token.liquid {
   color: var(--papyrus-liquid-fallback);
 }
-code.language-liquid .token.liquid-markup-string {
+.token.markup {
+  color: var(--papyrus-liquid-fallback);
+}
+.token.markup .token.comment {
+  color: var(--papyrus-html-comment);
+}
+.token.markup .token.punctuation {
+  color: var(--papyrus-html-delimiter);
+}
+.token.markup .token.tag {
+  color: var(--papyrus-html-tag-name);
+}
+.token.markup .token.attr-equals {
+  color: var(--papyrus-html-equals);
+}
+.token.markup .token.attr-name {
+  color: var(--papyrus-html-attr-name);
+}
+.token.markup .token.attr-value {
+  color: var(--papyrus-html-attr-value);
+}
+.token.liquid {
+  color: var(--papyrus-liquid-fallback);
+  /* LIQUID IN STRINGS -------------------------- */
+}
+.token.liquid .token.tag {
+  color: var(--papyrus-liquid-tag);
+}
+.token.liquid .token.output {
+  color: var(--papyrus-liquid-output);
+}
+.token.liquid .token.punctuation {
+  color: var(--papyrus-liquid-punctuation);
+}
+.token.liquid .token.operator {
+  color: var(--papyrus-liquid-operator);
+}
+.token.liquid .token.string {
   color: var(--papyrus-liquid-string);
 }
-code.language-liquid .token.liquid-markup-string .liquid-delimiters {
-  color: var(--papyrus-liquid-comment);
-}
-code.language-liquid .token.liquid-delimiters {
+.token.liquid .token.delimiters {
   color: var(--papyrus-liquid-delimiters);
 }
-code.language-liquid .token.liquid-comment {
+.token.liquid .token.comment {
   color: var(--papyrus-liquid-comment);
 }
-code.language-liquid .token.liquid-boolean {
+.token.liquid .token.boolean {
   color: var(--papyrus-liquid-boolean);
 }
-code.language-liquid .token.liquid-number {
+.token.liquid .token.number {
   color: var(--papyrus-liquid-number);
 }
-code.language-liquid .token.liquid-parameter {
+.token.liquid .token.parameter {
   color: var(--papyrus-liquid-parameter);
 }
-code.language-liquid .token.liquid-object {
+.token.liquid .token.object {
   color: var(--papyrus-liquid-object-name);
 }
-code.language-liquid .token.liquid-property {
+.token.liquid .token.property {
   color: var(--papyrus-liquid-object-prop);
 }
-code.language-liquid .token.liquid-filter {
+.token.liquid .token.filter {
   color: var(--papyrus-liquid-filter-name);
 }
-code.language-liquid .token.liquid-string {
-  color: var(--papyrus-liquid-string);
+.token.liquid.liquid-string .token.object {
+  color: var(--papyrus-liquid-string-object-name);
 }
-code.language-liquid .token.liquid-punctuation, code.language-liquid .token.liquid-operator, code.language-liquid .token.liquid-tagged, code.language-liquid .token.liquid-tag {
-  color: var(--papyrus-liquid-tag-name);
+.token.liquid.liquid-string .token.delimiters {
+  color: var(--papyrus-liquid-string-delimiters);
+}
+
+:root {
+  --papyrus-js-keyword: #E91E63;
+  --papyrus-js-function: #9EE34F;
+  --papyrus-js-class-name: #9EE34F;
+  --papyrus-js-function-name: #81D4FA;
+  --papyrus-js-punctuation: #FAFAFA;
+  --papyrus-js-special-chars: #E91E63;
+  --papyrus-js-parameter: #FFAB40;
+  --papyrus-js-variable: #81D4FA;
+  --papyrus-js-operator: #E91E63;
+  --papyrus-js-operation: #E91E63;
+  --papyrus-js-module: #E91E63;
+  --papyrus-js-semi: #fafafa;
+  --papyrus-js-flow: #E91E63;
+  --papyrus-js-number: #F48FB1;
+  --papyrus-js-boolean: #F48FB1;
+  --papyrus-js-string: #F5EC70;
+  --papyrus-js-regex: #F5EC70;
+  --papyrus-js-regex-flags: #E91E63;
+  --papyrus-js-literal-property: #22c0cb;
+  --papyrus-js-comment: #888888;
+}
+
+code.language-javascript .token.keyword,
+code.language-js .token.keyword {
+  color: var(--papyrus-js-keyword);
+}
+code.language-javascript .token.punctuation,
+code.language-js .token.punctuation {
+  color: var(--papyrus-js-punctuation);
+}
+code.language-javascript .token.punctuation-chars,
+code.language-js .token.punctuation-chars {
+  color: var(--papyrus-js-special-chars);
+}
+code.language-javascript .token.comment,
+code.language-js .token.comment {
+  color: var(--papyrus-js-punctuation-comment);
+}
+code.language-javascript .token.parameter,
+code.language-js .token.parameter {
+  color: var(--papyrus-js-parameter);
+}
+code.language-javascript .token.variable,
+code.language-js .token.variable {
+  color: var(--papyrus-js-variable);
+}
+code.language-javascript .token.operator,
+code.language-js .token.operator {
+  color: var(--papyrus-js-operator);
+}
+code.language-javascript .token.operation,
+code.language-js .token.operation {
+  color: var(--papyrus-js-operation);
+}
+code.language-javascript .token.module,
+code.language-js .token.module {
+  color: var(--papyrus-js-module);
+}
+code.language-javascript .token.function,
+code.language-js .token.function {
+  color: var(--papyrus-js-function);
+}
+code.language-javascript .token.class-name,
+code.language-js .token.class-name {
+  color: var(--papyrus-js-class-name);
+}
+code.language-javascript .token.function-name,
+code.language-js .token.function-name {
+  color: var(--papyrus-js-function-name);
+}
+code.language-javascript .token.number,
+code.language-js .token.number {
+  color: var(--papyrus-js-number);
+}
+code.language-javascript .token.flow,
+code.language-js .token.flow {
+  color: var(--papyrus-js-flow);
+}
+code.language-javascript .token.string,
+code.language-js .token.string {
+  color: var(--papyrus-js-string);
+}
+code.language-javascript .token.semi,
+code.language-js .token.semi {
+  color: var(--papyrus-js-semi);
+}
+code.language-javascript .token.boolean,
+code.language-js .token.boolean {
+  color: var(--papyrus-js-boolean);
+}
+code.language-javascript .token.regex,
+code.language-js .token.regex {
+  color: var(--papyrus-js-regex);
+}
+code.language-javascript .token.regex-flags,
+code.language-js .token.regex-flags {
+  color: var(--papyrus-js-regex-flags);
+}
+code.language-javascript .token.literal-property,
+code.language-js .token.literal-property {
+  color: var(--papyrus-js-literal-property);
 }
 
 :root {
@@ -333,76 +482,46 @@ code.language-liquid .token.liquid-punctuation, code.language-liquid .token.liqu
   --papyrus-ts-function-name: #9EE34F;
   --papyrus-ts-filter-name: #3defb9;
   --papyrus-ts-string: #FFF9A6;
-  --papyrus-ts-comment: #888;
+  --papyrus-ts-comment: #888888;
 }
 
 code.language-typescript,
-code.language-ts,
-code.language-javascript,
-code.language-js {
+code.language-ts {
   color: var(--papyrus-ts-fallback);
 }
 code.language-typescript .token.parameter-type, code.language-typescript .token.return-type, code.language-typescript .token.semi,
 code.language-ts .token.parameter-type,
 code.language-ts .token.return-type,
-code.language-ts .token.semi,
-code.language-javascript .token.parameter-type,
-code.language-javascript .token.return-type,
-code.language-javascript .token.semi,
-code.language-js .token.parameter-type,
-code.language-js .token.return-type,
-code.language-js .token.semi {
+code.language-ts .token.semi {
   color: var(--papyrus-ts-types);
 }
 code.language-typescript .token.punctuation,
-code.language-ts .token.punctuation,
-code.language-javascript .token.punctuation,
-code.language-js .token.punctuation {
+code.language-ts .token.punctuation {
   color: var(--papyrus-ts-types);
 }
 code.language-typescript .token.comment,
-code.language-ts .token.comment,
-code.language-javascript .token.comment,
-code.language-js .token.comment {
+code.language-ts .token.comment {
   color: var(--papyrus-ts-comment);
 }
 code.language-typescript .token.parameter-optional, code.language-typescript .token.parameter,
 code.language-ts .token.parameter-optional,
-code.language-ts .token.parameter,
-code.language-javascript .token.parameter-optional,
-code.language-javascript .token.parameter,
-code.language-js .token.parameter-optional,
-code.language-js .token.parameter {
+code.language-ts .token.parameter {
   color: var(--papyrus-ts-parameter);
 }
 code.language-typescript .token.type-object, code.language-typescript .token.type-array,
 code.language-ts .token.type-object,
-code.language-ts .token.type-array,
-code.language-javascript .token.type-object,
-code.language-javascript .token.type-array,
-code.language-js .token.type-object,
-code.language-js .token.type-array {
+code.language-ts .token.type-array {
   color: #30adc3;
 }
 code.language-typescript .token.types,
-code.language-ts .token.types,
-code.language-javascript .token.types,
-code.language-js .token.types {
+code.language-ts .token.types {
   color: var(--papyrus-ts-types);
 }
 code.language-typescript .token.method, code.language-typescript .token.keyword, code.language-typescript .token.browser-objects, code.language-typescript .token.variable,
 code.language-ts .token.method,
 code.language-ts .token.keyword,
 code.language-ts .token.browser-objects,
-code.language-ts .token.variable,
-code.language-javascript .token.method,
-code.language-javascript .token.keyword,
-code.language-javascript .token.browser-objects,
-code.language-javascript .token.variable,
-code.language-js .token.method,
-code.language-js .token.keyword,
-code.language-js .token.browser-objects,
-code.language-js .token.variable {
+code.language-ts .token.variable {
   color: var(--papyrus-ts-method);
 }
 code.language-typescript .token.op, code.language-typescript .token.tag, code.language-typescript .token.punctuation-chars, code.language-typescript .token.operator, code.language-typescript .token.module,
@@ -410,39 +529,152 @@ code.language-ts .token.op,
 code.language-ts .token.tag,
 code.language-ts .token.punctuation-chars,
 code.language-ts .token.operator,
-code.language-ts .token.module,
-code.language-javascript .token.op,
-code.language-javascript .token.tag,
-code.language-javascript .token.punctuation-chars,
-code.language-javascript .token.operator,
-code.language-javascript .token.module,
-code.language-js .token.op,
-code.language-js .token.tag,
-code.language-js .token.punctuation-chars,
-code.language-js .token.operator,
-code.language-js .token.module {
+code.language-ts .token.module {
   color: var(--papyrus-ts-operator);
 }
 code.language-typescript .token.function,
-code.language-ts .token.function,
-code.language-javascript .token.function,
-code.language-js .token.function {
+code.language-ts .token.function {
   color: var(--papyrus-ts-function-name);
 }
 code.language-typescript .token.number,
-code.language-ts .token.number,
-code.language-javascript .token.number,
-code.language-js .token.number {
+code.language-ts .token.number {
   color: var(--papyrus-ts-number);
 }
 code.language-typescript .token.nil, code.language-typescript .token.boolean,
 code.language-ts .token.nil,
-code.language-ts .token.boolean,
-code.language-javascript .token.nil,
-code.language-javascript .token.boolean,
-code.language-js .token.nil,
-code.language-js .token.boolean {
+code.language-ts .token.boolean {
   color: var(--papyrus-ts-boolean);
+}
+
+/* stylelint-disable color-hex-length */
+:root {
+  --papyrus-xml-prolog: #BECAFF;
+  --papyrus-xml-name: #FF93BC;
+  --papyrus-xml-prefix: #BECAFF;
+}
+
+.token.prolog {
+  color: var(--papyrus-xml-prolog);
+}
+.token.name {
+  color: var(--papyrus-xml-prefix-name);
+}
+.token.prefix {
+  color: var(--papyrus-xml-prefix);
+}
+
+/* stylelint-disable color-hex-length */
+:root {
+  --papyrus-css-selector: #a5d447;
+  --papyrus-css-tag-selector: #E91E63;
+  --papyrus-css-function: #a5d447;
+  --papyrus-css-variable: #b594d9;
+  --papyrus-css-operator: #E91E63;
+  --papyrus-css-punctuation: #fafafa;
+  --papyrus-css-important: #E91E63;
+  --papyrus-css-atrule: #E91E63;
+  --papyrus-css-property: #81D4FA;
+  --papyrus-css-property-value: #FFF9A6;
+  --papyrus-css-number: #F48FB1;
+  --papyrus-css-hexcode: #F48FB1;
+  --papyrus-css-combinator: #E91E63;
+  --papyrus-css-unit: #E91E63;
+  --papyrus-css-attr-name: #a5d447;
+  --papyrus-css-attr-value: #FFF9A6;
+  --papyrus-css-attr-punctuation: #f4f4f4;
+  --papyrus-css-pseudo-element: #e18d27 ;
+}
+
+.token.selector {
+  color: var(--papyrus-css-selector);
+}
+.token.attribute .punctuation {
+  color: var(--papyrus-css-attr-punctuation);
+}
+.token.css-tag {
+  color: var(--papyrus-css-tag-selector);
+}
+.token.colon {
+  color: var(--papyrus-css-operator);
+}
+.token.css-attr-name {
+  color: var(--papyrus-css-attr-name);
+}
+.token.css-attr-value {
+  color: var(--papyrus-css-attr-value);
+}
+.token.inserted {
+  color: var(--papyrus-css-inserted);
+}
+.token.atrule {
+  color: var(--papyrus-css-atrule);
+}
+.token.important {
+  color: var(--papyrus-css-important);
+}
+.token.keyword {
+  color: var(--papyrus-css-deleted);
+}
+.token.punctuation {
+  color: var(--papyrus-css-punctuation);
+}
+.token.property {
+  color: var(--papyrus-css-property);
+}
+.token.property-value {
+  color: var(--papyrus-css-property-value);
+}
+.token.operator {
+  color: var(--papyrus-css-operator);
+}
+.token.combinator {
+  color: var(--papyrus-css-combinator);
+}
+.token.variable {
+  color: var(--papyrus-css-variable);
+}
+.token.number {
+  color: var(--papyrus-css-number);
+}
+.token.unit {
+  color: var(--papyrus-css-unit);
+}
+.token.hexcode {
+  color: var(--papyrus-css-hexcode);
+}
+.token.function {
+  color: var(--papyrus-css-function);
+}
+.token.pseudo-element {
+  color: var(--papyrus-css-pseudo-element);
+}
+
+:root {
+  --papyrus-json-punctuation: #fafafa;
+  --papyrus-json-property: #81D4FA;
+  --papyrus-json-string: #FFF9A6;
+  --papyrus-json-boolean: #FF80F4;
+  --papyrus-json-number: #978FFF;
+  --papyrus-json-operator: #E91E63;
+}
+
+code.language-json .token.property {
+  color: var(--papyrus-json-property);
+}
+code.language-json .token.operator {
+  color: var(--papyrus-json-operator);
+}
+code.language-json .token.string {
+  color: var(--papyrus-json-string);
+}
+code.language-json .token.number {
+  color: var(--papyrus-json-number);
+}
+code.language-json .token.boolean {
+  color: var(--papyrus-json-boolean);
+}
+code.language-json .token.punctuation {
+  color: var(--papyrus-json-punctuation);
 }
 
 /*# sourceMappingURL=potion.css.map */

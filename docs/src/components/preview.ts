@@ -3,6 +3,7 @@ import { IAttrs, Languages } from '../attrs';
 import prism from 'prismjs';
 import papyrus, { IModel } from 'papyrus';
 
+// comment
 export const Preview: m.Component<IAttrs, {
   editor: IModel,
   language: Languages,
@@ -51,12 +52,7 @@ export const Preview: m.Component<IAttrs, {
       'div.d-flex.ai-center.jc-center.py-4.px-5.w-100'
       , m(
         'pre.papyrus.w-100'
-        , {
-
-          style: {
-            height: '80vh'
-          }
-        }
+        , { style: { height: '80vh' } }
         , m(
           'code'
           , {
@@ -95,14 +91,9 @@ export const Preview: m.Component<IAttrs, {
 
               state.tab = 0;
               state.language = attrs.language;
-              state.editor = papyrus.potion(prism).mount(dom.parentElement as HTMLPreElement, {
-                editor: true,
-                input: attrs.state.sample,
-                language: attrs.language,
-                lineNumbers: true,
-                tabIndent: true,
-                showSpace: false
-              });
+              attrs.papyrus.input = attrs.state.sample;
+              attrs.papyrus.language = attrs.language;
+              state.editor = papyrus.potion(prism).mount(dom.parentElement as HTMLPreElement, attrs.papyrus);
 
             }
           }

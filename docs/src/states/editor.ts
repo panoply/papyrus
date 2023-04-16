@@ -7,7 +7,7 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
     [
       {
         label: 'Root',
-        describe: 'Papyrus uses <strong>em</strong> units. This is the base font <strong>px</strong> size that is used to scale the code regions fonts, lines and other typography stylings.',
+        description: 'Papyrus uses <strong>em</strong> units. This is the base font <strong>px</strong> size that is used to scale the code regions fonts, lines and other typography stylings.',
         sass: '$papyrus-font-size-root',
         css: '--papyrus-font-size-root',
         input: {
@@ -18,6 +18,18 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
           max: '30',
           step: '1',
           unit: 'px'
+        }
+      },
+      {
+        label: 'Color',
+        description: 'The fallback text color of the code block. This is used when tokens cannot be matched, typically plain text.',
+        sass: '$papyrus-code-color',
+        css: '--papyrus-code-color',
+        input: {
+          type: 'color',
+          format: 'hex',
+          default: '#FFFFFF',
+          value: '#FFFFFF'
         }
       }
     ]

@@ -1,39 +1,56 @@
 /* stylelint-disable color-hex-length */
-$papyrus-html-text-content: #FAFAFA;
-$papyrus-html-delimiter: #BECAFF;
-$papyrus-html-tag-name: #FF93BC;
-$papyrus-html-equals: #FF93BC;
-$papyrus-html-attr-name: #91EBC2;
-$papyrus-html-attr-value: #FFF9A6;
-$papyrus-html-comment: #888888;
 
-code.language-html {
-  color: $papyrus-html-text-content;
+:root {
+  --papyrus-html-text-content: #FAFAFA;
+  --papyrus-html-doctype: #FAFAFA;
+  --papyrus-html-delimiter: #BECAFF;
+  --papyrus-html-tag-name: #FF93BC;
+  --papyrus-html-equals: #FF93BC;
+  --papyrus-html-attr-name: #91EBC2;
+  --papyrus-html-attr-value: #FFF9A6;
+  --papyrus-html-comment: #888888;
+}
 
-  .token {
 
-    &.comment {
-      color: $papyrus-html-comment;
+.token {
+
+  &.doctype {
+
+
+    &-tag {
+      color: var(--papyrus-html-doctype);
     }
 
-    &.punctuation {
-      color: $papyrus-html-delimiter;
+    .token.name {
+      color: var(--papyrus-html-delimiter);
     }
+  }
 
-    &.tag {
-      color: $papyrus-html-tag-name;
-    }
+  &.name {
+    color: var(--papyrus-html-tag-name);
+  }
 
-    &.attr-equals {
-      color: $papyrus-html-equals;
-    }
+  &.comment {
+    color: var(--papyrus-html-comment);
+  }
 
-    &.attr-name {
-      color: $papyrus-html-attr-name;
-    }
+  &.punctuation {
+    color: var(--papyrus-html-delimiter);
+  }
 
-    &.attr-value {
-      color: $papyrus-html-attr-value
-    }
+  &.tag {
+    color: var(--papyrus-html-tag-name);
+  }
+
+  &.attr-equals {
+    color: var(--papyrus-html-equals);
+  }
+
+  &.attr-name {
+    color: var(--papyrus-html-attr-name);
+  }
+
+  &.attr-value {
+    color: var(--papyrus-html-attr-value);
   }
 }

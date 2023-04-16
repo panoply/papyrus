@@ -1,48 +1,31 @@
 import m from 'mithril';
-import { IAttrs, IColor, IModel, IRange, ISelect, IState, ISwitch, IToken } from './attrs';
-import { xml } from './states/xml';
-import { html } from './states/html';
-import { liquid } from './states/liquid';
-import { css } from './states/css';
-import { scss } from './states/scss';
-import { yaml } from './states/yaml';
-import { json } from './states/json';
-import { jsx } from './states/jsx';
-import { shell } from './states/shell';
-import { tsx } from './states/tsx';
-import { editor } from './states/editor';
-import { javascript } from './states/javascript';
-import { typescript } from './states/typescript';
+import { IAttrs, IEditor, IModel, Languages } from './attrs';
 import { Layout } from './components/layout';
 import { Landing } from './components/landing';
+import { editor } from './states/editor';
+import { model } from './states/model';
 
 // eslint-disable-next-line no-unused-vars
-function replace (model: IModel) {
+function replace (model: IModel, editor: IEditor) {
 
   const style: Map<string, string> = new Map();
   const element = document.createElement('style');
   const node = document.head.appendChild(element);
 
-  for (const language in model) {
+  for (const lang in model) {
+    for (let i = 0; i < model[lang].tokens.length; i++) {
+      const token = model[lang].tokens[i];
+      style.set(token.css, token.input.value);
+    }
+  }
 
-    const item = model[language];
-
-    if (Array.isArray(item) === false) {
-      for (const state of (item as IState).tokens) {
-        for (const token of state[1]) {
-          style.set(token.css, token.input.value);
-        }
-      }
-    } else {
-
-      for (const state of item) {
-        for (const token of (state[1] as IToken<IColor | ISelect | ISwitch | IRange>[])) {
-          if (token.input.type === 'range') {
-            style.set(token.css, token.input.value + token.input.unit);
-          } else {
-            style.set(token.css, token.input.value);
-          }
-        }
+  for (let i = 0; i < editor.length; i++) {
+    for (let x = 0; x < editor[i][1].length; x++) {
+      const token = editor[i][1][x];
+      if (token.input.type === 'range') {
+        style.set(token.css, token.input.value + token.input.unit);
+      } else {
+        style.set(token.css, token.input.value);
       }
     }
   }
@@ -78,21 +61,7 @@ function replace (model: IModel) {
 
 function render () {
 
-  const model = localStorage.getItem('cache') !== null ? JSON.parse(localStorage.getItem('cache')) : {
-    editor,
-    liquid,
-    html,
-    xml,
-    json,
-    javascript,
-    jsx,
-    typescript,
-    tsx,
-    css,
-    scss,
-    shell,
-    yaml
-  };
+  const style = replace(model, editor);
 
   const attrs: IAttrs = {
     language: 'liquid',
@@ -115,28 +84,133 @@ function render () {
         }
       ]
     },
-    get state () {
-      return model[attrs.language];
+    get editor () {
+      return editor;
     },
-    model,
-    style: replace(model),
+    get state () {
+      return attrs.model[attrs.language];
+    },
+    get model () {
+      return model;
+    },
+    style,
+    papyrus: {
+      editor: true,
+      input: '',
+      language: 'liquid',
+      lineNumbers: true,
+      tabIndent: true,
+      showSpace: false,
+      autoSave: true,
+      indentChar: 'space',
+      indentSize: 2,
+      lineHighlight: true,
+      lineIndent: true,
+      locLimit: 2000,
+      showCR: false,
+      showCRLF: false,
+      showLF: false,
+      showTab: false,
+      spellcheck: false,
+      trimEnd: true,
+      trimStart: true
+    },
     cache: {
-      save () {
-        localStorage.removeItem('cache');
-        localStorage.setItem('cache', JSON.stringify(model));
+      reset,
+      get (store: 'editor' | 'tokens') {
+        const cache = JSON.parse(localStorage.getItem(store));
+        return cache;
       },
-      merge () {
-
+      save (store) {
+        localStorage.removeItem(store);
+        localStorage.setItem(store, JSON.stringify(model));
       }
     }
   };
-
-  attrs.cache.merge();
 
   m.route(document.body, '/', {
     '/': Landing,
     '/:language': Layout(attrs)
   });
+
+  /**
+   * Cache Reset
+   */
+  function reset (language?: Languages | 'editor') {
+
+    const store = language ? language === 'editor' ? 'editor' : 'tokens' : 'all';
+
+    if (store === 'tokens') {
+
+      const read: IModel = JSON.parse(localStorage.getItem(store));
+
+      for (let i = 0; i < read[language].tokens.length; i++) {
+
+        const cache = read[language].tokens[i];
+        const state = model[language].tokens[i];
+
+        if (state.input.value !== state.input.default) {
+          state.input.value = state.input.default;
+        }
+
+        cache.input.value = state.input.value;
+
+      }
+
+      localStorage.removeItem(store);
+      localStorage.setItem(store, JSON.stringify(read));
+
+    } if (store === 'editor') {
+
+      const read: IEditor = JSON.parse(localStorage.getItem(store));
+
+      for (let i = 0; i < read.length; i++) {
+        for (let x = 0; x < read[i][1].length; x++) {
+          const cache = read[i][1][x];
+          const state = editor[i][1][x];
+
+          if (state.input.value !== state.input.default) {
+            state.input.value = state.input.default;
+          }
+
+          cache.input.value = state.input.value;
+        }
+      }
+
+      localStorage.removeItem(store);
+      localStorage.setItem(store, JSON.stringify(read));
+
+    } else {
+
+      for (let i = 0; i < editor.length; i++) {
+        for (let x = 0; x < editor[i][1].length; x++) {
+          const state = editor[i][1][x];
+          if (state.input.value !== state.input.default) {
+            state.input.value = state.input.default;
+          }
+        }
+      }
+
+      localStorage.removeItem('editor');
+      localStorage.setItem('editor', JSON.stringify(editor));
+
+      for (const lang in model) {
+        for (let i = 0; i < model[lang].tokens.length; i++) {
+          const state = model[lang].tokens[i];
+          if (state.input.value !== state.input.default) {
+            state.input.value = state.input.default;
+          }
+        }
+      }
+
+      localStorage.removeItem('tokens');
+      localStorage.setItem('tokens', JSON.stringify(model));
+
+    }
+
+    attrs.style.write();
+
+  }
 
 }
 

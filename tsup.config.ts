@@ -23,6 +23,7 @@ export default defineConfig(
         languages: [
           'typescript',
           'javascript',
+          'css-extras',
           'css',
           'scss',
           'yaml',

@@ -1,5 +1,5 @@
 import Prism from 'prismjs';
-import grammar from './liquid';
+import { Grammar } from './liquid';
 
 export default <Prism.Grammar>{
   tag: {
@@ -18,9 +18,9 @@ export default <Prism.Grammar>{
         pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
         inside: {
           liquid: {
-            alias: 'liquid-markup-string',
+            alias: 'liquid-string',
             pattern: /{[{%]-?[\s\S]+-?[%}]}/,
-            inside: grammar
+            inside: Grammar
           },
           punctuation: [
             {
@@ -37,7 +37,7 @@ export default <Prism.Grammar>{
       },
       liquid: {
         pattern: /{[{%]-?[\s\S]+-?[%}]}/,
-        inside: grammar
+        inside: Grammar
       },
       punctuation: /\/?>/,
       'attr-name': {
@@ -64,6 +64,6 @@ export default <Prism.Grammar>{
   },
   liquid: {
     pattern: /{[{%]-?[\s\S]+-?[%}]}/,
-    inside: grammar
+    inside: Grammar
   }
 };

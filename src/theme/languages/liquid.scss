@@ -1,131 +1,154 @@
-/* stylelint-disable color-hex-length */
-$papyrus-liquid-fallback: #fafafa;
-$papyrus-liquid-delimiters: #fafafa;
-$papyrus-liquid-boolean: #ff80f4;
-$papyrus-liquid-number: #935eff;
-$papyrus-liquid-tag-name: #E91E63;
-$papyrus-liquid-parameter: #ff953c;
-$papyrus-liquid-object-name: #81d4fa;
-$papyrus-liquid-object-propp: #fafafa;
-$papyrus-liquid-filter-name: #3defb9;
-$papyrus-liquid-string: #FFF9A6;
-$papyrus-liquid-comment: #888888;
-
-$papyrus-markup-text-content: #FAFAFA;
-$papyrus-markup-delimiter: #BECAFF;
-$papyrus-markup-tag-name: #FF93BC;
-$papyrus-markup-equals: #FF93BC;
-$papyrus-markup-attr-name: #91EBC2;
-$papyrus-markup-attr-value: #FFF9A6;
-$papyrus-markup-comment: #888888;
-
 :root {
+
+  /* -------------------------------------------- */
+  /* LIQUID TOKENS                                */
+  /* -------------------------------------------- */
+
   --papyrus-liquid-fallback: #fafafa;
   --papyrus-liquid-delimiters: #fafafa;
+  --papyrus-liquid-tag: #E91E63;
+  --papyrus-liquid-output: #81d4fa;;
   --papyrus-liquid-boolean: #ff80f4;
   --papyrus-liquid-number: #935eff;
-  --papyrus-liquid-tag-name: #E91E63;
+  --papyrus-liquid-punctuation: #E91E63;
+  --papyrus-liquid-operator: #E91E63;
   --papyrus-liquid-parameter: #ff953c;
   --papyrus-liquid-object-name: #81d4fa;
   --papyrus-liquid-object-prop: #fafafa;
   --papyrus-liquid-filter-name: #3defb9;
   --papyrus-liquid-string: #FFF9A6;
-  --papyrus-liquid-comment: #888;
-  --papyrus-markup-text-content: #FAFAFA;
-  --papyrus-markup-delimiter: #BECAFF;
-  --papyrus-markup-tag-name: #FF93BC;
-  --papyrus-markup-equals: #FF93BC;
-  --papyrus-markup-attr-name: #91EBC2;
-  --papyrus-markup-attr-value: #FFF9A6;
-  --papyrus-markup-comment: #888888;
+  --papyrus-liquid-comment: #888888;
+
+  /* -------------------------------------------- */
+  /* LIQUID IN STRINGS                            */
+  /* -------------------------------------------- */
+
+  --papyrus-liquid-string-delimiters: #888888;
+  --papyrus-liquid-string-object-name: #81d4fa;
 }
 
 
-code.language-liquid {
+.token {
 
-  .token {
+  &.markup,
+  &.liquid {
+    color: var(--papyrus-liquid-fallback);
+  }
 
+  /* -------------------------------------------- */
+  /* MARKUP TOKENS                                */
+  /* -------------------------------------------- */
 
-    &.comment {
-      color: var(--papyrus-markup-comment);
-    }
+  &.markup {
+    color: var(--papyrus-liquid-fallback);
 
-    &.punctuation {
-      color: var(--papyrus-markup-delimiter);
-    }
+    .token {
 
-    &.tag {
-      color: var(--papyrus-markup-tag-name);
-    }
-
-    &.attr-equals {
-      color: var(--papyrus-markup-equals);
-    }
-
-    &.attr-name {
-      color: var(--papyrus-markup-attr-name);
-    }
-
-    &.attr-value {
-      color: var(--papyrus-markup-attr-value);
-    }
-
-
-    &.liquid {
-      color: var(--papyrus-liquid-fallback);
-
-      &-markup-string {
-        color: var(--papyrus-liquid-string);
-
-        .liquid-delimiters {
-          color: var(--papyrus-liquid-comment);
-        }
+      &.comment {
+        color: var(--papyrus-html-comment);
       }
 
-      &-delimiters {
+      &.punctuation {
+        color: var(--papyrus-html-delimiter);
+      }
+
+      &.tag {
+        color: var(--papyrus-html-tag-name);
+      }
+
+      &.attr-equals {
+        color: var(--papyrus-html-equals);
+      }
+
+      &.attr-name {
+        color: var(--papyrus-html-attr-name);
+      }
+
+      &.attr-value {
+        color: var(--papyrus-html-attr-value);
+      }
+
+    }
+  }
+
+  /* -------------------------------------------- */
+  /* LIQUID TOKENS                                */
+  /* -------------------------------------------- */
+
+  &.liquid {
+    color: var(--papyrus-liquid-fallback);
+
+    .token {
+
+      &.tag {
+        color: var(--papyrus-liquid-tag);
+      }
+
+      &.output {
+        color: var(--papyrus-liquid-output);
+      }
+
+      &.punctuation {
+        color: var(--papyrus-liquid-punctuation);
+      }
+
+      &.operator {
+        color: var(--papyrus-liquid-operator);
+      }
+
+      &.string {
+        color: var(--papyrus-liquid-string);
+      }
+
+      &.delimiters {
         color: var(--papyrus-liquid-delimiters);
       }
 
-      &-comment {
+      &.comment {
         color: var(--papyrus-liquid-comment);
       }
 
-      &-boolean {
+      &.boolean {
         color: var(--papyrus-liquid-boolean);
       }
 
-      &-number {
+      &.number {
         color: var(--papyrus-liquid-number);
       }
 
-      &-parameter {
+      &.parameter {
         color: var(--papyrus-liquid-parameter);
       }
 
-      &-object {
+      &.object {
         color: var(--papyrus-liquid-object-name);
       }
 
-      &-property {
+      &.property {
         color: var(--papyrus-liquid-object-prop);
       }
 
-      &-filter {
+      &.filter {
         color: var(--papyrus-liquid-filter-name);
       }
+    }
 
-      &-string {
-        color: var(--papyrus-liquid-string);
+
+    /* LIQUID IN STRINGS -------------------------- */
+
+    &.liquid-string {
+
+      .token {
+
+        &.object {
+          color: var(--papyrus-liquid-string-object-name);
+        }
+
+        &.delimiters {
+          color: var(--papyrus-liquid-string-delimiters);
+        }
+
       }
-
-      // PINK
-      &-punctuation,
-      &-operator,
-      &-tagged,
-      &-tag {
-        color: var(--papyrus-liquid-tag-name);
-      }
-
     }
   }
 }

@@ -10,14 +10,12 @@
   --papyrus-ts-function-name: #9EE34F;
   --papyrus-ts-filter-name: #3defb9;
   --papyrus-ts-string: #FFF9A6;
-  --papyrus-ts-comment: #888;
+  --papyrus-ts-comment: #888888;
 }
 
 
 code.language-typescript,
-code.language-ts,
-code.language-javascript,
-code.language-js {
+code.language-ts {
   color: var(--papyrus-ts-fallback);
 
 

@@ -6,8 +6,13 @@
 import Prism from 'prismjs';
 import { enableTabToIndent } from 'indent-textarea';
 import { insert, set } from 'text-field-edit';
+import * as Liquid from './grammars/liquid';
+import * as Style from './grammars/style';
 import Script from './grammars/script';
+import JavaScript from './grammars/javascript';
 import Markup from './grammars/markup';
+import XML from './grammars/xml';
+import JSON from './grammars/json';
 import morphdom from 'morphdom';
 import { IOptions, IModel, Languages, Papyrus, IRenderOptions } from '../index';
 import { invisible } from './editor/invisible';
@@ -446,29 +451,15 @@ function potion () {
 
     const prism = arguments[0] as typeof Prism;
 
-    Markup['liquid-style'] = {
-      inside: prism.languages.css,
-      lookbehind: true,
-      pattern: /(\{%-?\s*style(?:sheet)?\s*-?%\})([\s\S]+?)(?=\{%-?\s*endstyle(?:sheet)?\s*-?%\})/
-    };
-
-    Markup['liquid-javascript'] = {
-      inside: prism.languages.javascript,
-      lookbehind: true,
-      pattern: /(\{%-?\s*javascript\s*-?%\})([\s\S]*?)(?=\{%-?\s*endjavascript\s*-?%\})/
-    };
-
-    Markup['liquid-schema'] = {
-      inside: prism.languages.json,
-      lookbehind: true,
-      pattern: /(\{%-?\s*schema\s*-?%\})([\s\S]+?)(?=\{%-?\s*endschema\s*-?%\})/
-    };
+    Style.extend(prism);
+    Liquid.extend(prism);
 
     prism.manual = true;
-    prism.languages.insertBefore('js', 'keyword', Script);
     prism.languages.insertBefore('ts', 'keyword', Script);
+    prism.languages.insertBefore('js', 'keyword', JavaScript);
+    prism.languages.xml = prism.languages.extend('markup', XML);
     prism.languages.liquid = prism.languages.extend('markup', Markup);
-    prism.languages.html = prism.languages.extend('markup', Markup);
+    prism.languages.json = JSON;
 
     papyrus.prism = prism;
 
