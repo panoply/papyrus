@@ -21,7 +21,7 @@ Papyrus is appropriating PrismJS grammars and neither modules are designed for h
 Papyrus requires you to install [PrismJS](https://prismjs.com).
 
 ```bash
-pnpm add papyrus
+pnpm add @liquify/papyrus
 ```
 
 # Options

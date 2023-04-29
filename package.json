@@ -1,5 +1,5 @@
 {
-  "name": "papyrus",
+  "name": "@liquify/papyrus",
   "version": "0.1.0",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
