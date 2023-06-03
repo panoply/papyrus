@@ -1,6 +1,6 @@
 {
-  "name": "@liquify/papyrus",
-  "version": "0.2.0",
+  "name": "papyrus",
+  "version": "0.1.0",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης ",
@@ -18,19 +18,15 @@
     },
     "./iife": {
       "default": "./dist/index.iife.js"
-    },
-    "./markdown-it": {
-      "require": "./dist/markdown-it.cjs",
-      "import": "./dist/markdown-it.js"
     }
   },
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/panoply/liquify/master/packages/papyrus"
+    "url": "https://github.com/panoply/papyrus"
   },
   "bugs": {
-    "url": "https://github.com/panoply/liquify/issues"
+    "url": "https://github.com/panoply/papyrus/issues"
   },
   "scripts": {
     "dev": "concurrently \"pnpm run scss:dev\" \"tsup --watch\"",

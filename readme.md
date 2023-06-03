@@ -21,7 +21,7 @@ Papyrus is appropriating PrismJS grammars and neither modules are designed for h
 Papyrus requires you to install [PrismJS](https://prismjs.com).
 
 ```bash
-pnpm add @liquify/papyrus
+pnpm add papyrus
 ```
 
 # Options
@@ -184,3 +184,7 @@ papyrus.mount(element: HTMLPreElement, options?: {})
 // Highlight string
 papyrus.highlight(code: string, options?: {})
 ```
+
+# Special Thanks
+
+Thanks to [Swyxio](https://github.com/swyxio) for passing on the NPM package name.
