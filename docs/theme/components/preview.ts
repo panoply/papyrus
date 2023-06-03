@@ -1,6 +1,5 @@
 import m from 'mithril';
 import { IAttrs, Languages } from '../attrs';
-import prism from 'prismjs';
 import papyrus, { IModel } from 'papyrus';
 
 // comment
@@ -93,7 +92,7 @@ export const Preview: m.Component<IAttrs, {
               state.language = attrs.language;
               attrs.papyrus.input = attrs.state.sample;
               attrs.papyrus.language = attrs.language;
-              state.editor = papyrus.potion(prism).mount(dom.parentElement as HTMLPreElement, attrs.papyrus);
+              state.editor = papyrus.mount(dom.parentElement as HTMLPreElement, attrs.papyrus);
 
             }
           }

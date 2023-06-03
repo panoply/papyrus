@@ -16,6 +16,7 @@
   --papyrus-selection-alpha: 0.3;
 
   // CODE REGION
+  --papyrus-code-color: #fafafa;
   --papyrus-code-padding-y: 0.3em;
   --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
@@ -78,6 +79,11 @@ pre.papyrus {
   font-size: var(--papyrus-font-size-root);
   background: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
+
+  *::selection {
+    text-shadow: none;
+    background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
+  }
 
   &.no-fence::before {
     border: none;
@@ -142,15 +148,23 @@ pre.papyrus {
       padding-top: var(--papyrus-code-padding-y);
       padding-bottom: var(--papyrus-code-padding-y);
       user-select: none;
-      pointer-events: none;;
+      pointer-events: none;
+
+      // > .hover  {
+      //   user-select: all;
+      //   pointer-events: all;
+      // }
 
 
       span.ln {
-        z-index: 200;
+        z-index: 100;
         display: flex;
         padding-left: calc(var(--papyrus-line-number-width) / 5);
         line-height: var(--papyrus-line-height);
         counter-increment: linenumber;
+
+
+        // &.hover:hover,
 
         &.highlight {
           background-color: rgba(var(--papyrus-line-highlight-bg), var(--papyrus-line-highlight-alpha));
@@ -195,6 +209,11 @@ pre.papyrus {
     hyphens: none;
     inset: 0;
 
+    &.auto-height {
+      position: relative !important;
+      display: block;
+    }
+
 
     /* SCROLLBARS --------------------------------- */
 
@@ -212,11 +231,6 @@ pre.papyrus {
       background-color: var(--papyrus-scrollbar-thumb);
     }
 
-
-    &::selection {
-      text-shadow: none;
-      background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
-    }
   }
 
 }

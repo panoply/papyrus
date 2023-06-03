@@ -1,40 +1,27 @@
-/**
- * IMPORT MODULE
- *
- * PrismJS module import
- */
 import Prism from 'prismjs';
 import { enableTabToIndent } from 'indent-textarea';
 import { insert, set } from 'text-field-edit';
-import * as Liquid from './grammars/liquid';
-import * as Style from './grammars/style';
-import Script from './grammars/script';
-import JavaScript from './grammars/javascript';
-import Markup from './grammars/markup';
-import XML from './grammars/xml';
-import JSON from './grammars/json';
+import { IOptions, IModel, Papyrus } from 'index';
 import morphdom from 'morphdom';
-import { IOptions, IModel, Languages, Papyrus, IRenderOptions } from '../index';
 import { invisible } from './editor/invisible';
+import { loadPotion } from './editor/potion';
+import { IRenderOptions } from '../index';
+import {
+  getLanguageFromClass,
+  mergeOptions,
+  trimInput,
+  getLineCount,
+  getLineNumbers,
+  mergeRenderOptions
+} from './utils';
 
-const papyrus: Partial<typeof Papyrus> = function run (options = {}) {
-
-  if (arguments.length === 0) {
-    if (papyrus.prism === null) {
-      if (getPrismJS()) return;
-    }
-  } else if (arguments.length === 1) {
-    if ('disableWorkerMessageHandler' in arguments[0]) {
-      papyrus.prism = arguments[0];
-      return run;
-    }
-  }
+const papyrus: Partial<typeof Papyrus> = function Papyrus (options = {}) {
 
   if (!('models' in papyrus)) papyrus.models = new Map();
 
   document.querySelectorAll('pre').forEach((pre) => {
     if (!pre.classList.contains('papyrus')) pre.classList.add('papyrus');
-    mountDom(pre, options);
+    papyrus.mount(pre, options);
   });
 
   console.info('𓁁 Papyrus Initialized');
@@ -43,149 +30,41 @@ const papyrus: Partial<typeof Papyrus> = function run (options = {}) {
 
 };
 
-/**
- * **Utility** ~ Attempt to get PrismJS instance
- */
-function getPrismJS () {
+papyrus.prism = Prism;
 
-  if (globalThis.Prism) {
-    papyrus.prism = globalThis.Prism;
-    return false;
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'papyrus', {
+    get () {
+      return papyrus;
+    }
+  });
+}
+
+papyrus.get = function (id?: string) {
+
+  if (!id) return [ ...papyrus.models.values() ][0];
+
+  if (papyrus.models.has(id)) return papyrus.models.get(id);
+
+  return [ ...papyrus.models.values() ][0];
+};
+
+papyrus.mount = function (pre: HTMLPreElement, config: IOptions = {}) {
+
+  if (!Prism) {
+    throw new Error('𓁁 Papyrus: Missing PrismJS dependency');
   }
-
-  console.error('𓁁 Papyrus: Unable to obtain PrismJS context');
-
-  return true;
-
-}
-
-/**
- * **Utility** ~ Extract the Language ID reference from className
- */
-function getLanguageFromClass (className: string, options: IOptions) {
-
-  const language = className.indexOf('language-');
-  const langName = {
-    html: 'html',
-    shell: 'shell',
-    css: 'css',
-    scss: 'scss',
-    liquid: 'liquid',
-    xml: 'xml',
-    json: 'json',
-    javascript: 'javascript',
-    js: 'javascript',
-    typescript: 'typescript',
-    ts: 'typescript',
-    jsx: 'jsx',
-    tsx: 'tsx',
-    yaml: 'yaml'
-  }[className.slice(language + 9).split(' ')[0].trimEnd()] as Languages;
-
-  if (langName) {
-    if (options.language === null) options.language = langName;
-    return langName;
-  }
-
-  if (options.language !== null) return options.language;
-
-  return langName;
-
-}
-
-/**
- * **Utility** ~ Returns the number of newline occurances
- */
-function getLineCount (code: string) {
-
-  return code.split('\n').length;
-
-}
-
-/**
- * **Utility** ~ Returns the newline counter node
- */
-function getLineNumbers (count: number) {
-
-  let nl = '';
-
-  for (let i = 0; i < count; i++) nl += `<span class="ln" data-line="${i + 1}"></span>`;
-  return `<span class="line-numbers">${nl}</span>`;
-
-}
-
-/**
- * **Utility** ~ Merge options
- */
-function mergeOptions (config: IOptions) {
-
-  return Object.assign(<IOptions>{
-    autoSave: true,
-    prism: null,
-    editor: true,
-    indentChar: 'none',
-    indentSize: 2,
-    input: '',
-    language: null,
-    lineHighlight: true,
-    lineIndent: true,
-    lineNumbers: true,
-    locLimit: 1500,
-    tabIndent: false,
-    spellcheck: false,
-    showCRLF: false,
-    showSpace: false,
-    showCR: false,
-    showLF: false,
-    showTab: false,
-    trimEnd: true,
-    trimStart: true
-  }, config);
-
-}
-
-/**
- * **Utility** ~ Trim Code Input
- */
-function trimInput (input: string, options: IOptions) {
-
-  if (options.trimStart && options.trimStart) {
-    return input.trim();
-  } else if (options.trimStart === true && options.trimEnd === false) {
-    return input.trimStart();
-  } else if (options.trimStart === false && options.trimEnd === true) {
-    return input.trimEnd();
-  }
-
-  return input;
-}
-
-function mountPrism () {
 
   if (!('models' in papyrus)) papyrus.models = new Map();
 
-  if (arguments.length === 1) {
-
-    if (arguments[0] instanceof HTMLPreElement) {
-      return mountDom(arguments[0]);
-    }
-
-    if ('disableWorkerMessageHandler' in arguments[0]) {
-      papyrus.prism = arguments[0];
-      return mountDom;
-    }
-  }
-
-  return mountDom(arguments[0], arguments[1]);
-
-}
-
-function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
-
   if (!pre.hasAttribute('id')) pre.id = Math.random().toString(36).slice(2);
 
-  const { prism } = papyrus;
-  const options = mergeOptions(config);
+  const options = mergeOptions(config) as IOptions;
+
+  if (options.potion) {
+    papyrus.prism = loadPotion(Prism);
+  }
+
   const tab = ' '.repeat(options.indentSize);
 
   const code = pre.querySelector('code');
@@ -207,11 +86,11 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   let scroll: number = 0;
   let input: string = trimInput(code.textContent, options);
 
-  invisible(prism, options, language);
+  invisible(Prism, options, language);
 
   /**
-   * Disable Text Editor
-   */
+     * Disable Text Editor
+     */
   function disable () {
 
     const text = pre.querySelector('.editor');
@@ -220,8 +99,8 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   }
 
   /**
-   * Enable Text Editor
-   */
+     * Enable Text Editor
+     */
   function enable () {
 
     textarea = pre.querySelector('textarea');
@@ -265,8 +144,8 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   }
 
   /**
-   * onclick event callback
-   */
+     * onclick event callback
+     */
   function onclick () {
 
     const { value, selectionStart } = textarea;
@@ -291,8 +170,8 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
       return '<code><span class="papyrus-loc-limit">LOC LIMIT EXCEEDED</span></code>';
     }
 
-    const grammar = prism.languages[language] || prism.languages.plaintext;
-    const highlight = prism.highlight(input, grammar, language);
+    const grammar = papyrus.prism.languages[language] || papyrus.prism.languages.plaintext;
+    const highlight = papyrus.prism.highlight(input, grammar, language);
 
     const output = options.lineNumbers
       ? `<code>${highlight}${getLineNumbers(lines)}</code>`
@@ -310,8 +189,8 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
   }
 
   /**
-   * onscroll event callback
-   */
+     * onscroll event callback
+     */
   function onscroll () {
 
     code.scrollTop = scroll = textarea.scrollTop;
@@ -319,15 +198,15 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
     if (left > 0) {
       pre.classList.add('no-fence');
       // pre.setAttribute('style', `--papyrus-line-scroll-left: -${left}px`);
-    //  code.lastElementChild.setAttribute('style', `--papyrus-line-scroll-left: ${left}px`);
+      //  code.lastElementChild.setAttribute('style', `--papyrus-line-scroll-left: ${left}px`);
     } else {
       pre.classList.remove('no-fence');
     }
   };
 
   /**
-   * oninput event callback
-   */
+     * oninput event callback
+     */
   function oninput (this: HTMLTextAreaElement, event: InputEvent) {
 
     input = textarea.value;
@@ -346,7 +225,7 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
     onupdate();
     onscroll();
 
-    // tokens = prism.tokenize(input, prism.languages[language]);
+    // tokens = Prism.tokenize(input, Prism.languages[language]);
 
   }
 
@@ -440,63 +319,29 @@ function mountDom (pre: HTMLPreElement, config: IOptions = {}) {
 
   return state;
 
-}
+};
 
-/**
- * Apply potion grammar extension
- */
-function potion () {
+papyrus.render = function (input: string, config: IRenderOptions) {
 
-  if ('disableWorkerMessageHandler' in arguments[0]) {
-
-    const prism = arguments[0] as typeof Prism;
-
-    Style.extend(prism);
-    Liquid.extend(prism);
-
-    prism.manual = true;
-    prism.languages.insertBefore('ts', 'keyword', Script);
-    prism.languages.insertBefore('js', 'keyword', JavaScript);
-    prism.languages.xml = prism.languages.extend('markup', XML);
-    prism.languages.liquid = prism.languages.extend('markup', Markup);
-    prism.languages.json = JSON;
-
-    papyrus.prism = prism;
-
+  if (!Prism) {
+    throw new Error('𓁁 Papyrus: Missing PrismJS dependency');
   }
 
-  return papyrus;
+  const options = mergeRenderOptions(config);
 
-}
+  if (options.potion) papyrus.prism = loadPotion(Prism);
 
-function render () {
+  const code = trimInput(input, options);
 
-  if (arguments.length === 0) throw new Error('𓁁 Papyrus: Missing code parameter');
+  invisible(papyrus.prism, options, options.language);
 
-  if (typeof arguments[0] !== 'string' && 'disableWorkerMessageHandler' in arguments[0]) {
-    papyrus.prism = arguments[0];
-    return render;
-  } else if (papyrus.prism === null) {
-    if (getPrismJS()) return arguments[0];
-  }
-
-  if (arguments.length < 2) {
-    console.error('𓁁 Papyrus: Render method requires options argument');
-    return arguments[0];
-  }
-
-  const options = mergeOptions(arguments[1]) as IRenderOptions;
-  const code = trimInput(arguments[0], options);
-
-  if (!('insertCodeElement' in options)) options.insertPreElement = true;
-  if (!('insertPreElement' in options)) options.insertCodeElement = true;
-  if (!('insertTextArea' in options)) options.insertTextArea = true;
   if (!options.language) {
     console.error('𓁁 Papyrus: Missing Language Reference');
     return code;
   }
 
   const output: string[] = [];
+  const lines = getLineCount(code);
 
   if (options.insertPreElement) {
     if (options.lineNumbers) {
@@ -507,13 +352,17 @@ function render () {
   }
 
   if (options.insertCodeElement) {
-    output.push(`<code class="language-${options.language}">`);
+    if (options.lineNumbers) {
+      output.push(`<code class="language-${options.language} lines auto-height">`);
+    } else {
+      output.push(`<code class="language-${options.language} lines auto-height">`);
+    }
   }
 
   const highlight = papyrus.prism.highlight(code, papyrus.prism.languages[options.language], options.language);
 
   if (options.lineNumbers) {
-    const lineNumbers = getLineNumbers(getLineCount(code));
+    const lineNumbers = getLineNumbers(lines, true);
     output.push(highlight, lineNumbers, '</code>');
   } else {
     output.push(highlight, '</code>');
@@ -528,20 +377,5 @@ function render () {
   return output.join('');
 
 };
-
-function getModel (id?: string) {
-
-  if (!id) return [ ...papyrus.models.values() ][0];
-
-  if (papyrus.models.has(id)) return papyrus.models.get(id);
-
-  return [ ...papyrus.models.values() ][0];
-}
-
-papyrus.prism = null;
-papyrus.get = getModel;
-papyrus.render = render;
-papyrus.mount = mountPrism as typeof Papyrus['mount'];
-papyrus.potion = potion as typeof Papyrus['potion'];
 
 export default papyrus;

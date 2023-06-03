@@ -62,9 +62,9 @@ export const Landing: m.Component = {
           , 'Theme'
         ),
         m(
-          m.route.Link
+          'a'
           , {
-            href: '/liquid',
+            href: '/usage/',
             class: 'btn btn-outline-black rd-1 bc-black px-4 py-1 mt-5 mx-2',
             selector: 'a[data-tooltip="right"][aria-label="Usage Examples"]'
           }

@@ -13,7 +13,7 @@ export default defineConfig(
     treeshake: true,
     async onSuccess () {
       const time = new Date();
-      await utimes('./docs/src/index.ts', time, time);
+      await utimes('./docs/theme/index.ts', time, time);
       return undefined;
     },
     esbuildPlugins: [
@@ -21,6 +21,8 @@ export default defineConfig(
         inline: true,
         css: false,
         languages: [
+          'js',
+          'ts',
           'typescript',
           'javascript',
           'css-extras',

@@ -4,7 +4,7 @@
     "public"
   ],
   "include": [
-    "src/**/*.ts"
+    "theme/**/*.ts"
   ],
   "compilerOptions": {
     "incremental": false,

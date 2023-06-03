@@ -262,11 +262,11 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 }
 
 h1, .h1 {
-  font-size: calc(1.375rem + 1.5vw) !important;
+  font-size: calc(1.3rem + 0.6vw) !important;
 }
 @media (min-width: 1200px) {
   h1, .h1 {
-    font-size: 2.5rem !important;
+    font-size: 1.75rem !important;
   }
 }
 
@@ -307,7 +307,7 @@ h6, .h6 {
 
 p {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 2em;
 }
 
 abbr[title] {
@@ -7301,3 +7301,5 @@ code.inline {
   background-color: #eeeeee;
   border: 1px solid #e7e7e7;
 }
+
+/*# sourceMappingURL=style.css.map */

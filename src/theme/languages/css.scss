@@ -21,92 +21,94 @@
   --papyrus-css-pseudo-element: #e18d27
 }
 
+code.css {
 
-.token {
+  .token {
 
-  &.selector {
-    color: var(--papyrus-css-selector);
-  }
-
-  &.attribute {
-    .punctuation {
-      color: var(--papyrus-css-attr-punctuation);
+    &.selector {
+      color: var(--papyrus-css-selector);
     }
-  }
 
-  &.css-tag {
-    color: var(--papyrus-css-tag-selector);
-  }
+    &.attribute {
+      .punctuation {
+        color: var(--papyrus-css-attr-punctuation);
+      }
+    }
 
-  &.colon {
-    color: var(--papyrus-css-operator);
-  }
+    &.css-tag {
+      color: var(--papyrus-css-tag-selector);
+    }
 
-  &.css-attr-name {
-    color: var(--papyrus-css-attr-name);
-  }
+    &.colon {
+      color: var(--papyrus-css-operator);
+    }
 
-  &.css-attr-value {
-    color: var(--papyrus-css-attr-value);
-  }
+    &.css-attr-name {
+      color: var(--papyrus-css-attr-name);
+    }
 
-  &.inserted {
-    color: var(--papyrus-css-inserted);
-  }
+    &.css-attr-value {
+      color: var(--papyrus-css-attr-value);
+    }
 
-  &.atrule {
-    color: var(--papyrus-css-atrule);
-  }
+    &.inserted {
+      color: var(--papyrus-css-inserted);
+    }
 
-  &.important{
-    color: var(--papyrus-css-important);
-  }
+    &.atrule {
+      color: var(--papyrus-css-atrule);
+    }
 
-  &.keyword {
-    color: var(--papyrus-css-deleted);
-  }
+    &.important{
+      color: var(--papyrus-css-important);
+    }
 
-  &.punctuation {
-    color: var(--papyrus-css-punctuation);
-  }
+    &.keyword {
+      color: var(--papyrus-css-deleted);
+    }
 
-  &.property {
-    color: var(--papyrus-css-property);
-  }
+    &.punctuation {
+      color: var(--papyrus-css-punctuation);
+    }
 
-  &.property-value {
-    color: var(--papyrus-css-property-value);
-  }
+    &.property {
+      color: var(--papyrus-css-property);
+    }
 
-  &.operator {
-    color: var(--papyrus-css-operator);
-  }
+    &.property-value {
+      color: var(--papyrus-css-property-value);
+    }
 
-  &.combinator {
-    color: var(--papyrus-css-combinator);
-  }
+    &.operator {
+      color: var(--papyrus-css-operator);
+    }
 
-  &.variable {
-    color: var(--papyrus-css-variable);
-  }
+    &.combinator {
+      color: var(--papyrus-css-combinator);
+    }
 
-  &.number {
-    color: var(--papyrus-css-number);
-  }
+    &.variable {
+      color: var(--papyrus-css-variable);
+    }
 
-  &.unit{
-    color: var(--papyrus-css-unit);
-  }
+    &.number {
+      color: var(--papyrus-css-number);
+    }
 
-  &.hexcode{
-    color: var(--papyrus-css-hexcode);
-  }
+    &.unit{
+      color: var(--papyrus-css-unit);
+    }
 
-  &.function {
-    color: var(--papyrus-css-function);
-  }
+    &.hexcode{
+      color: var(--papyrus-css-hexcode);
+    }
 
-  &.pseudo-element {
-    color: var(--papyrus-css-pseudo-element);
+    &.function {
+      color: var(--papyrus-css-function);
+    }
+
+    &.pseudo-element {
+      color: var(--papyrus-css-pseudo-element);
+    }
   }
 }

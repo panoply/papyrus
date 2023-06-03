@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 import type Prism from 'prismjs';
 
@@ -17,6 +18,10 @@ export type Languages = (
 )
 
 export interface IOptions {
+  /**
+   * Whether or not to use potion theme extension
+   */
+  potion?: boolean;
   /**
    * The language name
    */
@@ -136,6 +141,10 @@ export interface IOptions {
 }
 
 export interface IRenderOptions extends Omit<IOptions, 'input'> {
+  /**
+   * The language name
+   */
+  prism: typeof Prism;
   /**
    * The language name
    */
@@ -301,7 +310,6 @@ export const Papyrus: {
    * code[0] // Returns the papyrus model for # 1
    * code[1] // Returns the papyrus model for # 2
    */
-  (prismjs: typeof Prism, options?: Omit<IOptions, 'language'>): IModel[];
   (options?: Omit<IOptions, 'language'>): IModel[];
   /**
    * #### POTION 🧝🏽‍♀️
@@ -378,7 +386,6 @@ export const Papyrus: {
    * code.update('const foo: string = "bar";', 'typescript')
    *
    */
-  mount(prism: typeof Prism): (dom: HTMLPreElement, options?: IOptions) => IModel;
   mount(dom: HTMLPreElement, options?: IOptions): IModel;
   /**
    * #### RENDER
@@ -420,7 +427,20 @@ export const Papyrus: {
    * `;
    */
   render(code: string, options: IRenderOptions): string;
-  render(prism: typeof Prism): (code: string, options: IRenderOptions) => string;
 };
 
-export default Papyrus;
+declare global {
+
+  interface Window {
+    /**
+     * #### PAPYRUS 𓁁
+     */
+    papyrus: typeof Papyrus
+  }
+
+  /**
+   *#### PAPYRUS 𓁁
+   */
+  export const papyrus: typeof Papyrus;
+
+}

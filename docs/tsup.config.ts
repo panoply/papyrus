@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: {
-    'bundle.min': './src/index.ts'
+    'bundle.min': './theme/index.ts'
   },
   noExternal: [
     'mithril',

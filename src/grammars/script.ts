@@ -1,6 +1,7 @@
 export default <Prism.Grammar>{
   variable: {
-    pattern: /\b(?:const|var|let)\b/
+    pattern: /\b(?:const|var|let)\b/,
+    global: true
   },
   module: {
     pattern: /\b(?:import|as|export|from|default)\b/

@@ -5,13 +5,13 @@
   "description": "Papyrus Documentation",
   "license": "ISC",
   "scripts": {
-    "dev": "concurrently \"pnpm run scss:watch\" \"pnpm run tsup:watch\" \"http-server ./public\"",
+    "dev": "concurrently \"eleventy --serve --watch\" \"pnpm run scss:watch\" \"pnpm run tsup:watch\"",
     "build": "pnpm run tsup:build && pnpm run scss:build",
     "netlify:deploy": "netlify deploy",
     "tsup:watch": "tsup --watch",
     "tsup:build": "tsup --minify",
-    "scss:watch": "sass --load-path=node_modules/ src/style.scss public/style.css --watch",
-    "scss:build": "sass --load-path=node_modules/ src/style.scss public/style.css --no-source-map",
+    "scss:watch": "sass --load-path=node_modules/ theme/style.scss public/style.css --watch",
+    "scss:build": "sass --load-path=node_modules/ theme/style.scss public/style.css --no-source-map",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "module": "./public/bundle.min.js",
@@ -46,13 +46,16 @@
     "relapse": "^0.5.0"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
     "@brixtol/bootstrap": "^1.4.3",
     "@liquify/eslint-config": "workspace:^",
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
+    "@panoply/11ty": "^0.2.0",
     "concurrently": "^8.0.1",
     "http-server": "^14.1.1",
+    "markdown-it": "^13.0.1",
     "mithril": "^2.2.2",
     "sass": "^1.61.0",
     "terser": "^5.16.8",

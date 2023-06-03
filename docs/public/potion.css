@@ -9,6 +9,7 @@
   --papyrus-width: 100%;
   --papyrus-selection-bg: 255, 255, 255;
   --papyrus-selection-alpha: 0.3;
+  --papyrus-code-color: #fafafa;
   --papyrus-code-padding-y: 0.3em;
   --papyrus-code-padding-x: 0.5em;
   --papyrus-code-bg: #181b20;
@@ -59,6 +60,10 @@ pre.papyrus {
   border-radius: var(--papyrus-code-border-radius);
   /* LINE FENCE --------------------------------- */
   /* CODE ELEMENT ------------------------------- */
+}
+pre.papyrus *::selection {
+  text-shadow: none;
+  background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
 }
 pre.papyrus.no-fence::before {
   border: none;
@@ -111,7 +116,7 @@ pre.papyrus code[class*=language-] > .line-numbers {
   pointer-events: none;
 }
 pre.papyrus code[class*=language-] > .line-numbers span.ln {
-  z-index: 200;
+  z-index: 100;
   display: flex;
   padding-left: calc(var(--papyrus-line-number-width) / 5);
   line-height: var(--papyrus-line-height);
@@ -153,6 +158,11 @@ pre.papyrus code[class*=language-] {
   inset: 0;
   /* SCROLLBARS --------------------------------- */
 }
+pre.papyrus textarea.editor.auto-height,
+pre.papyrus code[class*=language-].auto-height {
+  position: relative !important;
+  display: block;
+}
 pre.papyrus textarea.editor::-webkit-scrollbar-track,
 pre.papyrus code[class*=language-]::-webkit-scrollbar-track {
   background-color: var(--papyrus-scrollbar-track);
@@ -166,11 +176,6 @@ pre.papyrus code[class*=language-]::-webkit-scrollbar {
 pre.papyrus textarea.editor::-webkit-scrollbar-thumb,
 pre.papyrus code[class*=language-]::-webkit-scrollbar-thumb {
   background-color: var(--papyrus-scrollbar-thumb);
-}
-pre.papyrus textarea.editor::selection,
-pre.papyrus code[class*=language-]::selection {
-  text-shadow: none;
-  background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
 }
 
 /* -------------------------------------------- */
@@ -232,31 +237,40 @@ pre.papyrus code[class*=language-]::selection {
   --papyrus-html-comment: #888888;
 }
 
-.token.doctype-tag {
+code.language-markup .token.doctype-tag,
+code.language-html .token.doctype-tag {
   color: var(--papyrus-html-doctype);
 }
-.token.doctype .token.name {
+code.language-markup .token.doctype .token.name,
+code.language-html .token.doctype .token.name {
   color: var(--papyrus-html-delimiter);
 }
-.token.name {
+code.language-markup .token.name,
+code.language-html .token.name {
   color: var(--papyrus-html-tag-name);
 }
-.token.comment {
+code.language-markup .token.comment,
+code.language-html .token.comment {
   color: var(--papyrus-html-comment);
 }
-.token.punctuation {
+code.language-markup .token.punctuation,
+code.language-html .token.punctuation {
   color: var(--papyrus-html-delimiter);
 }
-.token.tag {
+code.language-markup .token.tag,
+code.language-html .token.tag {
   color: var(--papyrus-html-tag-name);
 }
-.token.attr-equals {
+code.language-markup .token.attr-equals,
+code.language-html .token.attr-equals {
   color: var(--papyrus-html-equals);
 }
-.token.attr-name {
+code.language-markup .token.attr-name,
+code.language-html .token.attr-name {
   color: var(--papyrus-html-attr-name);
 }
-.token.attr-value {
+code.language-markup .token.attr-value,
+code.language-html .token.attr-value {
   color: var(--papyrus-html-attr-value);
 }
 
@@ -368,6 +382,7 @@ pre.papyrus code[class*=language-]::selection {
 }
 
 :root {
+  --papyrus-js-fallback: #fafafa;
   --papyrus-js-keyword: #E91E63;
   --papyrus-js-function: #9EE34F;
   --papyrus-js-class-name: #9EE34F;
@@ -390,6 +405,10 @@ pre.papyrus code[class*=language-]::selection {
   --papyrus-js-comment: #888888;
 }
 
+code.language-javascript,
+code.language-js {
+  color: var(--papyrus-ts-fallback);
+}
 code.language-javascript .token.keyword,
 code.language-js .token.keyword {
   color: var(--papyrus-js-keyword);
@@ -585,67 +604,67 @@ code.language-ts .token.boolean {
   --papyrus-css-pseudo-element: #e18d27 ;
 }
 
-.token.selector {
+code.css .token.selector {
   color: var(--papyrus-css-selector);
 }
-.token.attribute .punctuation {
+code.css .token.attribute .punctuation {
   color: var(--papyrus-css-attr-punctuation);
 }
-.token.css-tag {
+code.css .token.css-tag {
   color: var(--papyrus-css-tag-selector);
 }
-.token.colon {
+code.css .token.colon {
   color: var(--papyrus-css-operator);
 }
-.token.css-attr-name {
+code.css .token.css-attr-name {
   color: var(--papyrus-css-attr-name);
 }
-.token.css-attr-value {
+code.css .token.css-attr-value {
   color: var(--papyrus-css-attr-value);
 }
-.token.inserted {
+code.css .token.inserted {
   color: var(--papyrus-css-inserted);
 }
-.token.atrule {
+code.css .token.atrule {
   color: var(--papyrus-css-atrule);
 }
-.token.important {
+code.css .token.important {
   color: var(--papyrus-css-important);
 }
-.token.keyword {
+code.css .token.keyword {
   color: var(--papyrus-css-deleted);
 }
-.token.punctuation {
+code.css .token.punctuation {
   color: var(--papyrus-css-punctuation);
 }
-.token.property {
+code.css .token.property {
   color: var(--papyrus-css-property);
 }
-.token.property-value {
+code.css .token.property-value {
   color: var(--papyrus-css-property-value);
 }
-.token.operator {
+code.css .token.operator {
   color: var(--papyrus-css-operator);
 }
-.token.combinator {
+code.css .token.combinator {
   color: var(--papyrus-css-combinator);
 }
-.token.variable {
+code.css .token.variable {
   color: var(--papyrus-css-variable);
 }
-.token.number {
+code.css .token.number {
   color: var(--papyrus-css-number);
 }
-.token.unit {
+code.css .token.unit {
   color: var(--papyrus-css-unit);
 }
-.token.hexcode {
+code.css .token.hexcode {
   color: var(--papyrus-css-hexcode);
 }
-.token.function {
+code.css .token.function {
   color: var(--papyrus-css-function);
 }
-.token.pseudo-element {
+code.css .token.pseudo-element {
   color: var(--papyrus-css-pseudo-element);
 }
 

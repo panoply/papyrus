@@ -80,4 +80,5 @@ export function invisible (prism: typeof Prism, options: IOptions, language: Lan
   };
 
   addInvisibles(prism.languages[language]);
+
 }
