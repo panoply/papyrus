@@ -3,6 +3,7 @@ node_modules/
 versions/
 .pnpm-debug.log
 dist
+docs/public
 
 
 # Local Netlify folder
