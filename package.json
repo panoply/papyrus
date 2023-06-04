@@ -1,6 +1,6 @@
 {
   "name": "papyrus",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης ",
