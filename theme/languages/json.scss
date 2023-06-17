@@ -1,0 +1,30 @@
+code.language-json {
+
+  .token {
+
+    &.property {
+      color: var(--papyrus-json-property);
+    }
+
+    &.operator {
+      color: var(--papyrus-json-operator);
+    }
+
+    &.string {
+      color: var(--papyrus-json-string);
+    }
+
+    &.number {
+      color: var(--papyrus-json-number);
+    }
+
+    &.boolean {
+      color: var(--papyrus-json-boolean);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-json-punctuation);
+    }
+
+  }
+}

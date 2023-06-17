@@ -1,0 +1,208 @@
+/* stylelint-disable color-function-notation */
+
+@import "vars";
+
+:root {
+
+  /* -------------------------------------------- */
+  /* BASE VARIABLES                               */
+  /* -------------------------------------------- */
+
+  // FONT FAMILY
+  --papyrus-font-size-root                  : #{$papyrus-font-size-root};
+  --papyrus-font-size                       : #{$papyrus-font-size};
+  --papyrus-font-family                     : #{$papyrus-font-family};
+  --papyrus-line-height                     : #{$papyrus-line-height};
+
+  // EDITOR SIZING
+  --papyrus-height                          : #{$papyrus-height};
+  --papyrus-width                           : #{$papyrus-width};
+
+  // SELECTION
+  --papyrus-selection-bg                    : #{$papyrus-selection-bg};
+  --papyrus-selection-alpha                 : #{$papyrus-selection-alpha};
+
+  // CODE REGION
+  --papyrus-code-color                      : #{$papyrus-code-color};
+  --papyrus-code-padding-y                  : #{$papyrus-code-padding-y};
+  --papyrus-code-padding-x                  : #{$papyrus-code-padding-x};
+  --papyrus-code-bg                         : #{$papyrus-code-bg};
+  --papyrus-code-inline-bg                  : #{$papyrus-code-inline-bg};
+  --papyrus-code-border-radius              : #{$papyrus-code-border-radius};
+  --papyrus-code-caret-color                : #{$papyrus-code-caret-color};
+
+  // SCROLLBAR
+  --papyrus-scrollbar-width                 : #{$papyrus-scrollbar-width};
+  --papyrus-scrollbar-track                 : #{$papyrus-scrollbar-track};
+  --papyrus-scrollbar-bg                    : #{$papyrus-scrollbar-bg};
+  --papyrus-scrollbar-thumb                 : #{$papyrus-scrollbar-thumb};
+
+  // INVISIBLE CHARACTERS
+  --papyrus-invisible-space-color           : #{$papyrus-invisible-space-color};
+  --papyrus-invisible-tab-color             : #{$papyrus-invisible-tab-color};
+  --papyrus-invisible-lf-color              : #{$papyrus-invisible-lf-color};
+  --papyrus-invisible-cr-color              : #{$papyrus-invisible-cr-color};
+  --papyrus-invisible-crlf-color            : #{$papyrus-invisible-crlf-color};
+
+  // LINE NUMBERS
+  --papyrus-line-number-width               : #{$papyrus-line-number-width};
+  --papyrus-line-number-color               : #{$papyrus-line-number-color};
+  --papyrus-line-fence-color                : #{$papyrus-line-fence-color};
+  --papyrus-line-fence-width                : #{$papyrus-line-fence-width};
+  --papyrus-line-scroll-left                : #{$papyrus-line-scroll-left};
+
+  // LINE HIGHLIGHT
+  --papyrus-line-highlight-alpha            : #{$papyrus-line-highlight-alpha};
+  --papyrus-line-highlight-bg               : #{$papyrus-line-highlight-bg};
+  --papyrus-line-highlight-number           : #{$papyrus-line-highlight-number};
+
+
+  /* -------------------------------------------- */
+  /* XML LANGUAGE                                */
+  /* -------------------------------------------- */
+
+  --papyrus-xml-prolog                      : #{$papyrus-xml-prolog};
+  --papyrus-xml-name                        : #{$papyrus-xml-name};
+  --papyrus-xml-prefix                      : #{$papyrus-xml-prefix};
+  --papyrus-xml-comment                     : #{$papyrus-xml-comment};
+  --papyrus-xml-delimiter                   : #{$papyrus-xml-delimiter};
+  --papyrus-xml-tag-name                    : #{$papyrus-xml-tag-name};
+  --papyrus-xml-equals                      : #{$papyrus-xml-equals};
+  --papyrus-xml-attr-name                   : #{$papyrus-xml-attr-name};
+  --papyrus-xml-attr-value                  : #{$papyrus-xml-attr-value};
+
+  /* -------------------------------------------- */
+  /* HTML LANGUAGE                                */
+  /* -------------------------------------------- */
+
+  --papyrus-html-text-content               : #{$papyrus-html-text-content};
+  --papyrus-html-doctype                    : #{$papyrus-html-doctype};
+  --papyrus-html-delimiter                  : #{$papyrus-html-delimiter};
+  --papyrus-html-tag-name                   : #{$papyrus-html-tag-name};
+  --papyrus-html-equals                     : #{$papyrus-html-equals};
+  --papyrus-html-attr-name                  : #{$papyrus-html-attr-name};
+  --papyrus-html-attr-value                 : #{$papyrus-html-attr-value};
+  --papyrus-html-comment                    : #{$papyrus-html-comment};
+
+  /* -------------------------------------------- */
+  /* LIQUID LANGUAGE                              */
+  /* -------------------------------------------- */
+
+  --papyrus-liquid-fallback                 : #{$papyrus-liquid-fallback};
+  --papyrus-liquid-delimiters               : #{$papyrus-liquid-delimiters};
+  --papyrus-liquid-tag                      : #{$papyrus-liquid-tag};
+  --papyrus-liquid-output                   : #{$papyrus-liquid-output};
+  --papyrus-liquid-boolean                  : #{$papyrus-liquid-boolean};
+  --papyrus-liquid-number                   : #{$papyrus-liquid-number};
+  --papyrus-liquid-punctuation              : #{$papyrus-liquid-punctuation};
+  --papyrus-liquid-operator                 : #{$papyrus-liquid-operator};
+  --papyrus-liquid-parameter                : #{$papyrus-liquid-parameter};
+  --papyrus-liquid-object-name              : #{$papyrus-liquid-object-name};
+  --papyrus-liquid-object-prop              : #{$papyrus-liquid-object-prop};
+  --papyrus-liquid-filter-name              : #{$papyrus-liquid-filter-name};
+  --papyrus-liquid-string                   : #{$papyrus-liquid-string};
+  --papyrus-liquid-comment                  : #{$papyrus-liquid-comment};
+  --papyrus-liquid-string-delimiters        : #{$papyrus-liquid-string-delimiters};
+  --papyrus-liquid-string-object-name       : #{$papyrus-liquid-string-object-name};
+
+  /* -------------------------------------------- */
+  /* CSS LANGUAGE                                 */
+  /* -------------------------------------------- */
+
+  --papyrus-css-selector                     : #{$papyrus-css-selector};
+  --papyrus-css-tag-selector                 : #{$papyrus-css-tag-selector};
+  --papyrus-css-colon                        : #{$papyrus-css-colon};
+  --papyrus-css-function                     : #{$papyrus-css-function};
+  --papyrus-css-variable                     : #{$papyrus-css-variable};
+  --papyrus-css-operator                     : #{$papyrus-css-operator};
+  --papyrus-css-punctuation                  : #{$papyrus-css-punctuation};
+  --papyrus-css-important                    : #{$papyrus-css-important};
+  --papyrus-css-atrule                       : #{$papyrus-css-atrule};
+  --papyrus-css-property                     : #{$papyrus-css-property};
+  --papyrus-css-property-value               : #{$papyrus-css-property-value};
+  --papyrus-css-number                       : #{$papyrus-css-number};
+  --papyrus-css-hexcode                      : #{$papyrus-css-hexcode};
+  --papyrus-css-combinator                   : #{$papyrus-css-combinator};
+  --papyrus-css-unit                         : #{$papyrus-css-unit};
+  --papyrus-css-attr-name                    : #{$papyrus-css-attr-name};
+  --papyrus-css-attr-value                   : #{$papyrus-css-attr-value};;
+  --papyrus-css-attr-punctuation             : #{$papyrus-css-attr-punctuation};
+  --papyrus-css-pseudo-element               : #{$papyrus-css-pseudo-element};
+
+  /* -------------------------------------------- */
+  /* SCSS LANGUAGE                                */
+  /* -------------------------------------------- */
+
+  --papyrus-scss-selector                     : #{$papyrus-scss-selector};
+  --papyrus-scss-tag-selector                 : #{$papyrus-scss-tag-selector};
+  --papyrus-scss-colon                        : #{$papyrus-scss-colon};
+  --papyrus-scss-function                     : #{$papyrus-scss-function};
+  --papyrus-scss-variable                     : #{$papyrus-scss-variable};
+  --papyrus-scss-operator                     : #{$papyrus-scss-operator};
+  --papyrus-scss-punctuation                  : #{$papyrus-scss-punctuation};
+  --papyrus-scss-important                    : #{$papyrus-scss-important};
+  --papyrus-scss-atrule                       : #{$papyrus-scss-atrule};
+  --papyrus-scss-property                     : #{$papyrus-scss-property};
+  --papyrus-scss-property-value               : #{$papyrus-scss-property-value};
+  --papyrus-scss-number                       : #{$papyrus-scss-number};
+  --papyrus-scss-hexcode                      : #{$papyrus-scss-hexcode};
+  --papyrus-scss-combinator                   : #{$papyrus-scss-combinator};
+  --papyrus-scss-unit                         : #{$papyrus-scss-unit};
+  --papyrus-scss-attr-name                    : #{$papyrus-scss-attr-name};
+  --papyrus-scss-attr-value                   : #{$papyrus-scss-attr-value};;
+  --papyrus-scss-attr-punctuation             : #{$papyrus-scss-attr-punctuation};
+  --papyrus-scss-pseudo-element               : #{$papyrus-scss-pseudo-element};
+
+  /* -------------------------------------------- */
+  /* JSON LANGUAGE                                */
+  /* -------------------------------------------- */
+
+  --papyrus-json-punctuation                 : #{$papyrus-json-punctuation};
+  --papyrus-json-property                    : #{$papyrus-json-property};
+  --papyrus-json-string                      : #{$papyrus-json-string};
+  --papyrus-json-boolean                     : #{$papyrus-json-boolean};
+  --papyrus-json-number                      : #{$papyrus-json-number};
+  --papyrus-json-operator                    : #{$papyrus-json-operator};
+
+  /* -------------------------------------------- */
+  /* JAVASCRIPT LANGUAGE                          */
+  /* -------------------------------------------- */
+
+  --papyrus-js-fallback                      : #{$papyrus-js-fallback};
+  --papyrus-js-keyword                       : #{$papyrus-js-keyword};
+  --papyrus-js-function                      : #{$papyrus-js-function};
+  --papyrus-js-class-name                    : #{$papyrus-js-class-name};
+  --papyrus-js-function-name                 : #{$papyrus-js-function-name};
+  --papyrus-js-punctuation                   : #{$papyrus-js-punctuation};
+  --papyrus-js-special-chars                 : #{$papyrus-js-special-chars};
+  --papyrus-js-parameter                     : #{$papyrus-js-parameter};
+  --papyrus-js-variable                      : #{$papyrus-js-variable};
+  --papyrus-js-operator                      : #{$papyrus-js-operator};
+  --papyrus-js-operation                     : #{$papyrus-js-operation};
+  --papyrus-js-module                        : #{$papyrus-js-module};
+  --papyrus-js-semi                          : #{$papyrus-js-semi};
+  --papyrus-js-flow                          : #{$papyrus-js-flow};
+  --papyrus-js-number                        : #{$papyrus-js-number};
+  --papyrus-js-boolean                       : #{$papyrus-js-boolean};
+  --papyrus-js-string                        : #{$papyrus-js-string};
+  --papyrus-js-regex                         : #{$papyrus-js-regex};
+  --papyrus-js-regex-flags                   : #{$papyrus-js-regex-flags};
+  --papyrus-js-literal-property              : #{$papyrus-js-literal-property};
+  --papyrus-js-comment                       : #{$papyrus-js-comment};
+
+  /* -------------------------------------------- */
+  /* TYPESCRIPT LANGUAGE                          */
+  /* -------------------------------------------- */
+
+  --papyrus-ts-fallback                      : #{$papyrus-ts-fallback};
+  --papyrus-ts-types                         : #{$papyrus-ts-types};
+  --papyrus-ts-boolean                       : #{$papyrus-ts-boolean};
+  --papyrus-ts-number                        : #{$papyrus-ts-number};
+  --papyrus-ts-operator                      : #{$papyrus-ts-operator};
+  --papyrus-ts-parameter                     : #{$papyrus-ts-parameter};
+  --papyrus-ts-method                        : #{$papyrus-ts-method};
+  --papyrus-ts-function-name                 : #{$papyrus-ts-function-name};
+  --papyrus-ts-filter-name                   : #{$papyrus-ts-filter-name};
+  --papyrus-ts-string                        : #{$papyrus-ts-string};
+  --papyrus-ts-comment                       : #{$papyrus-ts-comment};
+}

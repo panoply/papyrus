@@ -1,24 +1,21 @@
 {
   "name": "papyrus",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης ",
     "email": "n.savvidis@gmx.com"
   },
   "license": "MIT",
-  "type": "module",
   "types": "./index.d.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/papyrus.js",
+  "module": "./dist/papyrus.mjs",
+  "type": "module",
   "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
-    },
-    "./iife": {
-      "default": "./dist/index.iife.js"
-    }
+    "types": "./index.d.ts",
+    "require": "./dist/papyrus.cjs",
+    "import": "./dist/papyrus.mjs",
+    "default": "./dist/papyrus.js"
   },
   "private": false,
   "repository": {
@@ -30,9 +27,9 @@
   },
   "scripts": {
     "dev": "concurrently \"pnpm run scss:dev\" \"tsup --watch\"",
-    "build": "rm -rf dist && pnpm run scss:build && NODE_ENV=production tsup --minify",
-    "scss:dev": "sass ./src/theme/potion.scss:./docs/public/potion.css --watch",
-    "scss:build": "sass ./src/theme/potion.scss:./potion.css --no-source-map --style=compressed",
+    "build": "rm -rf dist && pnpm run scss:build && tsup --minify --env.NODE_ENV production && gzip-size dist/papyrus.mjs --include-original",
+    "scss:dev": "sass ./index.scss:./docs/public/papyrus.css --watch",
+    "scss:build": "sass ./index.scss:./papyrus.css --no-source-map --style=compressed",
     "pack": "cd versions; pnpm pack ../ && cd .."
   },
   "stylelint": {
@@ -46,6 +43,9 @@
     "ignorePatterns": [
       "dist/*"
     ],
+    "rules": {
+      "n/no-callback-literal": "off"
+    },
     "extends": [
       "@liquify/eslint-config"
     ]
@@ -56,15 +56,11 @@
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
     "ava": "^5.2.0",
-    "esbuild-plugin-prismjs": "^1.0.8",
-    "prismjs": "^1.29.0"
+    "terser": "^5.18.0"
   },
   "dependencies": {
-    "indent-textarea": "^3.0.0",
     "morphdom": "^2.7.0",
-    "text-field-edit": "^3.2.0"
-  },
-  "peerDependencies": {
-    "prismjs": "^1.29.0"
+    "prismjs": "^1.29.0",
+    "type-fest": "^3.11.1"
   }
 }

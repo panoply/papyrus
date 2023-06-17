@@ -4,12 +4,13 @@
     "public"
   ],
   "include": [
-    "theme/**/*.ts"
+    "src/**/*.ts"
   ],
   "compilerOptions": {
     "incremental": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "strictNullChecks": false,
     "declaration": true,
     "removeComments": true,
     "target": "ES6",

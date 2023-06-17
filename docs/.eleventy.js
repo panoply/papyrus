@@ -1,6 +1,6 @@
 const eleventy = require('@panoply/11ty');
 const markdown = require('markdown-it');
-const papyrus = require('../dist/index.cjs');
+const papyrus = require('papyrus');
 
 /** @type {import('@liquify/papyrus')['Papyrus']} */
 //const Papyrus = require('@liquify/papyrus')
@@ -14,24 +14,9 @@ function highlighter (md, raw, language) {
 
     try {
 
-
-      code = papyrus.render(raw, {
-        language,
-        insertCodeElement: true,
-        trimStart: true,
-        trimEnd: true,
-        insertPreElement: true,
-        lineNumbers: true,
-        lineIndent: true,
-        showTab: true,
-        spellcheck: false,
-        tabIndent: true,
-        indentSize: 2,
-        editor: false,
-        insertTextArea: false,
-        lineHighlight: true,
-        showSpace: true,
-        indentChar: 'space'
+      code = papyrus.create(raw, {
+       language,
+       editor: false
       });
 
 
@@ -90,7 +75,7 @@ module.exports = eleventy(function (config) {
       'md'
     ],
     dir: {
-      input: 'usage',
+      input: 'src/usage',
       output: 'public',
       includes: 'include',
       layouts: 'layout',

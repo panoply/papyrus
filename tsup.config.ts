@@ -1,60 +1,61 @@
 import { defineConfig } from 'tsup';
 import { utimes } from 'node:fs/promises';
-import { prismjsPlugin } from 'esbuild-plugin-prismjs';
 
-export default defineConfig(
+export default defineConfig([
   {
-    entry: [
-      './src/index.ts'
+    entry: {
+      papyrus: './src/index.ts'
+    },
+    noExternal: [
+      'morphdom',
+      'prismjs'
     ],
-    noExternal: [ 'indent-textarea', 'morphdom', 'text-field-edit' ],
+    clean: false,
     name: 'papyrus',
     globalName: 'papyrus',
-    treeshake: true,
+    treeshake: 'smallest',
+    platform: 'neutral',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    terserOptions: {
+      keep_classnames: false,
+      ecma: 2016,
+      compress: {
+        passes: 100
+      }
+    },
+    minify: 'terser',
     async onSuccess () {
       const time = new Date();
-      await utimes('./docs/theme/index.ts', time, time);
+      await utimes('./docs/src/theme/index.ts', time, time);
       return undefined;
     },
-    esbuildPlugins: [
-      prismjsPlugin({
-        inline: true,
-        css: false,
-        languages: [
-          'js',
-          'ts',
-          'typescript',
-          'javascript',
-          'css-extras',
-          'css',
-          'scss',
-          'yaml',
-          'json',
-          'jsx',
-          'tsx'
-        ],
-        plugins: [
-          // 'line-numbers',
-          'treeview',
-          'command-line'
-        ]
-      })
-    ],
-    outExtension: ({ format }) => {
-      if (format === 'iife') {
+    esbuildOptions: options => {
+      options.treeShaking = true;
+    },
+    outExtension ({ format }) {
+
+      if (format === 'cjs') {
         return {
-          js: '.iife.js'
+          js: '.cjs'
+        };
+      } else if (format === 'esm') {
+        return {
+          js: '.mjs'
+        };
+
+      } else {
+        return {
+          js: '.js'
         };
       }
-      return {
-        js: ''
-      };
     },
-    splitting: false,
     format: [
       'cjs',
-      'iife',
-      'esm'
-    ]
+      'esm',
+      'iife'
+    ],
+    splitting: false
+
   }
-);
+]);

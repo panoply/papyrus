@@ -1,0 +1,286 @@
+/* stylelint-disable color-function-notation */
+
+
+code {
+  &.inline {
+    padding: 0.1em;
+    white-space: normal;
+    background: var(--papyrus-code-inline-bg);
+    border-radius: 0.3em;
+  }
+}
+
+
+@media print {
+  code[class*="language-"],
+  pre[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+/* -------------------------------------------- */
+/* EDITOR                                       */
+/* -------------------------------------------- */
+
+pre.papyrus {
+  position: relative !important;
+  width: var(--papyrus-width);
+  height: var(--papyrus-height);
+  font-size: var(--papyrus-font-size-root);
+  background-color: var(--papyrus-code-bg) !important;
+  border-radius: var(--papyrus-code-border-radius);
+
+  *::selection {
+    text-shadow: none;
+    background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
+  }
+
+  &.no-fence::before {
+    border: none;
+  }
+
+
+  &.error {
+    padding: calc(var(--papyrus-code-padding-x) * 3) !important;
+
+    &::before {
+      display: none !important;
+    }
+
+    textarea.editor,
+    code[class*="language-"] {
+      display: none !important;
+    }
+  }
+
+  /* ERROR MESSAGE ------------------------------ */
+
+  .error {
+
+    &-title,
+    &-message,
+    &-stack {
+      display: block;
+      color: #ffffff;
+    }
+
+    &-title {
+      font-weight: 600;
+    }
+
+    &-message {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    &-stack {
+      margin-top: 20px;
+      color: #808080;
+    }
+
+    &-heading {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      margin-bottom: 0;
+      padding: 5px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: x-small;
+      text-align: center;
+      text-transform: uppercase;
+      background-color: #f55968;
+    }
+  }
+
+  /* LINE FENCE --------------------------------- */
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--papyrus-line-number-width);
+    display: block;
+    height: 100%;
+    background-color: var(--papyrus-code-bg);
+    border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+    content: "";
+
+  }
+
+  code[class*="language-"] {
+    position: relative;
+    z-index: 100;
+    display: block;
+    width: initial;
+    height: initial;
+    margin: 0;
+    padding: var(--papyrus-code-padding-y) calc(var(--papyrus-code-padding-x));
+    overflow: auto;
+    color: var(--papyrus-code-color);
+    font-size: var(--papyrus-font-size);
+    font-family: var(--papyrus-font-family);
+    line-height: var(--papyrus-line-height);
+    white-space: pre;
+    text-align: left;
+    word-wrap: normal;
+    word-break: normal;
+    word-spacing: normal;
+    tab-size: 2;
+    hyphens: none;
+    caret-color: var(--papyrus-code-caret-color);
+
+    span {
+      caret-color: var(--papyrus-code-caret-color);
+    }
+
+
+    /* SCROLLBARS --------------------------------- */
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--papyrus-scrollbar-track);
+    }
+
+    &::-webkit-scrollbar {
+      width: var(--papyrus-scrollbar-width);
+      height: var(--papyrus-scrollbar-width);
+      background-color: var(--papyrus-scrollbar-bg);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--papyrus-scrollbar-thumb);
+    }
+
+
+    &.lines {
+      padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
+    }
+
+    > .papyrus-loc-limit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    /* -------------------------------------------- */
+    /* LINE NUMBERS                                 */
+    /* -------------------------------------------- */
+
+
+    > .line-numbers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 200;
+      display: block;
+      width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
+      height: 100%;
+      padding-top: var(--papyrus-code-padding-y);
+      padding-bottom: var(--papyrus-code-padding-y);
+      user-select: none;
+      pointer-events: none;
+
+
+      span.ln {
+        z-index: 100;
+        display: flex;
+        padding-left: calc(var(--papyrus-line-number-width) / 5);
+        line-height: var(--papyrus-line-height);
+        counter-increment: linenumber;
+
+
+        &.highlight {
+          background-color: rgba(var(--papyrus-line-highlight-bg), var(--papyrus-line-highlight-alpha));
+
+          &::before {
+            color: var(--papyrus-line-highlight-number);
+          }
+        }
+
+        &::before {
+          display: block;
+          width: calc(var(--papyrus-line-number-width) / 2);
+          color: var(--papyrus-line-number-color);
+          text-align: right;
+          content: counter(linenumber);
+        }
+      }
+    }
+
+  }
+
+}
+
+
+/* -------------------------------------------- */
+/* BLOCKS                                       */
+/* -------------------------------------------- */
+
+
+:not(pre) > code[class*="language-"] {
+  width: 100%;
+  padding: 0.1em;
+  white-space: normal;
+  background: var(--papyrus-code-bg);
+  border-radius: 0.3em;
+}
+
+/* -------------------------------------------- */
+/* LINE NUMBERS                                 */
+/* -------------------------------------------- */
+
+
+.token {
+
+  /* -------------------------------------------- */
+  /* INVISIBLES                                   */
+  /* -------------------------------------------- */
+
+
+  &.tab:not(:empty),
+  &.cr,
+  &.lf,
+  &.space {
+    position: relative;
+  }
+
+  &.tab:not(:empty)::before,
+  &.cr::before,
+  &.lf::before,
+  &.space::before {
+    position: absolute;
+    opacity: 1;
+  }
+
+
+  &.tab:not(:empty)::before {
+    color: var(--papyrus-invisible-tab-color);
+    content: "\21E5";
+  }
+
+  &.cr::before {
+    color: var(--papyrus-invisible-cr-color);
+    content: "\240D";
+  }
+
+  &.crlf::before {
+    color: var(--papyrus-invisible-crlf-color);
+    content: "\240D\240A";
+  }
+
+  &.lf::before {
+    color: var(--papyrus-invisible-lf-color);
+    content: "\240A";
+  }
+
+  &.space::before {
+    color: var(--papyrus-invisible-space-color);
+    content: "\00B7";
+  }
+
+
+}

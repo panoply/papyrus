@@ -1,0 +1,66 @@
+
+
+code.language-typescript,
+code.language-ts {
+  color: var(--papyrus-ts-fallback);
+
+
+  .token {
+    &.parameter-type,
+    &.return-type,
+    &.semi {
+      color: var(--papyrus-ts-types);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-ts-types);
+    }
+
+    &.comment {
+      color: var(--papyrus-ts-comment);
+    }
+
+    &.parameter-optional,
+    &.parameter {
+      color: var(--papyrus-ts-parameter);
+    }
+
+    &.type-object,
+    &.type-array {
+      color: #30adc3;
+    }
+
+    &.types {
+      color: var(--papyrus-ts-types);
+    }
+
+    &.method,
+    &.keyword,
+    &.browser-objects,
+    &.variable {
+      color: var(--papyrus-ts-method);
+    }
+
+    &.op,
+    &.tag,
+    &.punctuation-chars,
+    &.operator,
+    &.module {
+      color: var(--papyrus-ts-operator);
+    }
+
+    &.function {
+      color: var(--papyrus-ts-function-name);
+    }
+
+    &.number {
+      color: var(--papyrus-ts-number);
+    }
+
+    &.nil,
+    &.boolean {
+      color: var(--papyrus-ts-boolean);
+    }
+
+  }
+}

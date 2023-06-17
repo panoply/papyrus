@@ -1,0 +1,45 @@
+/* stylelint-disable color-hex-length */
+
+
+code.language-xml {
+
+  .token {
+
+    &.prolog {
+      color: var(--papyrus-xml-prolog);
+    }
+
+    &.name {
+      color: var(--papyrus-xml-prefix-name);
+    }
+
+    &.prefix {
+      color: var(--papyrus-xml-prefix);
+    }
+
+    &.comment {
+      color: var(--papyrus-xml-comment);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-xml-delimiter);
+    }
+
+    &.tag {
+      color: var(--papyrus-xml-tag-name);
+    }
+
+    &.attr-equals {
+      color: var(--papyrus-xml-equals);
+    }
+
+    &.attr-name {
+      color: var(--papyrus-xml-attr-name);
+    }
+
+    &.attr-value {
+      color: var(--papyrus-xml-attr-value);
+    }
+  }
+
+}

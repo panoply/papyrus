@@ -1,0 +1,90 @@
+
+
+code.language-javascript,
+code.language-js {
+  color: var(--papyrus-ts-fallback);
+
+  .token {
+
+    &.keyword {
+      color: var(--papyrus-js-keyword);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-js-punctuation);
+    }
+
+    &.punctuation-chars {
+      color: var(--papyrus-js-special-chars);
+    }
+
+    &.comment {
+      color: var(--papyrus-js-punctuation-comment);
+    }
+
+    &.parameter {
+      color: var(--papyrus-js-parameter);
+    }
+
+    &.variable {
+      color: var(--papyrus-js-variable);
+    }
+
+    &.operator {
+      color: var(--papyrus-js-operator);
+    }
+
+    &.operation {
+      color: var(--papyrus-js-operation);
+    }
+
+    &.module {
+      color: var(--papyrus-js-module);
+    }
+
+    &.function {
+      color: var(--papyrus-js-function);
+    }
+
+    &.class-name {
+      color: var(--papyrus-js-class-name);
+    }
+
+    &.function-name {
+      color: var(--papyrus-js-function-name);
+    }
+
+    &.number {
+      color: var(--papyrus-js-number);
+    }
+
+    &.flow {
+      color: var(--papyrus-js-flow);
+    }
+
+    &.string {
+      color: var(--papyrus-js-string);
+    }
+
+
+    &.semi {
+      color: var(--papyrus-js-semi);
+    }
+
+    &.boolean {
+      color: var(--papyrus-js-boolean);
+    }
+
+    &.regex {
+      color: var(--papyrus-js-regex);
+    }
+
+    &.regex-flags {
+      color: var(--papyrus-js-regex-flags);
+    }
+
+    &.literal-property {
+      color: var(--papyrus-js-literal-property);
+    }
+  }
+}

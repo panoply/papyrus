@@ -1,0 +1,31 @@
+
+@import "@brixtol/bootstrap";
+
+/* VARIABLES ---------------------------------- */
+
+@import "variables";
+
+
+$body-color: $black;
+$font-family-base: $font-family-code;
+$font-family-heading: $font-family-code;
+$headings-font-family: $font-family-code;
+$btn-font-family: $font-family-code;
+$btn-border-width: 0.01rem;
+$form-color-width: 7.4em;
+$form-range-track-height: .30rem;
+$form-range-thumb-border-radius: 50%;
+
+$tooltip-font-style: capitalize !important;
+
+$btn-border-radius: 3px;
+$btn-border-radius-sm: 0;
+$btn-border-radius-lg: 0;
+
+$h1-font-size: $h3-font-size;
+$paragraph-margin-bottom: 2em;
+
+/* STRAP -------------------------------------- */
+
+@import "@brixtol/bootstrap";
+@import "custom";

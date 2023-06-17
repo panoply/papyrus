@@ -1,24 +1,23 @@
 {
   "extends": "@liquify/tsconfig",
   "exclude": [
-    "node_modules/**",
-    "package",
-    "docs"
+    "**/node_modules",
+    "**/docs"
   ],
   "include": [
-    "tsup.config.ts",
-    "src/**/**.ts"
+    "src/**/*.ts",
+    "types/**/*.d.ts",
+    "index.d.ts"
   ],
   "compilerOptions": {
     "incremental": false,
-    "declaration": true,
+    "strictNullChecks": false,
     "lib": [
       "es2020",
       "dom",
-      "dom.iterable"
+      "dom.iterable",
+      "ESNext"
     ],
     "removeComments": false,
-    "emitDeclarationOnly": true,
-    "baseUrl": ".",
   }
 }
