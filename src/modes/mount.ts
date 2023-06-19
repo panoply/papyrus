@@ -2,7 +2,7 @@ import { MountOptions, CombinedOptions } from '../../types/options';
 import { Model } from '../../types/model';
 import { highlight } from './highlight';
 import { getLanguageFromClass, getLineCount, mergeOptions, trimInput } from '../utils';
-import { editor } from './editor';
+import { texteditor } from './editor';
 
 export function mount (element: HTMLElement, options: MountOptions): Model {
 
@@ -41,7 +41,7 @@ export function mount (element: HTMLElement, options: MountOptions): Model {
 
   prism.highlight(input);
 
-  const model = editor(prism, config);
+  const model = texteditor(prism, config);
   prism.model.set(prism.pre.id, model);
 
   return model;
