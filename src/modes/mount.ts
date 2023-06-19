@@ -1,7 +1,7 @@
 import { MountOptions, CombinedOptions } from '../../types/options';
 import { Model } from '../../types/model';
 import { highlight } from './highlight';
-import { getLanguageFromClass, getLineCount, mergeOptions, trimInput } from '../utils';
+import { getLineCount, mergeOptions, trimInput } from '../utils';
 import { texteditor } from './editor';
 
 export function mount (element: HTMLElement, options: MountOptions): Model {
@@ -10,12 +10,6 @@ export function mount (element: HTMLElement, options: MountOptions): Model {
   const prism = highlight(config as CombinedOptions);
 
   prism.nodes(element);
-
-  if (config.language === null || config.language === undefined) {
-    const classLanguage = getLanguageFromClass(prism.code.className);
-    config.language = classLanguage !== null ? classLanguage : 'plaintext';
-  }
-
   prism.language(config.language);
 
   let input = '';
@@ -41,7 +35,20 @@ export function mount (element: HTMLElement, options: MountOptions): Model {
 
   prism.highlight(input);
 
+  if (prism.code.style.position === 'relative') {
+    const height = prism.code.getBoundingClientRect().height + 'px';
+    prism.code.style.position = 'absolute';
+    prism.pre.style.height = height;
+  }
+
   const model = texteditor(prism, config);
+
+  if (config.editor) {
+    if (model.textarea.style.position === 'relative') {
+      model.textarea.style.position = 'absolute';
+    }
+  }
+
   prism.model.set(prism.pre.id, model);
 
   return model;

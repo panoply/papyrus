@@ -26,8 +26,9 @@ pre.papyrus {
   position: relative !important;
   width: var(--papyrus-width);
   height: var(--papyrus-height);
+  overflow: hidden;
   font-size: var(--papyrus-font-size-root);
-  background-color: var(--papyrus-code-bg) !important;
+  background-color: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
 
   *::selection {

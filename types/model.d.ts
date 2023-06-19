@@ -35,6 +35,10 @@ export interface Model {
    */
   get code(): HTMLElement;
   /**
+   * Return the HTML `<textarea>` element
+   */
+  get textarea(): HTMLTextAreaElement;
+  /**
    * The raw string of the `<code>` element, i.e: `codeElement.textContent`
    */
   get raw(): string;

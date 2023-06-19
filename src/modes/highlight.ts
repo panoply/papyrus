@@ -1,23 +1,18 @@
+
 import type { Languages, CombinedOptions } from '../../types/options';
 import Prism, { Grammar } from 'prismjs';
 import { model } from '../model';
 import { grammars } from '../prism/grammars';
 import { invisibles } from '../prism/invisibles';
-import { getLanguageName, getLineNumbers } from '../utils';
+import { getLanguageName, getLineCount, getLineNumbers } from '../utils';
 import morphdom from 'morphdom';
 
 export function highlight (config: CombinedOptions) {
 
-  if (typeof window !== 'undefined' && !('Prism' in window)) {
-    Object.assign(window, {
-      Prism: { manual: true }
-    });
-  }
-
   Prism.manual = true;
 
   let mode: 'error' | 'static' | 'editing' = 'static';
-  let languageId: Languages;
+  let languageId: Languages = config.language;
   let grammar: Grammar;
   let preEl: HTMLPreElement;
   let codeEl: HTMLElement;
@@ -32,13 +27,8 @@ export function highlight (config: CombinedOptions) {
 
   function language (languageName: Languages) {
 
-    const lang = getLanguageName(languageName);
-
-    if (lang === null) {
-      console.warn(`𓁁 Papyprus: Unsupported language ${languageId}, will fallback to "plaintext"`);
-      languageId = 'plaintext';
-    } else {
-      languageId = lang;
+    if (languageId === null || languageId !== languageName) {
+      languageId = getLanguageName(languageName);
     }
 
     if (codeEl && codeEl.hasAttribute('class')) {
@@ -107,6 +97,8 @@ export function highlight (config: CombinedOptions) {
 
   function raw (input: string) {
 
+    lineCount = getLineCount(input);
+
     const output = Prism.highlight(input, grammar, languageId);
 
     return `${output}${getLineNumbers(lineCount)}`;
@@ -137,7 +129,7 @@ export function highlight (config: CombinedOptions) {
         childrenOnly: true,
         onBeforeElUpdated: (from, to) => {
         // Skip line numbers
-          if (from.classList.contains('line-numbers')) return false;
+          if (from.classList.contains('highlight')) return false;
           if (from.isEqualNode(to)) return false;
           return true;
         }

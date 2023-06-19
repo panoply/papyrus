@@ -17,17 +17,20 @@ export function create (codeInput: string, options: CreateOptions) {
 
   const output: string[] = [];
   const preClass = config.addClass.pre.join(' ');
+  const preAttrs = config.addAttrs.pre.join(' ');
   const codeClass = config.addClass.code.join(' ');
+  const codeAttrs = config.addAttrs.code.join(' ');
+  const rel = 'style="position: relative;"';
 
   if (config.lineNumbers) {
     if (config.addAttrs.pre.length > 0) {
-      output.push(`<pre class="papyrus line-numbers ${preClass}" ${config.addAttrs.pre.join(' ')}>`);
+      output.push(`<pre class="papyrus line-numbers ${preClass}" ${preAttrs}>`);
     } else {
       output.push(`<pre class="papyrus line-numbers ${preClass}">`);
     }
   } else {
     if (config.addAttrs.pre.length > 0) {
-      output.push(`<pre class="papyrus ${preClass}" ${config.addAttrs.pre.join(' ').trim()}>`);
+      output.push(`<pre class="papyrus ${preClass}" ${preAttrs}>`);
     } else {
       output.push(`<pre class="papyrus ${preClass}">`);
     }
@@ -35,22 +38,36 @@ export function create (codeInput: string, options: CreateOptions) {
 
   if (config.lineNumbers) {
     if (config.addAttrs.code.length > 0) {
-      output.push(`<code class="language-${config.language} lines ${codeClass}" ${config.addAttrs.code.join(' ')}>`);
+      output.push(`<code ${rel} class="language-${config.language} lines ${codeClass}" ${codeAttrs}>`);
     } else {
-      output.push(`<code class="language-${config.language} lines ${codeClass}">`);
+      output.push(`<code ${rel} class="language-${config.language} lines ${codeClass}">`);
     }
   } else {
     if (config.addAttrs.code.length > 0) {
-      output.push(`<code class="language-${config.language} ${codeClass}" ${config.addAttrs.code.join(' ')}>`);
+      output.push(`<code ${rel} class="language-${config.language} ${codeClass}" ${codeAttrs}>`);
     } else {
-      output.push(`<code class="language-${config.language} ${codeClass}">`);
+      output.push(`<code ${rel} class="language-${config.language} ${codeClass}">`);
     }
   }
 
   const input = prism.raw(code);
 
-  output.push(input, '</code>', '</pre>');
+  if (config.editor) {
+    output.push(
+      input,
+      '</code>',
+      `<textarea style="position: relative;" class="editor" spellcheck="${config.spellcheck}">`,
+      '</textarea>',
+      '</pre>'
+    );
 
+  } else {
+    output.push(
+      input,
+      '</code>',
+      '</pre>'
+    );
+  }
   return output.join('');
 
 };

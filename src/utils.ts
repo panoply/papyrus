@@ -43,6 +43,8 @@ export function getLanguageFromClass (className: string) {
  */
 export function getLanguageName (language: string): Languages | null {
 
+  if (language === null) return null;
+
   const map = {
     html: 'html',
     shell: 'bash',
@@ -68,7 +70,7 @@ export function getLanguageName (language: string): Languages | null {
 
   console.error(`𓁁 Papyprus: Unsupported language "${language}" provided, will fallback to "plaintext"`);
 
-  return 'plaintext';
+  return null;
 
 }
 
@@ -139,7 +141,7 @@ export function mergePairs (config: MountOptions) {
 
 }
 
-export function mergeShared (config: any) {
+export function mergeShared <T = any> (config: T): T {
 
   const defaults = {
     id: null,
@@ -162,7 +164,7 @@ export function mergeShared (config: any) {
     showTab: false,
     trimEnd: true,
     trimStart: true
-  };
+  } as any;
 
   for (const key in config) defaults[key] = config[key];
 
@@ -177,7 +179,7 @@ export function mergeOptions (config: MountOptions): MountOptions {
 
   const combined = mergeShared(config) as MountOptions;
   const pairs = mergePairs(config) as MountOptions;
-  const defaults = Object.assign(combined, pairs);
+  const defaults = Object.assign(config, combined, pairs);
 
   for (const option in config) defaults[option] = config[option];
 
@@ -187,31 +189,31 @@ export function mergeOptions (config: MountOptions): MountOptions {
 
 export function mergeCreateOptions (config: CreateOptions) {
 
-  const combined = mergeShared(config) as any;
-  const defaults: CreateOptions = Object.assign(combined, {
-    addClass: {
-      pre: [],
-      code: []
-    },
-    addAttrs: {
-      pre: [],
-      code: []
-    }
-  });
+  const combined = mergeShared<CreateOptions>(config);
+
+  combined.addClass = {
+    pre: [],
+    code: []
+  };
+
+  combined.addAttrs = {
+    pre: [],
+    code: []
+  };
 
   for (const option in config) {
     if (option === 'addAttrs' || option === 'addClass') {
       for (const attr in config[option]) {
-        defaults[option][attr] = config[option][attr];
+        combined[option][attr] = config[option][attr];
       }
     } else {
-      defaults[option] = config[option];
+      combined[option] = config[option];
     }
   }
 
-  defaults.language = getLanguageName(config.language as Languages);
+  combined.language = getLanguageName(combined.language as Languages);
 
-  return defaults;
+  return combined;
 
 }
 

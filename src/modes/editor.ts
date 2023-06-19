@@ -10,7 +10,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
 
   let indentPairs: string[];
   let autoClosePairs: string[];
-  let textarea: HTMLTextAreaElement = null;
+  let textarea: HTMLTextAreaElement = pre.querySelector('textarea');
   let indentChar: string;
   let language: Languages;
   let lineActive: HTMLSpanElement = null;
@@ -127,6 +127,8 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
       code.scrollTop = textarea.scrollTop;
     }
 
+    if (onUpdate) onUpdate(input, language);
+
   }
 
   function onkeydown (event: KeyboardEvent) {
@@ -172,7 +174,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
       const from = input.lastIndexOf('\n', start);
       const empty = input.slice(from, start);
 
-      if (empty.trim() === '' && /\s/.test(input[start - indentChar.length])) {
+      if (empty.trim() === '' && /[ \t]/.test(input[start - indentChar.length])) {
         event.preventDefault();
         textarea.setSelectionRange(textarea.selectionStart - indentChar.length, textarea.selectionEnd, 'backward');
         document.execCommand('delete', false);
@@ -296,6 +298,9 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
     get mode () {
       return prism.mode;
     },
+    get textarea () {
+      return textarea;
+    },
     get code () {
       return code;
     },
@@ -349,21 +354,6 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
 
       if (prism.mode === 'error') hideError();
 
-      let hasUpdated: boolean = false;
-
-      if (onUpdate) {
-
-        const edits = onUpdate(newInput, newLanguage || language);
-
-        if (typeof edits === 'string') {
-          code.textContent = edits;
-          hasUpdated = true;
-        } else if (edits === false) {
-          return;
-        };
-
-      }
-
       if (newLanguage) {
         if (newLanguage !== language && newLanguage !== prism.languageId) {
           language = prism.language(newLanguage);
@@ -371,8 +361,11 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
         }
       }
 
-      if (hasUpdated === false) {
-        code.textContent = newInput;
+      input = newInput;
+
+      if (config.editor) {
+        textarea.select();
+        insert(input);
       }
 
       if (config.lineNumbers) {
@@ -380,7 +373,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
         if (!pre.classList.contains('line-numbers')) pre.classList.add('line-numbers');
         if (!code.classList.contains('lines')) code.classList.add('lines');
 
-        prism.lines = getLineCount(toString());
+        prism.lines = getLineCount(input);
 
       } else {
 
@@ -391,7 +384,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
 
       }
 
-      prism.highlight(toString());
+      prism.highlight(input);
 
     }
 

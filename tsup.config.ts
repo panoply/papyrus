@@ -16,16 +16,6 @@ export default defineConfig([
     globalName: 'papyrus',
     treeshake: 'smallest',
     platform: 'neutral',
-    minifyIdentifiers: true,
-    minifySyntax: true,
-    terserOptions: {
-      keep_classnames: false,
-      ecma: 2016,
-      compress: {
-        passes: 100
-      }
-    },
-    minify: 'terser',
     async onSuccess () {
       const time = new Date();
       await utimes('./docs/src/theme/index.ts', time, time);

@@ -4,6 +4,12 @@ import { create } from './modes/create';
 import { MountOptions, CreateOptions } from '../types/options';
 import { Model } from '../types/model';
 
+if (typeof window !== 'undefined' && !('Prism' in window)) {
+  document.onreadystatechange = () => {
+    if (document.readyState === 'loading') Object.assign(window, { Prism: { manual: true } });
+  };
+}
+
 const papyrus: {
   (options?: MountOptions): Model[];
   get(id?: string): Model | Model[];
