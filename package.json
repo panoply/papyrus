@@ -59,6 +59,7 @@
     "terser": "^5.18.0"
   },
   "dependencies": {
+    "indent-textarea": "^3.0.0",
     "morphdom": "^2.7.0",
     "prismjs": "^1.29.0",
     "type-fest": "^3.11.1"

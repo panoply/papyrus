@@ -91,7 +91,7 @@ export const Preview: m.Component<IAttrs, {
               state.editor = papyrus.mount(dom as HTMLPreElement, {
                 language: attrs.language,
                 input: attrs.state.sample,
-                showSpace: true
+                showSpace: false
               });
             }
           })
