@@ -168,9 +168,11 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
 
     } else if (key === 'Backspace') {
 
-      const line = textarea.value.slice(0, textarea.selectionStart - indentChar.length).split('\n').pop();
+      const start = textarea.selectionStart;
+      const from = input.lastIndexOf('\n', start);
+      const empty = input.slice(from, start);
 
-      if (line.trim().length === 0) {
+      if (empty.trim() === '' && /\s/.test(input[start - indentChar.length])) {
         event.preventDefault();
         textarea.setSelectionRange(textarea.selectionStart - indentChar.length, textarea.selectionEnd, 'backward');
         document.execCommand('delete', false);
@@ -436,7 +438,9 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
 
     if (initialFocus !== textarea) textarea.focus();
 
-    if (!safeTextInsert(text)) {
+    const add = safeTextInsert(text);
+
+    if (!add) {
       textarea.setRangeText(text, textarea.selectionStart || 0, textarea.selectionEnd || 0, 'end');
       textarea.dispatchEvent(new InputEvent('input', { data: text, inputType: 'insertText' }));
     }
@@ -447,7 +451,10 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
       initialFocus.focus();
     }
 
-    if (!isNaN(backward)) textarea.selectionEnd = textarea.selectionEnd - backward;
+    if (!isNaN(backward)) {
+      if (initialFocus !== textarea) textarea.focus();
+      textarea.selectionEnd = textarea.selectionEnd - backward;
+    }
 
   }
 }
