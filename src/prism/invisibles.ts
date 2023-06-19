@@ -3,9 +3,9 @@
 /* eslint-disable no-case-declarations */
 
 import Prism from 'prismjs';
-import { Languages, Options } from '../../index';
+import { Languages, MountOptions } from '../../types/options';
 
-export function invisibles (language: Languages, options: Options) {
+export function invisibles (language: Languages, options: MountOptions) {
 
   if (
     options.showLF === false &&
