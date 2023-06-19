@@ -17,32 +17,24 @@ export function trimInput (input: string, options: MountOptions | CreateOptions)
 }
 
 /**
+ * **Utility** ~ Safe text insertion
+ */
+export function safeTextInsert (text: string): boolean {
+
+  return text === ''
+    ? document.execCommand('delete')
+    : document.execCommand('insertText', false, text);
+
+}
+
+/**
  * **Utility** ~ Extract the Language ID reference from className
  */
 export function getLanguageFromClass (className: string) {
 
   const language = className.indexOf('language-');
-  const langName = {
-    html: 'html',
-    shell: 'shell',
-    css: 'css',
-    scss: 'scss',
-    liquid: 'liquid',
-    xml: 'xml',
-    json: 'json',
-    javascript: 'javascript',
-    js: 'javascript',
-    typescript: 'typescript',
-    ts: 'typescript',
-    jsx: 'jsx',
-    tsx: 'tsx',
-    yaml: 'yaml',
-    yml: 'yaml'
-  }[className.slice(language + 9).split(' ')[0].trimEnd()] as Languages;
 
-  if (langName) return langName;
-
-  return null;
+  return getLanguageName(className.slice(language + 9).split(' ')[0].trimEnd());
 
 }
 
@@ -51,10 +43,11 @@ export function getLanguageFromClass (className: string) {
  */
 export function getLanguageName (language: string): Languages | null {
 
-  const languages = {
+  const map = {
     html: 'html',
     shell: 'bash',
     bash: 'bash',
+    cli: 'bash',
     css: 'css',
     scss: 'scss',
     liquid: 'liquid',
@@ -71,9 +64,11 @@ export function getLanguageName (language: string): Languages | null {
     plaintext: 'plaintext'
   };
 
-  if (language in languages) return languages[language];
+  if (language in map) return map[language];
 
-  return null;
+  console.error(`𓁁 Papyprus: Unsupported language "${language}" provided, will fallback to "plaintext"`);
+
+  return 'plaintext';
 
 }
 
@@ -96,40 +91,91 @@ export function getLineNumbers (count: number) {
   let nl = '';
   let i = 0;
   for (; i < count; i++) nl += '<span class="ln"></span>';
-  return `<span class="line-numbers" contenteditable="false">${nl}</span>`;
+  return `<span class="line-numbers">${nl}</span>`;
+
+}
+
+export function mergePairs (config: MountOptions) {
+
+  if ('autoClosingPairs' in config) {
+    for (const [ open, close ] of config.autoClosingPairs) {
+      if (open.length !== 1) {
+        throw new Error(`𓁁 Papyprus: Invalid "autoClosePairs" character ("${open}") - Single characters only!`);
+      }
+      if (open.length !== 1) {
+        throw new Error(`𓁁 Papyprus: Invalid "autoClosePairs" character ("${close}") - Single characters only!`);
+      }
+    }
+  }
+
+  if ('newlineIndentPairs' in config) {
+    for (const [ open, close ] of config.newlineIndentPairs) {
+      if (open.length !== 1) {
+        throw new Error(`𓁁 Papyprus: Invalid "newlineIndentPairs" character ("${open}") - Single characters only!`);
+      }
+      if (open.length !== 1) {
+        throw new Error(`𓁁 Papyprus: Invalid "newlineIndentPairs" character ("${close}") - Single characters only!`);
+      }
+    }
+  }
+
+  const defaults = {
+    autoClosingPairs: [
+      [ '"', '"' ],
+      [ "'", "'" ],
+      [ '(', ')' ],
+      [ '{', '}' ],
+      [ '[', ']' ]
+    ],
+    newlineIndentPairs: [
+      [ '{', '}' ],
+      [ '[', ']' ]
+    ]
+  };
+
+  for (const key in config) defaults[key] = config[key];
+
+  return defaults;
+
+}
+
+export function mergeShared (config: any) {
+
+  const defaults = {
+    id: null,
+    autoSave: true,
+    editor: true,
+    indentChar: ' ',
+    indentSize: 2,
+    language: null,
+    lineIndent: true,
+    lineNumbers: true,
+    lineHighlight: true,
+    locLimit: 1500,
+    spellcheck: false,
+    showCRLF: false,
+    showSpace: false,
+    showCR: false,
+    showLF: false,
+    showTab: false,
+    trimEnd: true,
+    trimStart: true
+  };
+
+  for (const key in config) defaults[key] = config[key];
+
+  return defaults;
 
 }
 
 /**
  * **Utility** ~ Merge options
  */
-export function mergeOptions (config: MountOptions, defaults: MountOptions = {
-  id: '',
-  autoSave: true,
-  autoClosing: true,
-  editor: true,
-  indentChar: ' ',
-  indentSize: 2,
-  input: '',
-  language: null,
-  lineHighlight: true,
-  lineIndent: true,
-  lineNumbers: true,
-  locLimit: 1500,
-  history: true,
-  indentMultiline: true,
-  tabConvert: true,
-  newlineIndentChars: [ '(', '{', '[' ],
-  newlineInsertChars: [ ')', '}', ']' ],
-  spellcheck: false,
-  showCRLF: false,
-  showSpace: false,
-  showCR: false,
-  showLF: false,
-  showTab: false,
-  trimEnd: true,
-  trimStart: true
-}): MountOptions {
+export function mergeOptions (config: MountOptions): MountOptions {
+
+  const combined = mergeShared(config) as MountOptions;
+  const pairs = mergePairs(config) as MountOptions;
+  const defaults = Object.assign(combined, pairs);
 
   for (const option in config) defaults[option] = config[option];
 
@@ -139,31 +185,8 @@ export function mergeOptions (config: MountOptions, defaults: MountOptions = {
 
 export function mergeCreateOptions (config: CreateOptions) {
 
-  const defaults: CreateOptions = {
-    id: null,
-    indentMultiline: true,
-    tabConvert: true,
-    autoSave: true,
-    editor: true,
-    indentChar: ' ',
-    indentSize: 2,
-    language: null,
-    autoClosing: true,
-    lineHighlight: true,
-    lineIndent: true,
-    lineNumbers: true,
-    locLimit: 1500,
-    history: true,
-    newlineIndentChars: [ '(', '{', '[' ],
-    newlineInsertChars: [ ')', '}', ']' ],
-    spellcheck: false,
-    showCRLF: false,
-    showSpace: false,
-    showCR: false,
-    showLF: false,
-    showTab: false,
-    trimEnd: true,
-    trimStart: true,
+  const combined = mergeShared(config) as any;
+  const defaults: CreateOptions = Object.assign(combined, {
     addClass: {
       pre: [],
       code: []
@@ -172,8 +195,7 @@ export function mergeCreateOptions (config: CreateOptions) {
       pre: [],
       code: []
     }
-
-  };
+  });
 
   for (const option in config) {
     if (option === 'addAttrs' || option === 'addClass') {
@@ -196,101 +218,6 @@ export function mergeCreateOptions (config: CreateOptions) {
 /* -------------------------------------------- */
 
 /**
- * Get keyboard code
- */
-function getKeyCode (event: KeyboardEvent): string | undefined {
-
-  const key = event.key || event.keyCode || event.which;
-  if (!key) return undefined;
-  return (typeof key === 'string' ? key : String.fromCharCode(key)).toUpperCase();
-
-}
-
-/**
- * Is control key
- */
-function isCtrl (event: KeyboardEvent) {
-
-  return event.metaKey || event.ctrlKey;
-
-}
-
-/**
- * Visit node occurance
- */
-export function visit (editor: HTMLElement, visitor: (el: Node) => 'stop' | undefined) {
-
-  const queue: Node[] = [];
-
-  if (editor.firstChild) queue.push(editor.firstChild);
-
-  let el = queue.pop();
-
-  while (el) {
-    if (visitor(el) === 'stop') { break; };
-    if (el.nextSibling) queue.push(el.nextSibling);
-    if (el.firstChild) queue.push(el.firstChild);
-    el = queue.pop();
-  }
-}
-
-/**
- * Undo event
- */
-export function isUndo (event: KeyboardEvent) {
-
-  return isCtrl(event) && !event.shiftKey && getKeyCode(event) === 'Z';
-
-}
-
-/**
- * Redo event
- */
-export function isRedo (event: KeyboardEvent) {
-
-  return isCtrl(event) && event.shiftKey && getKeyCode(event) === 'Z';
-
-}
-
-/**
- * Copy keyboard event
- */
-export function isCopy (event: KeyboardEvent) {
-
-  return isCtrl(event) && getKeyCode(event) === 'C';
-
-}
-
-/**
- * Whether or not history should record
- */
-export function canRecord (event: KeyboardEvent): boolean {
-
-  return !isUndo(event) && !isRedo(event) &&
-      event.key !== 'Meta' &&
-      event.key !== 'Control' &&
-      event.key !== 'Alt' &&
-      !event.key.startsWith('Arrow');
-
-};
-
-/**
- * Debounce wrapper outside the event loop
- */
-export function insert (text: string) {
-
-  text = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-
-  document.execCommand('insertHTML', false, text);
-
-}
-
-/**
  * Debounce wrapper outside the event loop
  */
 export function debounce (cb: any, wait: number) {
@@ -302,20 +229,4 @@ export function debounce (cb: any, wait: number) {
     timeout = window.setTimeout(() => cb(...args), wait);
   };
 
-}
-
-/**
- * Returns the leading space padding
- */
-export function findPadding (text: string): [string, number, number] {
-
-  // Find beginning of previous line.
-  let i = text.length - 1;
-  while (i >= 0 && text[i] !== '\n') i--;
-  i++;
-
-  // Find padding of the line.
-  let j = i;
-  while (j < text.length && /[ \t]/.test(text[j])) j++;
-  return [ text.substring(i, j) || '', i, j ];
 }
