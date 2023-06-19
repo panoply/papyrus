@@ -3,7 +3,7 @@ import Prism, { Grammar } from 'prismjs';
 import { model } from '../model';
 import { grammars } from '../prism/grammars';
 import { invisibles } from '../prism/invisibles';
-import { getLanguageName, getLineCount, getLineNumbers } from '../utils';
+import { getLanguageName, getLineNumbers } from '../utils';
 import morphdom from 'morphdom';
 
 export function highlight (config: CombinedOptions) {
@@ -22,6 +22,7 @@ export function highlight (config: CombinedOptions) {
   let preEl: HTMLPreElement;
   let codeEl: HTMLElement;
   let lineCount: number = NaN;
+  let locLimit: HTMLElement = null;
 
   grammars();
 
@@ -106,8 +107,6 @@ export function highlight (config: CombinedOptions) {
 
   function raw (input: string) {
 
-    lineCount = getLineCount(input);
-
     const output = Prism.highlight(input, grammar, languageId);
 
     return `${output}${getLineNumbers(lineCount)}`;
@@ -116,18 +115,34 @@ export function highlight (config: CombinedOptions) {
 
   function highlight (input: string) {
 
-    lineCount = getLineCount(input);
+    if (lineCount > config.locLimit) {
 
-    const output = Prism.highlight(input, grammar, languageId);
-
-    morphdom(codeEl, `<code>${output}${getLineNumbers(lineCount)}</code>`, {
-      childrenOnly: true,
-      onBeforeElUpdated: (from, to) => {
-        if (from.classList.contains('highlight')) return false;
-        if (from.isEqualNode(to)) return false;
-        return true;
+      if (locLimit === null) {
+        const node = document.createElement('div');
+        node.innerHTML = `<div class="loc-limit">LOC LIMIT (${config.locLimit}) EXCEEDED</div>`;
+        preEl.insertBefore(codeEl, node.firstElementChild);
+        locLimit = preEl.firstElementChild as HTMLElement;
       }
-    });
+
+    } else {
+
+      if (locLimit !== null) {
+        locLimit.remove();
+        locLimit = null;
+      }
+
+      const output = Prism.highlight(input, grammar, languageId);
+
+      morphdom(codeEl, `<code>${output}${getLineNumbers(lineCount)}</code>`, {
+        childrenOnly: true,
+        onBeforeElUpdated: (from, to) => {
+        // Skip line numbers
+          if (from.classList.contains('line-numbers')) return false;
+          if (from.isEqualNode(to)) return false;
+          return true;
+        }
+      });
+    }
 
   }
 
@@ -149,6 +164,9 @@ export function highlight (config: CombinedOptions) {
     },
     get code () {
       return codeEl;
+    },
+    get lineNumbers () {
+      return codeEl.lastElementChild as HTMLElement;
     },
     get pre () {
       return preEl;
