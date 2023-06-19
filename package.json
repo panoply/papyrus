@@ -1,6 +1,6 @@
 {
   "name": "papyrus",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης ",
@@ -8,14 +8,12 @@
   },
   "license": "MIT",
   "types": "./index.d.ts",
-  "main": "./dist/papyrus.js",
+  "main": "./dist/papyrus.cjs",
   "module": "./dist/papyrus.mjs",
-  "type": "module",
   "exports": {
     "types": "./index.d.ts",
     "require": "./dist/papyrus.cjs",
-    "import": "./dist/papyrus.mjs",
-    "default": "./dist/papyrus.js"
+    "import": "./dist/papyrus.mjs"
   },
   "private": false,
   "repository": {

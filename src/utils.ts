@@ -145,6 +145,8 @@ export function mergeShared (config: any) {
     id: null,
     autoSave: true,
     editor: true,
+    tabConvert: true,
+    input: '',
     indentChar: ' ',
     indentSize: 2,
     language: null,

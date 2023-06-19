@@ -8,7 +8,8 @@ export default defineConfig([
     },
     noExternal: [
       'morphdom',
-      'prismjs'
+      'prismjs',
+      'indent-textarea'
     ],
     clean: false,
     name: 'papyrus',
@@ -52,8 +53,7 @@ export default defineConfig([
     },
     format: [
       'cjs',
-      'esm',
-      'iife'
+      'esm'
     ],
     splitting: false
 

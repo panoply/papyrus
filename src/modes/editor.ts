@@ -54,7 +54,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: MountOp
     }
 
     if (textarea) {
-      if (config.input.length > 0) {
+      if (config?.input && config.input !== null && config.input.length > 0) {
         if (input.trim() === '') {
           input = textarea.value = trimInput(config.input, config);
         } else {
