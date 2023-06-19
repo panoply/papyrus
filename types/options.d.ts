@@ -23,29 +23,22 @@ export interface EditorOptions {
    *
    * @default
    * [
-   *  '(',
-   *  '{',
-   *  '[',
+   *  ['(', ')'],
+   *  ['{', '}']
+   *  ['[', ']']
    * ]
    */
-  newlineIndentChars: string[];
+  autoClosingPairs: [ open: string, close: string ][];
   /**
    * A list of characters which insert an extra newline
    *
    * @default
    * [
-   *  ')',
-   *  '}',
-   *  ']',
+   *  ['{', '}']
+   *  ['[', ']']
    * ]
    */
-  newlineInsertChars: string[]
-  /**
-   * Record history
-   *
-   * @default true
-   */
-  history: boolean;
+  newlineIndentPairs: [ open: string, close: string ][];
   /**
    * Whether or not autoSave is enabled.
    *
@@ -54,12 +47,6 @@ export interface EditorOptions {
    * @default true
    */
   autoSave: boolean;
-  /**
-   * Auto closing pairs
-   *
-   * @default true
-   */
-  autoClosing: boolean;
   /**
    * The number of allowed lines
    *
@@ -81,7 +68,7 @@ export interface EditorOptions {
    */
   lineNumbers: boolean;
   /**
-   * Autoclosing pairs
+   * Whether or not to enable spell checking, best to keep this disabled.
    *
    * @default false
    */
@@ -99,13 +86,28 @@ export interface EditorOptions {
    */
   indentChar: string;
   /**
-   * The indentation size
+   * The indentation size. This will determine how many
+   * time the `indentChar` should repeat, for example:
+   *
+   * ```js
+   * // The default indent character is a single space, eg:
+   * ' '
+   * // The default indent size is set to 2 which will result in:
+   * '  '
+   *
+   * // If you were to set the indent character to tab, eg:
+   * '\t'
+   * // If you were to set the indent size to 2 it will result in:
+   * '\t\t'
+   * ```
    *
    * @default 2
    */
   indentSize: 2;
   /**
-   * Whether or not `\t` tabs should convert.
+   * Whether or not `\t` tabs should convert. If you are using tab
+   * indentation (i.e: the `indentChar` is set to `\t`) then this will
+   * be ignored.
    *
    * @default true
    */
@@ -119,11 +121,24 @@ export interface EditorOptions {
   /**
    * Show Invisible whitespace characters, eg: ` `
    *
+   * > **IMPORTANT**
+   * >
+   * > Avoid space character insertion when leveraging Papyrus
+   * for large edits. Only show spaces when working with 200 lines
+   * or less. Space characters can be serious performance hit in Prism.
+   *
    * @default false
    */
   showSpace: boolean;
   /**
    * Show Invisible tab characters, eg: `\t`
+   *
+   * > **IMPORTANT**
+   * >
+   * > Avoid space character insertion when leveraging Papyrus
+   * for large edits. Only show spaces when working with 200 lines
+   * or less. Space characters can be serious performance hit in Prism.
+   *
    *
    * @default false
    */
@@ -224,7 +239,14 @@ export interface MountOptions extends EditorOptions {
   trimEnd: boolean;
 }
 
-export interface CreateOptions extends Omit<MountOptions, 'input'> {
+export interface CreateOptions extends Omit<MountOptions,
+| 'input'
+| 'autoClosingPairs'
+| 'newlineIndentPairs'
+| 'indentMultiline'
+| 'tabConvert'
+| 'lineHighlight'> {
+
   /**
    * The language name
    *
