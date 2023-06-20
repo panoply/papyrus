@@ -14,12 +14,12 @@ export function grammars () {
   JavaScript();
   TypeScript();
   XML();
-  Liquid();
   CSS();
   SCSS();
   Yaml();
   Json();
   Bash();
+  Liquid();
 
   return Prism;
 

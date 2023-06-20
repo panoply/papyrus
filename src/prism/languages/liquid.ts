@@ -2,25 +2,16 @@ import Prism from 'prismjs';
 
 export default function () {
 
-  const Liquid = <Prism.Grammar>{
-    comment: {
-      global: true,
-      pattern: /(\{%-?\s*comment\s*-?%\}[\s\S]+\{%-?\s*endcomment\s*-?%\}|\{%-?\s*#[\s\S]+?-?%\})/
-    },
-    'comment-html': {
-      pattern: /<!--(?:(?!<!--)[\s\S])*?-->/,
-      greedy: true
-    },
-    tag: {
+  const Inside = <Prism.Grammar>{
+    'tag-name': {
       lookbehind: true,
-      pattern: /({%-?\s*)([a-z_$][\w$]+)(?=\s)/
+      pattern: /({%-?\s*)([a-z_$][\w$]+)/
     },
     output: {
       lookbehind: true,
-      pattern: /({{-?\s*)([a-z_$][\w$]+)(?=\s)/
+      pattern: /({{-?\s*)([a-z_$][\w$]+)/
     },
     delimiters: {
-      global: true,
       pattern: /{%|{{|}}|%}/
     },
     object: {
@@ -65,91 +56,59 @@ export default function () {
     }
   };
 
-  /**
-   * Extended Liquid Language Support
-   */
-  const Markup = <Prism.Grammar> {
-    markup: {
-      pattern: /<\/?(?!(?:\d|!--))[^\s>/=$<%]+(?:\s(?:\s*[^\s>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/,
-      greedy: true,
-      inside: {
-        tag: {
-          pattern: /^<\/?[^\s>/]+/,
-          inside: {
-            punctuation: /^<\/?/,
-            namespace: /^[^\s>/:]+:/
-          }
-        },
-        'attr-value': {
-          pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-          inside: {
-            liquid: {
-              alias: 'liquid-string',
-              pattern: /{[{%]-?[\s\S]+-?[%}]}/,
-              inside: Liquid
-            },
-            punctuation: [
-              {
-                pattern: /^=/,
-                alias: 'attr-equals'
-              },
-              {
-                pattern: /^(\s*)["']|["']$/,
-                lookbehind: true,
-                alias: 'attr-value'
-              }
-            ]
-          }
-        },
-        liquid: {
-          pattern: /{[{%]-?[\s\S]+-?[%}]}/,
-          inside: Liquid
-        },
-        punctuation: /\/?>/,
-        'attr-name': {
-          pattern: /[^\s>/]+/,
-          inside: {
-            namespace: /^[^\s>/:]+:/,
-            punctuation: /{[{%]-?|-?[%}]}/,
-            'attr-object': {
-              lookbehind: true,
-              pattern: /([a-z]*?)\s*[[\]0-9_\w$]+(?=\.)/i
-            },
-            'attr-property': {
-              lookbehind: true,
-              pattern: /(\.)\s*?[[\]\w0-9_$]+(?=[.\s?])/i
-            },
-            'punctuation-chars': {
-              global: true,
-              pattern: /[.,|:?]/
-            },
-            'attr-eq': /=/
-          }
-        }
-      }
+  const Liquid = <Prism.Grammar>{
+    comment: {
+      global: true,
+      pattern: /(\{%-?\s*comment\s*-?%\}[\s\S]+\{%-?\s*endcomment\s*-?%\}|\{%-?\s*#[\s\S]+?-?%\})/
     },
-    ...Liquid
+    liquid: {
+      pattern: /{[{%]-?[\s\S]+-?[%}]}/,
+      inside: Inside
+    }
   };
 
-  Markup['liquid-style'] = {
+  Prism.languages.insertBefore('css', 'property', {
+    liquid: {
+      pattern: /{[{%]-?[\s\S]+-?[%}]}/,
+      inside: Inside
+    }
+  });
+
+  Prism.languages.liquid = Prism.languages.extend('markup', Liquid);
+
+  // @ts-ignore
+  Prism.languages.liquid.tag.alias = 'markup';
+
+  // @ts-ignore
+  Prism.languages.liquid.tag.inside['attr-value'].inside.liquid = {
+    alias: 'liquid-string',
+    pattern: /{[{%]-?[\s\S]+-?[%}]}/,
+    inside: Liquid
+  };
+
+  // @ts-ignore
+  Prism.languages.liquid.tag.inside['special-attr'].push({
+    pattern: /{%(?!\d)[^\s]*(?:(?:"[^"]*"|'[^']*'|[^\s'"])|(?!{%)|[^%]*}|[^}])*?%}/,
+    inside: Inside
+  });
+
+  Prism.languages.liquid['language-css'] = {
     inside: Prism.languages.css,
     lookbehind: true,
     pattern: /(\{%-?\s*style(?:sheet)?\s*-?%\})([\s\S]+?)(?=\{%-?\s*endstyle(?:sheet)?\s*-?%\})/
   };
 
-  Markup['liquid-javascript'] = {
+  Prism.languages.liquid['language-javascript'] = {
     inside: Prism.languages.javascript,
     lookbehind: true,
     pattern: /(\{%-?\s*javascript\s*-?%\})([\s\S]*?)(?=\{%-?\s*endjavascript\s*-?%\})/
   };
 
-  Markup['liquid-schema'] = {
+  Prism.languages.liquid['language-json'] = {
     inside: Prism.languages.json,
     lookbehind: true,
     pattern: /(\{%-?\s*schema\s*-?%\})([\s\S]+?)(?=\{%-?\s*endschema\s*-?%\})/
   };
-
-  Prism.languages.liquid = Markup;
 
   return Prism.languages.liquid;
 
