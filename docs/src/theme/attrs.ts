@@ -1,4 +1,4 @@
-import { MountOptions, Languages } from 'papyrus';
+import { Options, Languages } from 'papyrus';
 
 export interface IRange {
   /**
@@ -140,7 +140,7 @@ export interface IModel {
   /**
    * Shell
    */
-  shell: IState;
+  bash: IState;
   /**
    * CSS
    */
@@ -177,6 +177,10 @@ export interface IModel {
    * Yaml
    */
   yaml: IState;
+  /**
+   * Treeview
+   */
+  treeview: IState;
 }
 
 export interface IPreview {
@@ -225,7 +229,7 @@ export interface IAttrs {
   /**
    * Editor Options
    */
-  papyrus?: MountOptions;
+  papyrus?: Options;
   /**
    * The current state model
    */

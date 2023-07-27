@@ -1,29 +1,16 @@
 import { json } from 'language-literals';
 
 export default json`
-
-  {
-    "object": {
-      "string": "xxxx",
-      "boolean": false,
-      "number": 1000,
-      "array": [
-        {
-          "string": "xxxx",
-          "boolean": false,
-          "number": 1000,
-        },
-        {
-          "numbers": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      ]
-    }
+{
+  "boolean": true,
+  "string": "string" /* block comment */,
+  "number": 100,
+  "object": {
+    "array": [
+      {
+        "null": null // line comment
+      }
+    ]
   }
-
+}
 `;

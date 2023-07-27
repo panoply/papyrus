@@ -16,6 +16,10 @@ export default function () {
     operation: {
       pattern: /\b(?:typeof|new|of|delete|void|readonly)\b/
     },
+    object: {
+      lookbehind: true,
+      pattern: /(\s+)\b([a-z_$][\w$]*)(?=[.])/
+    },
     'punctuation-chars': {
       pattern: /[.,]/,
       global: true
@@ -32,10 +36,6 @@ export default function () {
     },
     flow: {
       pattern: /\b(?:return|await|new)\b/
-    },
-    object: {
-      lookbehind: true,
-      pattern: /(\s*)\b([a-z_$][\w$]*)(?=[.])/
     }
   });
 

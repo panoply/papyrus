@@ -11,7 +11,7 @@ $papyrus-font-size:                     1em !default;
 $papyrus-line-height:                   1.7 !default;
 
 // EDITOR SIZING
-$papyrus-height:                        100% !default;
+$papyrus-height:                        auto !default;
 $papyrus-width:                         100% !default;
 
 // SELECTION
@@ -19,7 +19,7 @@ $papyrus-selection-bg:                   255, 255, 255 !default;
 $papyrus-selection-alpha:                0.3 !default;
 
 // CODE REGION
-$papyrus-code-padding-y:                 0.3em !default;
+$papyrus-code-padding-y:                 0.5em !default;
 $papyrus-code-padding-x:                 0.5em !default;
 $papyrus-code-border-radius:             0.5em !default;
 
@@ -27,6 +27,18 @@ $papyrus-code-color:                    #fafafa !default;
 $papyrus-code-bg:                       #181b20 !default;
 $papyrus-code-inline-bg:                #eeebeb !default;
 $papyrus-code-caret-color:              #ffffff !default;
+
+// COMPLETIONS
+$papyrus-complete-color:                 #ffffff !default;
+$papyrus-complete-highlight-color:       #ffffff !default;
+$papyrus-complete-highlight-bg:          #074472 !default;
+$papyrus-complete-border-color:          #363d49 !default;
+$papyrus-complete-icon-color:            #808080 !default;
+$papyrus-complete-icon-active-color:     #ffffff !default;
+$papyrus-complete-border-radius:             0.2em !default;
+$papyrus-complete-border-width:             0.01em !default;
+$papyrus-complete-font-size:                  .7em !default;
+$papyrus-complete-dropdown-width:            250px !default;
 
 // SCROLLBAR
 $papyrus-scrollbar-width:                    2px !default;
@@ -153,6 +165,17 @@ $papyrus-liquid-string-delimiters:        #888888 !default;
 $papyrus-liquid-string-object-name:       #81d4fa !default;
 
 /* -------------------------------------------- */
+/* YAML LANGUAGE                                */
+/* -------------------------------------------- */
+
+$papyrus-yaml-punctuation:                #E91E63 !default;
+$papyrus-yaml-key:                        #FF93BC !default;
+$papyrus-yaml-string:                     #FFF9A6 !default;
+$papyrus-yaml-boolean:                    #FF80F4 !default;
+$papyrus-yaml-number:                     #9753fd !default;
+$papyrus-yaml-comment:                    #888888 !default;
+
+/* -------------------------------------------- */
 /* JSON LANGUAGE                                */
 /* -------------------------------------------- */
 
@@ -162,6 +185,7 @@ $papyrus-json-string:                     #FFF9A6 !default;
 $papyrus-json-boolean:                    #FF80F4 !default;
 $papyrus-json-number:                     #9753fd !default;
 $papyrus-json-operator:                   #E91E63 !default;
+$papyrus-json-comment:                    #888888 !default;
 
 /* -------------------------------------------- */
 /* JAVASCRIPT LANGUAGE                          */
@@ -176,6 +200,7 @@ $papyrus-js-punctuation:                  #FAFAFA !default;
 $papyrus-js-special-chars:                #E91E63 !default;
 $papyrus-js-parameter:                    #FFAB40 !default;
 $papyrus-js-variable:                     #81D4FA !default;
+$papyrus-js-object:                       #8BD3FD !default;
 $papyrus-js-operator:                     #E91E63 !default;
 $papyrus-js-operation:                    #E91E63 !default;
 $papyrus-js-module:                       #E91E63 !default;
@@ -183,8 +208,8 @@ $papyrus-js-semi:                         #fafafa !default;
 $papyrus-js-flow:                         #E91E63 !default;
 $papyrus-js-number:                       #F48FB1 !default;
 $papyrus-js-boolean:                      #F48FB1 !default;
-$papyrus-js-string:                       #F5EC70 !default;
-$papyrus-js-regex:                        #F5EC70 !default;
+$papyrus-js-string:                       #FFF9A6 !default;
+$papyrus-js-regex:                        #FFF9A6 !default;
 $papyrus-js-regex-flags:                  #E91E63 !default;
 $papyrus-js-literal-property:             #22c0cb !default;
 $papyrus-js-comment:                      #888888 !default;
@@ -206,3 +231,17 @@ $papyrus-ts-filter-name:                  #3defb9 !default;
 $papyrus-ts-string:                       #FFF9A6 !default;
 $papyrus-ts-comment:                      #888888 !default;
 
+/* -------------------------------------------- */
+/* BASH                                         */
+/* -------------------------------------------- */
+
+$papyrus-bash-punctuation:                #888888 !default;
+$papyrus-bash-comment:                    #888888 !default;
+$papyrus-bash-argument:                   #F48FB1 !default;
+
+/* -------------------------------------------- */
+/* TREEVIEW                                     */
+/* -------------------------------------------- */
+
+$papyrus-treeview-line-width:                 0.05em !default;
+$papyrus-treeview-line-color:                 #8a8a8a !default;

@@ -99,3 +99,24 @@ code.inline {
   background-color: #eeeeee;
   border: 1px solid #e7e7e7;
 }
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  height: 100%;
+  padding-top: 50px;
+
+  + .content {
+    margin-left: 300px;
+  }
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: $spacer-5;
+}

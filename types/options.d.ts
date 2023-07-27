@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import type { StrategyProps } from '@textcomplete/core';
+
 /**
  * List of supported options
  */
@@ -15,6 +18,7 @@ export type Languages = (
   | 'tsx'
   | 'yaml'
   | 'plaintext'
+  | 'treeview'
 )
 
 export interface EditorOptions {
@@ -38,17 +42,10 @@ export interface EditorOptions {
    *  ['[', ']']
    * ]
    */
-  newlineIndentPairs: [ open: string, close: string ][];
+  autoIndentPairs: [ open: string, close: string ][];
   /**
-   * Whether or not autoSave is enabled.
-   *
-   * **NOT YET AVAILABLE**
-   *
-   * @default true
-   */
-  autoSave: boolean;
-  /**
-   * The number of allowed lines
+   * The number of allowed lines, when this limit is exceeded
+   * then a message will render on the editor.
    *
    * **Maximum of 5000**
    *
@@ -56,23 +53,17 @@ export interface EditorOptions {
    */
   locLimit: number;
   /**
+   * The line number to highlight upon initialisation.
+   *
+   * @default 1
+   */
+  lineNumber: number;
+  /**
    * Whether or not to highlight the active line
    *
    * @default true
    */
   lineHighlight: boolean;
-  /**
-   * Whether or not line numbers show
-   *
-   * @default true
-   */
-  lineNumbers: boolean;
-  /**
-   * Whether or not to enable spell checking, best to keep this disabled.
-   *
-   * @default false
-   */
-  spellcheck: boolean;
   /**
    * Preserve newline indentation
    *
@@ -105,6 +96,12 @@ export interface EditorOptions {
    */
   indentSize: 2;
   /**
+   * Whether or not to enable spell checking, best to keep this disabled.
+   *
+   * @default false
+   */
+  spellcheck: boolean;
+  /**
    * Whether or not `\t` tabs should convert. If you are using tab
    * indentation (i.e: the `indentChar` is set to `\t`) then this will
    * be ignored.
@@ -117,74 +114,49 @@ export interface EditorOptions {
    *
    * @default true
    */
-  indentMultiline: boolean;
+  tabIndent: boolean;
   /**
    * Show Invisible whitespace characters, eg: ` `
    *
-   * > **IMPORTANT**
-   * >
-   * > Avoid space character insertion when leveraging Papyrus
+   * **IMPORTANT**
+   *
+   * Avoid space character insertion when leveraging Papyrus
    * for large edits. Only show spaces when working with 200 lines
    * or less. Space characters can be serious performance hit in Prism.
    *
+   * This will default to using the `showSpace` value.
+   *
    * @default false
    */
-  showSpace: boolean;
+  renderSpace: boolean;
   /**
    * Show Invisible tab characters, eg: `\t`
    *
-   * > **IMPORTANT**
-   * >
-   * > Avoid space character insertion when leveraging Papyrus
+   * **IMPORTANT**
+   *
+   * Avoid space character insertion when leveraging Papyrus
    * for large edits. Only show spaces when working with 200 lines
    * or less. Space characters can be serious performance hit in Prism.
    *
+   * This will default to using the `showTab` value.
    *
    * @default false
    */
-  showTab: boolean;
+  renderTab: boolean;
   /**
-   * Show CRLF characters
-   *
-   * @default false
+   * Completions are made possible using [TextComplete](https://yuku.takahashi.coffee/textcomplete)
+   * by [Yuku Takahashi](https://github.com/yuku). Papyrus will pass `strategies` to the editor
+   * runtime. Provide completions a per language id basis.
    */
-  showCRLF: boolean;
-  /**
-   * Show LF characters
-   *
-   * @default false
-   */
-  showLF: boolean;
-  /**
-   * Show LF characters
-   *
-   * @default false
-   */
-  showCR: boolean;
+  completions: {
+    /**
+     * Strategies are provided here, see [Stategy](https://yuku.takahashi.coffee/textcomplete/#strategy)
+     */
+    [language in Languages]?: StrategyProps[]
+  }
 }
 
-export interface DOMOptions extends EditorOptions {
-  /**
-   * Whether or not to enable the the editor upon rendering
-   *
-   * @default false
-   */
-  editor: boolean;
-  /**
-   * Whether or not leading whitespace/newlines should be trimmed (stripped)
-   *
-   * @default true
-   */
-  trimStart: boolean;
-  /**
-   * Whether or not ending whitespace/newlines should be trimmed (stripped)
-   *
-   * @default true
-   */
-  trimEnd: boolean;
-}
-
-export interface MountOptions extends EditorOptions {
+export interface Options {
   /**
    * The language name.
    *
@@ -220,12 +192,6 @@ export interface MountOptions extends EditorOptions {
    */
   input: string;
   /**
-   * Whether or not to enable the the editor upon mounting.
-   *
-   * @default false
-   */
-  editor: boolean;
-  /**
    * Whether or not leading whitespace/newlines should be trimmed (stripped)
    *
    * @default true
@@ -237,22 +203,58 @@ export interface MountOptions extends EditorOptions {
    * @default true
    */
   trimEnd: boolean;
-}
-
-export interface CreateOptions extends Omit<MountOptions,
-| 'input'
-| 'autoClosingPairs'
-| 'newlineIndentPairs'
-| 'indentMultiline'
-| 'tabConvert'
-| 'lineHighlight'> {
-
   /**
-   * The language name
+   * Whether or not to render a line fence (i.e: right border on the line count)
    *
-   * This is **required** when leveraging the render method.
+   * @default true
    */
-  language: Languages;
+  lineFence: boolean;
+  /**
+   * Whether or not line numbers show
+   *
+   * @default true
+   */
+  lineNumbers: boolean;
+  /**
+   * Papyrus Editor
+   *
+   * Whether or not to enable the the editor upon mounting. Accepts a boolean
+   * of `false` to not render the editor or `true` to render the editor with
+   * default settings. Optionally, pass editor options.
+   *
+   * @default false
+   */
+  editor: boolean | EditorOptions;
+  /**
+   * Show Invisible whitespace characters, eg: ` `
+   *
+   * @default false
+   */
+  showSpace: boolean;
+  /**
+   * Show Invisible tab characters, eg: `\t`
+   *
+   * @default false
+   */
+  showTab: boolean;
+  /**
+   * Show CRLF characters ~ Overrides options defined on `highlight` option
+   *
+   * @default false
+   */
+  showCRLF: boolean;
+  /**
+   * Show LF characters ~ Overrides options defined on `highlight` option
+   *
+   * @default false
+   */
+  showLF: boolean;
+  /**
+   * Show LF characters ~ Overrides options defined on `highlight` option
+   *
+   * @default false
+   */
+  showCR: boolean;
   /**
    * Apply additional classes to the `<pre>` and/or `<code>` elements when
    * generating the string output.
@@ -351,5 +353,3 @@ export interface CreateOptions extends Omit<MountOptions,
     code: string[]
   };
 }
-
-export interface CombinedOptions extends DOMOptions, MountOptions, CreateOptions {}

@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { IAttrs } from '../attrs';
+import JsonCompletions from '../states/completions/json';
 import papyrus, { Model, Languages } from 'papyrus';
 
 // comment
@@ -91,7 +92,14 @@ export const Preview: m.Component<IAttrs, {
               state.editor = papyrus.mount(dom as HTMLPreElement, {
                 language: attrs.language,
                 input: attrs.state.sample,
-                showSpace: false
+                editor: {
+                  tabConvert: true,
+                  completions: {
+                    json: JsonCompletions
+                  }
+                },
+                showSpace: true,
+                showTab: true
               });
             }
           })

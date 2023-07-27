@@ -1,20 +1,800 @@
+/* -------------------------------------------- */
+/* VARIABLE PREFIX                              */
+/* -------------------------------------------- */
+
+$prefix: null;
+
+/* -------------------------------------------- */
+/* OPTIONS                                      */
+/* -------------------------------------------- */
+
+$enable-rfs: true;
+$enable-font-smoothing: true;
+$enable-font-smoothing-heading: true;
+$enable-transitions: true;
+$enable-reduced-motion: true;
+$enable-grid-classes: true;
+$enable-validation-icons: true;
+$enable-rounded: true;
+$enable-button-pointers: true;
+$enable-deprecation-messages: true;
+$enable-caret: false;
+$enable-shadows: false;
+$enable-gradients: false;
+$enable-smooth-scroll: false;
+$enable-cssgrid: false;
+$enable-negative-margins: false;
+$enable-important-utilities: false;
+
+/* -------------------------------------------- */
+/* TRANSPARENT                                  */
+/* -------------------------------------------- */
+
+$transparent: transparent;
+
+/* -------------------------------------------- */
+/* PALETTE                                      */
+/* -------------------------------------------- */
+
+$white: #ffffff;
+$black: #000000;
+$blue: #0d6efd;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #d63384;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #198754;
+$teal: #20c997;
+$cyan: #0dcaf0;
+
+/* -------------------------------------------- */
+/* GRAYS                                        */
+/* -------------------------------------------- */
+
+$gray-100: #f8f8f8;
+$gray-200: #e0e4e7;
+$gray-300: #ccd3da;
+$gray-400: #b6c2ce;
+$gray-500: #98a5b3;
+$gray-600: #747d85;
+$gray-700: #575f68;
+$gray-800: #373d42;
+$gray-900: #202427;
+
+/* -------------------------------------------- */
+/* BACKGROUND COLORS                            */
+/* -------------------------------------------- */
+
+$background-colors: (
+  transparent: $transparent,
+  white: $white,
+  black: $black,
+  ivory: $gray-100,
+  gray: $gray-400,
+);
+
+/* -------------------------------------------- */
+/* BORDER COLORS                                */
+/* -------------------------------------------- */
+
+$border-color: $gray-300;
+$border-colors: (
+  "black": $black,
+  "white": $white,
+  "red": $red,
+  "gray": $gray-400,
+  "green": $green
+);
 
 
-$body-color: $black;
-$font-family-base: $font-family-code;
-$font-family-heading: $font-family-code;
-$headings-font-family: $font-family-code;
-$btn-font-family: $font-family-code;
-$btn-border-width: 0.01rem;
-$form-color-width: 7.4em;
-$form-range-track-height: .30rem;
-$form-range-thumb-border-radius: 50%;
+/* -------------------------------------------- */
+/* FONT COLORS                                  */
+/* -------------------------------------------- */
 
-$tooltip-font-style: capitalize !important;
+$font-colors: (
+  "black": $black,
+  "white": $white,
+  "green": $green,
+  "gray": $gray-500,
+  "dark-gray": $gray-800,
+  "red": $red,
+  "orange": $orange,
+  "pink": $pink
+);
 
-$btn-border-radius: 3px;
+
+/* -------------------------------------------- */
+/* BUTTON COLORS                                */
+/* -------------------------------------------- */
+
+$button-colors: (
+  "black": $black,
+  "white": $white,
+  "gray": $gray-500,
+  "red": $red,
+  "green": $green
+);
+
+/* -------------------------------------------- */
+/* SPACING                                      */
+/* -------------------------------------------- */
+
+/// Base Spacing
+///
+$spacer: 1rem;
+
+$spacer-1: .25rem;
+$spacer-2: .5rem;
+$spacer-3: 1rem;
+$spacer-4: 1.5rem;
+$spacer-5: 3rem;
+
+/* -------------------------------------------- */
+/* GRID                                         */
+/* -------------------------------------------- */
+
+$grid-columns: 12;
+$grid-gutter-width: 1.5rem;
+$grid-row-columns: 6;
+
+/* -------------------------------------------- */
+/* CONTAINER PADDING                            */
+/* -------------------------------------------- */
+
+$container-padding-x: $grid-gutter-width;
+
+/* -------------------------------------------- */
+/* GRID > BREAKPOINTS                           */
+/* -------------------------------------------- */
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+/* -------------------------------------------- */
+/* GRID > MAX-WIDTHS                            */
+/* -------------------------------------------- */
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1340px
+);
+
+/* -------------------------------------------- */
+/* FLEX CONTROL                                 */
+/* -------------------------------------------- */
+
+/// Passed to the Bootstrap flex directions utility.
+$flex-direction: (
+  row: row,
+  col: column,
+  /* row-rev: row-reverse,*/
+  /* col-rev: column-reverse*/
+);
+
+
+/// Passed to the Bootstrap flex justify content utility.
+$justify-content: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+  /* even: space-evenly,*/
+);
+
+/// Passed to the Bootstrap flex align content utility.
+$align-content: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+  /* stretch: stretch*/
+);
+
+
+/// Passed to the Bootstrap flex align self utility.
+$align-self: (
+  auto: auto,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  base: baseline,
+  /* stretch: stretch*/
+);
+
+/// Passed to the Bootstrap flex align items utility.
+$align-items: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  base: baseline,
+  /* stretch: stretch,*/
+);
+
+/// Passed to the Bootstrap flex justify content utility.
+$display-utils: (
+  unset: unset,
+  inline: inline,
+  block: block,
+  grid: grid,
+  flex: flex,
+  none: none,
+  /* flex-inline: inline-flex,*/
+  /* inline-block: inline-block,*/
+  /* table: table,*/
+  /* table-row: table-row,*/
+  /* table-cell: table-cell,*/
+);
+
+/* -------------------------------------------- */
+/* Z-INDEXES                                    */
+/* -------------------------------------------- */
+
+$zindex-tooltip: 99999;
+
+/* -------------------------------------------- */
+/* FONT FAMILY                                  */
+/* -------------------------------------------- */
+
+/// Base font family
+///
+$font-family-base: system-ui, -apple-system, blinkmacsystemfont, "Open Sans", "Helvetica Neue", sans-serif;
+$font-family-base-var: var(--#{$prefix}font-base);
+
+$font-family-heading: $font-family-base;
+$font-family-heading-var: var(--#{$prefix}font-heading);
+
+$font-family-code: sfmono-regular, menlo, monaco, "Courier New", courier, monospace;
+$font-family-code-var: var(--#{$prefix}font-code);
+
+/// Fallback sans font family for situations when we
+/// are using identical base and heading font families.
+///
+$font-family-sans: system-ui, -apple-system, blinkmacsystemfont, "Open Sans", "Helvetica Neue", sans-serif;
+$font-family-sans-var: var(--#{$prefix}font-sans);
+
+/* -------------------------------------------- */
+/* BODY                                         */
+/* -------------------------------------------- */
+
+$body-bg: $white;
+$body-color: $gray-900;
+$body-letter-spacing: inherit;
+
+
+/* -------------------------------------------- */
+/* FONT SIZES                                   */
+/* -------------------------------------------- */
+
+/// Base font size uses `.fs` class name.
+///
+$font-size-base: 1.05rem;
+
+$font-size-xs: $font-size-base * .595;
+$font-size-sm: $font-size-base * .725;
+$font-size-md: $font-size-base * 1;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-xl: $font-size-base * 1.75;
+
+/* -------------------------------------------- */
+/* FONT HEADINGS                                */
+/* -------------------------------------------- */
+
+$headings-letter-spacing: inherit;
+$headings-font-style: null;
+$headings-font-weight: 500;
+$headings-line-height: 1.4;
+$headings-uppercase: false;
+$headings-margin-bottom: 15px;    // We use spacing utilities for heading margins
+
+$h1-font-size: $font-size-base * 2;
+$h2-font-size: $font-size-base * 1.75;
+$h3-font-size: $font-size-base * 1.5;
+$h4-font-size: $font-size-base * 1.3;
+$h5-font-size: $font-size-base * 1.2;
+$h6-font-size: $font-size-base * 1;
+
+/* -------------------------------------------- */
+/* FONT WEIGHT                                  */
+/* -------------------------------------------- */
+
+$font-weight-lighter: 100;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-bolder: bolder;
+
+/* -------------------------------------------- */
+/* LINE HEIGHT                                  */
+/* -------------------------------------------- */
+
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 2;
+$line-height-xl: 2.4;
+
+/* -------------------------------------------- */
+/* LINKS                                        */
+/* -------------------------------------------- */
+
+$link-color: $black;
+$link-shade-percentage: 40%;
+$link-hover-color: tint-color($link-color, $link-shade-percentage);
+$link-decoration: none;
+$link-hover-decoration: none;
+$link-cover: after;
+$link-z-index: 1;
+
+/* -------------------------------------------- */
+/* PARAGRAPH                                    */
+/* -------------------------------------------- */
+
+$paragraph-margin-bottom: 1.5rem;
+
+/* -------------------------------------------- */
+/* BORDERS                                      */
+/* -------------------------------------------- */
+
+$border-width: .07rem;
+$border-style: solid;
+$border-color-translucent: rgba($black, .175);
+$border-widths: (
+  1: .1rem,
+  2: .2rem
+);
+
+/* -------------------------------------------- */
+/* RADIUS                                       */
+/* -------------------------------------------- */
+
+$border-radius: .375rem;
+$border-radius-sm: .25rem;
+$border-radius-lg: .5rem;
+$border-radius-xl: 1rem;
+$border-radius-pill: 5rem;
+
+/* -------------------------------------------- */
+/* SHADOWS                                      */
+/* -------------------------------------------- */
+
+$box-shadow: 0 .5rem 1rem rgba($black, .15);
+$box-shadow-sm: 0 .125rem .25rem rgba($black, .075);
+$box-shadow-lg: 0 1rem 3rem rgba($black, .175);
+$box-shadow-inset: inset 0 1px 2px rgba($black, .075);
+
+/* -------------------------------------------- */
+/* HR LINE                                      */
+/* -------------------------------------------- */
+
+$hr-color: inherit;
+$hr-margin-y: $spacer;
+$hr-border-width: $border-width;
+$hr-border-color: null; // Allows for inherited colors
+$hr-opacity: .25;
+
+
+/* -------------------------------------------- */
+/* CODE                                         */
+/* -------------------------------------------- */
+
+// Code
+
+$pre-color: null;
+$pre-radius: .25rem;
+$pre-bg-color: inherit;
+
+$code-font-size: $font-size-md;
+$code-color: $pink;
+$code-bg-color: inherit;
+$code-radius: inherit;
+
+$kbd-padding-y: .1875rem;
+$kbd-padding-x: .375rem;
+$kbd-font-size: $code-font-size;
+$kbd-color: var(--#{$prefix}body-bg);
+$kbd-bg: var(--#{$prefix}body-color);
+
+
+/* -------------------------------------------- */
+/* LINKS LISTS                                  */
+/* -------------------------------------------- */
+
+$link-list-radius: 0;
+$link-list-padding-y: .395rem;
+$link-list-padding-x: .75rem;
+$link-list-color: $black;
+$link-list-hover-bg: $gray-200;
+$link-list-hover-color: $black;
+$link-list-disabled-color: $gray-500;
+$link-list-active-bold: true;
+$link-list-active-bg: null;
+$link-list-active-color: $black;
+
+
+/* -------------------------------------------- */
+/* LISTS                                        */
+/* -------------------------------------------- */
+
+$list-pipe-spacing: 20px;
+$list-inline-spacing: 20px;
+$list-dash-indent: 12px;
+
+/* -------------------------------------------- */
+/* BUTTONS                                      */
+/* -------------------------------------------- */
+
+$btn-border-width: $border-width;
+
+// Allows for customizing button radius independently from global border radius
+///
+$btn-border-radius: 0;
 $btn-border-radius-sm: 0;
 $btn-border-radius-lg: 0;
 
-$h1-font-size: $h3-font-size;
-$paragraph-margin-bottom: 2em;
+$btn-link-color: var(--#{$prefix}link-color);
+$btn-link-hover-color: var(--#{$prefix}link-hover-color);
+
+$btn-font-family: $font-family-heading;
+$btn-font-size: $font-size-sm;
+$btn-font-size-sm: $font-size-xs;
+$btn-text-uppercase: true;
+$btn-line-height: $line-height-base;
+$btn-letter-spacing: inherit;
+
+// Controls the border highlighting to be applied when pressing a button element
+///
+$btn-focus-color: $transparent;
+$btn-focus-width: .15rem;
+$btn-focus-opacity: .25;
+$btn-focus-box-shadow: 0;
+
+$btn-disabled-opacity: .55;
+
+$btn-padding-y: .375rem;
+$btn-padding-x: .75rem;
+
+$btn-padding-y-sm: .2rem;
+$btn-padding-x-sm: .45rem;
+
+$btn-white-space: nowrap;  // Set to `nowrap` to prevent text wrapping
+
+/* -------------------------------------------- */
+/* SPINNER                                      */
+/* -------------------------------------------- */
+
+$spinner-width: 2rem;
+$spinner-height: $spinner-width;
+$spinner-border-width: .2rem;
+$spinner-width-sm: 1rem;
+$spinner-height-sm: $spinner-width-sm;
+$spinner-border-width-sm: .15rem;
+$spinner-vertical-align: -.125em;
+$spinner-border-color: $gray-300;
+$spinner-animation-speed: .65s;
+
+/* -------------------------------------------- */
+/* TOOLTIP                                      */
+/* -------------------------------------------- */
+
+$tooltip-bg: $black;
+$tooltip-font-family: $font-family-sans;
+$tooltip-font-size: $font-size-xs;
+$tooltip-font-color: $white;
+$tooltip-font-style: normal;
+$tooltip-padding-y: .1rem;
+$tooltip-padding-x: .5rem;
+$tooltip-arrow-size: 5px;
+$tooltip-radius: 0;
+$tooltip-border-width: .03rem;
+$tooltip-animation: true;
+$tooltip-use-outline: false;
+
+
+/* -------------------------------------------- */
+/* ACCORDION                                    */
+/* -------------------------------------------- */
+
+$accordion-border-width: $border-width;
+$accordion-border-color: $border-color;
+$accordion-btn-opened: $gray-700;
+$accordion-padding: 50px;
+$accordion-transition-height: 225ms;
+$accordion-transition-opacity: 200ms;
+$accordion-transition-easing: ease-in-out;
+$accordion-icon-padding-x: .5rem;
+
+/* -------------------------------------------- */
+/* MODAL                                        */
+/* -------------------------------------------- */
+
+$modal-backdrop-bg: rgba($color: $black, $alpha: 50%);
+$modal-transition: 200ms;
+
+/* -------------------------------------------- */
+/*                    DRAWER                    */
+/* -------------------------------------------- */
+
+$drawer-duration: 0.3s;
+$drawer-easing: ease-in-out;
+$drawer-zindex: 99999;
+$drawer-overlay-z-index: 1000 + 10;
+$drawer-overlay-duration: $drawer-duration;
+$drawer-overlay-bg: rgb(0 0 0 / 60%);
+$drawer-directions: (
+  left,
+  right,
+  top,
+  bottom
+);
+
+/* -------------------------------------------- */
+/* FORM TEXT                                    */
+/* -------------------------------------------- */
+
+$form-text-margin-top: .25rem;
+$form-text-font-size: $font-size-sm;
+$form-text-font-style: null;
+$form-text-font-weight: null;
+$form-text-color: $gray-700;
+
+/* -------------------------------------------- */
+/* FORMS LABEL                                  */
+/* -------------------------------------------- */
+
+$form-label-margin-bottom: .5rem;
+$form-label-text-transform: none;
+$form-label-font-size: null;
+$form-label-font-style: null;
+$form-label-font-weight: null;
+$form-label-color: null;
+
+/* -------------------------------------------- */
+/* FORM INPUT TEXT                              */
+/* -------------------------------------------- */
+
+$input-padding-y: .335rem;
+$input-padding-y-sm: .32rem;
+$input-padding-x: .75rem;
+$input-padding-x-sm: .5rem;
+
+$input-font-family: $font-family-base;
+$input-font-weight: $font-weight-base;
+$input-font-size: $font-size-base * 0.925;
+$input-font-size-sm: $font-size-sm;
+$input-font-size-lg: $font-size-lg;
+$input-line-height: $line-height-base;
+$input-text-uppercase: false;
+
+$input-bg: $body-bg;
+$input-color: $body-color;
+
+$input-disabled-bg: $gray-100;
+$input-disabled-border-color: $gray-200;
+
+$input-border-color: $gray-400;
+$input-border-width: $border-width; // $input-btn-border-width;
+$input-height-border: $input-border-width * 2;
+$input-box-shadow: none; //$box-shadow-inset;
+
+$input-border-radius: 0; // $border-radius;
+$input-border-radius-sm: 0; // $border-radius-sm;
+
+$input-focus-bg: $input-bg;
+$input-focus-border-color: $black;
+$input-focus-color: $input-color;
+$input-focus-width: $border-width;  // $input-btn-focus-width;
+$input-focus-box-shadow: null;           // $input-btn-focus-box-shadow;
+
+$input-btn-focus-box-shadow-lined: 0 0 0 0;
+$input-placeholder-color: $gray-500;
+$input-plaintext-color: $body-color;
+
+/* -------------------------------------------- */
+/* FORM SELECT                                  */
+/* -------------------------------------------- */
+
+$form-select-padding-y: $input-padding-y;
+$form-select-padding-x: $input-padding-x;
+$form-select-font-family: $input-font-family;
+$form-select-font-size: $input-font-size;
+$form-select-font-weight: $input-font-weight;
+$form-select-line-height: $input-line-height;
+$form-select-color: $input-color;
+$form-select-bg: $input-bg;
+$form-select-disabled-color: null;
+$form-select-disabled-bg: $gray-200;
+$form-select-disabled-border-color: $input-disabled-border-color;
+$form-select-bg-position: right $form-select-padding-x center;
+$form-select-bg-size: 22px; // In pixels because image dimensions
+$form-select-indicator-color: $input-placeholder-color;
+
+
+$form-dropdown-indicator: var(--#{$prefix}svg-plus);
+$form-dropdown-indicator-size: 20px; // In pixels because image dimensions
+
+$form-select-feedback-icon-padding-end: $form-select-padding-x * 2 + $form-select-indicator-padding;
+$form-select-feedback-icon-position: center right $form-select-indicator-padding;
+$form-select-feedback-icon-size: $input-height-inner-half $input-height-inner-half;
+
+$form-select-border-width: $input-border-width;
+$form-select-border-color: $input-border-color;
+$form-select-border-radius: $input-border-radius;
+$form-select-box-shadow: $box-shadow-inset;
+
+$form-select-focus-border-color: $input-focus-border-color;
+$form-select-focus-width: $input-focus-width;
+$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-color;
+
+$form-select-padding-y-sm: $input-padding-y-sm;
+$form-select-padding-x-sm: $input-padding-x-sm;
+$form-select-font-size-sm: $input-font-size-sm;
+$form-select-border-radius-sm: $input-border-radius-sm;
+
+$form-select-padding-y-lg: $input-padding-y-lg;
+$form-select-padding-x-lg: $input-padding-x-lg;
+$form-select-font-size-lg: $input-font-size-lg;
+$form-select-border-radius-lg: $input-border-radius-lg;
+
+$form-select-transition: $input-transition;
+
+/* -------------------------------------------- */
+/* FORM COLOR PICKER                            */
+/* -------------------------------------------- */
+
+$form-color-width: 7.4em;
+
+/* -------------------------------------------- */
+/* FORM NUMBER                                  */
+/* -------------------------------------------- */
+
+$form-number-width: 100%;
+
+/* -------------------------------------------- */
+/* FORM RADIO AND CHECKBOX                      */
+/* -------------------------------------------- */
+
+$form-check-input-width: 1rem;
+$form-check-min-height: $font-size-base * $line-height-base;
+$form-check-padding-start: $form-check-input-width + .5rem;
+$form-check-margin-bottom: .125rem;
+$form-check-label-color: null;
+$form-check-label-cursor: pointer;
+$form-check-label-spacing: .75rem;
+$form-check-transition: null;
+
+$form-check-input-active-filter: $body-bg;
+$form-check-input-bg: $input-bg;
+$form-check-input-border: $border-width $border-style $input-border-color;
+$form-check-input-border-radius: 0;
+$form-check-radio-border-radius: 0;
+$form-check-input-focus-border: $black;
+$form-check-input-focus-box-shadow: none;
+
+$form-check-input-checked-color: $black;
+$form-check-input-checked-bg-color: $transparent;
+$form-check-input-checked-border-color: $black;
+
+$form-check-input-checked-bg-image: var(--#{$prefix}svg-check);
+
+
+$form-check-input-indeterminate-color: $black;
+$form-check-input-indeterminate-bg-color: $transparent;
+$form-check-input-indeterminate-border-color: $black;
+$form-check-input-indeterminate-bg-image: var(--#{$prefix}svg-check);
+
+
+$form-check-input-disabled-opacity: .5;
+$form-check-label-disabled-opacity: $form-check-input-disabled-opacity;
+$form-check-btn-check-disabled-opacity: $btn-disabled-opacity;
+$form-check-inline-margin-end: 1rem;
+
+/* -------------------------------------------- */
+/* FORM SWITCH                                  */
+/* -------------------------------------------- */
+
+$form-switch-color: $gray-300;
+$form-switch-width: 3em;
+$form-switch-padding-start: $form-switch-width + .5em;
+$form-switch-border-radius: 0;
+$form-switch-transition: background-position .15s ease-in-out;
+$form-switch-focus-color: $input-focus-border-color;
+$form-switch-checked-color: $black;
+$form-switch-checked-bg-position: right center;
+
+/* -------------------------------------------- */
+/* FORM INPUT GROUP                             */
+/* -------------------------------------------- */
+
+$input-group-addon-padding-y: $input-padding-y;
+$input-group-addon-padding-x: $input-padding-x;
+$input-group-addon-font-weight: $input-font-weight;
+$input-group-addon-color: $input-color;
+$input-group-addon-bg: $gray-100;
+$input-group-addon-border-color: $input-border-color;
+
+/* -------------------------------------------- */
+/* FORM INPUT RANGE                             */
+/* -------------------------------------------- */
+
+$form-range-track-width: 100%;
+$form-range-track-height: .30rem;
+$form-range-track-cursor: pointer;
+$form-range-track-bg: $gray-300;
+$form-range-track-border-radius: 0;
+$form-range-track-box-shadow: $box-shadow-inset;
+$form-range-thumb-size: 0.8rem;
+$form-range-thumb-width: $form-range-thumb-size;
+$form-range-thumb-height: $form-range-thumb-size;
+$form-range-thumb-bg: $black;
+$form-range-thumb-border: 0;
+$form-range-thumb-border-radius: 50%;
+$form-range-thumb-box-shadow: 0 .1rem .25rem rgba($black, .1);
+$form-range-thumb-focus-box-shadow: 0 0 0 1px $body-bg, $input-focus-box-shadow;
+$form-range-thumb-focus-box-shadow-width: $input-focus-width;
+$form-range-thumb-active-bg: tint-color($black, 40%);
+$form-range-thumb-disabled-bg: $gray-500;
+
+
+$form-range-thumb-transition: (
+  background-color .10s ease-in-out,
+  border-color .10s ease-in-out,
+  box-shadow .10s ease-in-out
+);
+
+/* -------------------------------------------- */
+/* FORM INPUT FILE                              */
+/* -------------------------------------------- */
+
+$form-file-button-color: $input-color;
+$form-file-button-bg: $input-group-addon-bg;
+$form-file-button-hover-bg: shade-color($form-file-button-bg, 5%);
+
+/* -------------------------------------------- */
+/* FORM FLOATING                                */
+/* -------------------------------------------- */
+
+$form-float-height: add(2, $input-height-border);
+$form-float-line-height: 1.25;
+$form-float-padding-x: $input-padding-x;
+$form-float-padding-y: divide($form-float-height, 5, 2);
+$form-float-input-padding-t: $form-float-padding-y;
+$form-float-input-padding-b: $form-float-input-padding-t;
+$form-float-label-opacity: .85;
+$form-float-label-transform: scale(.55) translateY(-.5rem) translateX(.5rem);
+$form-float-transition: opacity .1s ease-in-out, transform .1s ease-in-out;
+$form-float-legend-transform: scale(.75) translateY(-50%) translateX(0);
+
+/* -------------------------------------------- */
+/* FORM VALIDATION                              */
+/* -------------------------------------------- */
+
+$form-feedback-margin-top: $form-text-margin-top;
+$form-feedback-font-size: $form-text-font-size;
+$form-feedback-font-style: $form-text-font-style;
+$form-feedback-valid-color: $green;
+$form-feedback-invalid-color: $red;
+$form-feedback-icon-valid-color: $form-feedback-valid-color;
+$form-feedback-icon-invalid-color: $form-feedback-invalid-color;
+
+$form-validation-states: (
+  "valid": (
+    "color": $form-feedback-valid-color,
+    "icon": icon-check($form-feedback-icon-valid-color, 1.4)
+  ),
+  "invalid": (
+    "color": $form-feedback-invalid-color,
+    "icon": icon-cross($form-feedback-invalid-color, 1.4)
+  )
+);

@@ -1,13 +1,13 @@
-import { MountOptions, CombinedOptions } from '../../types/options';
+import { Options } from '../../types/options';
 import { Model } from '../../types/model';
 import { highlight } from './highlight';
 import { getLineCount, mergeOptions, trimInput } from '../utils';
 import { texteditor } from './editor';
 
-export function mount (element: HTMLElement, options: MountOptions): Model {
+export function mount (element: HTMLElement, options: Options): Model {
 
   const config = mergeOptions(options);
-  const prism = highlight(config as CombinedOptions);
+  const prism = highlight(config as Options);
 
   prism.nodes(element);
   prism.language(config.language);
@@ -15,15 +15,12 @@ export function mount (element: HTMLElement, options: MountOptions): Model {
   let input = '';
 
   if (config.input !== undefined && config.input.length > 0) {
-    input = trimInput(config.input, config);
+    input = trimInput(config.input, config as Options);
   } else {
-    input = trimInput(prism.code.textContent || '', config);
+    input = trimInput(prism.code.textContent || '', config as Options);
   }
 
   if (config.lineNumbers) {
-    if (!prism.pre.classList.contains('line-numbers')) {
-      prism.pre.classList.add('line-numbers');
-    }
 
     if (!prism.code.classList.contains('lines')) {
       prism.code.classList.add('lines');
@@ -41,7 +38,7 @@ export function mount (element: HTMLElement, options: MountOptions): Model {
     prism.pre.style.height = height;
   }
 
-  const model = texteditor(prism, config);
+  const model = texteditor(prism, config as Options);
 
   if (config.editor) {
     if (model.textarea.style.position === 'relative') {

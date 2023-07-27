@@ -1,11 +1,11 @@
-import { mergeCreateOptions, trimInput } from '../utils';
+import { mergeOptions, trimInput } from '../utils';
 import { highlight } from './highlight';
-import { CombinedOptions, CreateOptions } from '../../types/options';
+import { Options } from '../../types/options';
 
-export function create (codeInput: string, options: CreateOptions) {
+export function create (codeInput: string, options: Options) {
 
-  const config = mergeCreateOptions(options as any);
-  const prism = highlight(config as CombinedOptions);
+  const config = mergeOptions(options as any);
+  const prism = highlight(config as Options);
   const code = trimInput(codeInput, options as any);
 
   if (config.language === null) {
@@ -16,24 +16,17 @@ export function create (codeInput: string, options: CreateOptions) {
   }
 
   const output: string[] = [];
-  const preClass = config.addClass.pre.join(' ');
+  const preClass = config.addClass.pre.join(' ').trimEnd();
   const preAttrs = config.addAttrs.pre.join(' ');
-  const codeClass = config.addClass.code.join(' ');
+  const codeClass = config.addClass.code.join(' ').trimEnd();
   const codeAttrs = config.addAttrs.code.join(' ');
-  const rel = 'style="position: relative;"';
+  const rel = 'style="position: initial;"';
+  const fence = config.lineNumbers ? ' ' : 'no-fence ';
 
-  if (config.lineNumbers) {
-    if (config.addAttrs.pre.length > 0) {
-      output.push(`<pre class="papyrus line-numbers ${preClass}" ${preAttrs}>`);
-    } else {
-      output.push(`<pre class="papyrus line-numbers ${preClass}">`);
-    }
+  if (config.addAttrs.pre.length > 0) {
+    output.push(`<pre class="papyrus ${fence}${preClass}" ${preAttrs}>`);
   } else {
-    if (config.addAttrs.pre.length > 0) {
-      output.push(`<pre class="papyrus ${preClass}" ${preAttrs}>`);
-    } else {
-      output.push(`<pre class="papyrus ${preClass}">`);
-    }
+    output.push(`<pre class="papyrus ${fence}${preClass}">`);
   }
 
   if (config.lineNumbers) {
@@ -52,22 +45,12 @@ export function create (codeInput: string, options: CreateOptions) {
 
   const input = prism.raw(code);
 
-  if (config.editor) {
-    output.push(
-      input,
-      '</code>',
-      `<textarea style="position: relative;" class="editor" spellcheck="${config.spellcheck}">`,
-      '</textarea>',
-      '</pre>'
-    );
+  output.push(
+    input,
+    '</code>',
+    '</pre>'
+  );
 
-  } else {
-    output.push(
-      input,
-      '</code>',
-      '</pre>'
-    );
-  }
   return output.join('');
 
 };

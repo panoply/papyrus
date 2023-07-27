@@ -8,18 +8,30 @@ import CSS from './languages/css';
 import SCSS from './languages/scss';
 import Json from './languages/json';
 import Bash from './languages/bash';
+import Treeview from './languages/treeview';
 
 export function grammars () {
 
-  JavaScript();
-  TypeScript();
-  XML();
-  CSS();
-  SCSS();
-  Yaml();
-  Json();
-  Bash();
-  Liquid();
+  // @ts-ignore
+  if (!Prism.papyrus) {
+
+    for (const call of [
+      Liquid,
+      JavaScript,
+      TypeScript,
+      XML,
+      CSS,
+      SCSS,
+      Yaml,
+      Json,
+      Bash,
+      Treeview
+    ]) call();
+
+    // @ts-ignore
+    Prism.papyrus = true;
+
+  }
 
   return Prism;
 

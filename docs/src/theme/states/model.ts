@@ -21,8 +21,10 @@ import tsxSample from './samples/tsx';
 import tsxTokens from './tokens/tsx';
 import yamlSample from './samples/yaml';
 import yamlTokens from './tokens/yaml';
-import shellSample from './samples/shell';
-import shellTokens from './tokens/shell';
+import bashSample from './samples/bash';
+import bashTokens from './tokens/bash';
+import treeviewSample from './samples/treeview';
+import treeviewTokens from './tokens/treeview';
 
 export const model: IModel = {
   liquid: {
@@ -91,9 +93,15 @@ export const model: IModel = {
     get tokens () { return yamlTokens; }
   }
   ,
-  shell: {
-    language: 'Shell Script',
-    get sample () { return shellSample; },
-    get tokens () { return shellTokens; }
+  bash: {
+    language: 'Bash',
+    get sample () { return bashSample; },
+    get tokens () { return bashTokens; }
+  }
+  ,
+  treeview: {
+    language: 'Treeview',
+    get sample () { return treeviewSample; },
+    get tokens () { return treeviewTokens; }
   }
 };

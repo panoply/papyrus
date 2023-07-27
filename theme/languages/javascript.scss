@@ -1,7 +1,7 @@
 
 
-code.language-javascript,
-code.language-js {
+.language-javascript,
+.language-js {
   color: var(--papyrus-ts-fallback);
 
   .token {
@@ -19,7 +19,7 @@ code.language-js {
     }
 
     &.comment {
-      color: var(--papyrus-js-punctuation-comment);
+      color: var(--papyrus-js-comment);
     }
 
     &.parameter {
@@ -28,6 +28,10 @@ code.language-js {
 
     &.variable {
       color: var(--papyrus-js-variable);
+    }
+
+    &.object {
+      color: var(--papyrus-js-object);
     }
 
     &.operator {

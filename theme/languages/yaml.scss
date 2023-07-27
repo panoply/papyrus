@@ -1,0 +1,34 @@
+.language-yaml {
+
+
+  .token {
+
+
+    &.comment {
+      color: var(--papyrus-yaml-comment);
+    }
+
+    &.key {
+      color: var(--papyrus-yaml-key);
+    }
+
+    &.string {
+      color: var(--papyrus-yaml-string);
+    }
+
+    &.number {
+      color: var(--papyrus-yaml-number);
+    }
+
+    &.boolean {
+      color: var(--papyrus-yaml-boolean);
+    }
+
+    &.punctuation {
+      color: var(--papyrus-yaml-punctuation);
+    }
+
+
+  }
+
+}

@@ -46,7 +46,7 @@ export const file = (name: Languages, active = false) => m(
   }
   , m.trust(
     {
-      shell: (
+      bash: (
         '<path d="M29.4,27.6H2.5V4.5H29.4Zm-25.9-1H28.4V5.5H3.5Z" style="fill:#333"/><polygon points="6.077 19.316 5.522 18.484 10.366 15.255 5.479 11.184 6.12 10.416 12.035 15.344 6.077 19.316" style="fill:#333"/><rect x="12.7" y="18.2" width="7.8" height="1" style="fill:#333"/><rect x="2.5" y="5.5" width="26.9" height="1.9" style="fill:#333"/>'
       ),
       jsx: (
@@ -87,6 +87,9 @@ export const file = (name: Languages, active = false) => m(
       ),
       xml: (
         '<path d="M20.42,21.157l2.211,2.211L30,16,22.631,8.631,20.42,10.843,25.58,16Z" style="fill:#f1662a"/><path d="M11.58,10.843,9.369,8.631,2,16l7.369,7.369,2.211-2.211L6.42,16Z" style="fill:#f1662a"/><path d="M17.411,7.677l1.6.437-4.42,16.209-1.6-.437,4.42-16.209Z" style="fill:#f1662a"/>'
+      ),
+      treeview: (
+        '<g transform="matrix(.21632 0 0 .21632 14.082 12.619)" fill="#d2d2d2"><rect x="-51.131" y="-48.987" width="9.2308" height="129.23"/><rect transform="scale(-1,1)" x="-68.869" y="71.013" width="110.77" height="9.2308"/><rect transform="scale(-1,1)" x="-36.561" y="29.474" width="78.462" height="9.2308"/><rect transform="scale(-1,1)" x="4.9774" y="-16.68" width="36.923" height="9.2308"/></g>'
       )
     }[name]
   )

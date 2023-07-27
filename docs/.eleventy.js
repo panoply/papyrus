@@ -14,7 +14,7 @@ function highlighter (md, raw, language) {
 
     try {
 
-      code = papyrus.create(raw, {
+      code = papyrus.static(raw, {
        language,
        editor: false
       });

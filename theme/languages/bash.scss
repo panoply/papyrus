@@ -1,0 +1,18 @@
+.language-bash {
+
+  .token {
+
+    &.punctuation {
+      color: var(--papyrus-bash-punctuation);
+    }
+
+    &.comment {
+      color: var(--papyrus-bash-comment);
+    }
+
+    &.argument {
+      color: var(--papyrus-bash-argument);
+    }
+  }
+
+}

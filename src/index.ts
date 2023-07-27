@@ -1,22 +1,21 @@
 import { model } from './model';
 import { mount } from './modes/mount';
 import { create } from './modes/create';
-import { MountOptions, CreateOptions } from '../types/options';
+import { Options } from '../types/options';
 import { Model } from '../types/model';
+import { mergeOptions } from './utils';
 
-if (typeof window !== 'undefined' && !('Prism' in window)) {
-  document.onreadystatechange = () => {
-    if (document.readyState === 'loading') Object.assign(window, { Prism: { manual: true } });
-  };
+if (typeof window !== 'undefined' && !('papyrus' in window)) {
+  Object.defineProperty(window, 'papyrus', { get () { return model; } });
 }
 
 const papyrus: {
-  (options?: MountOptions): Model[];
+  (options?: Options): Model[];
   get(id?: string): Model | Model[];
-  create(code: string, options: CreateOptions): string;
-  render(code: string, options: CreateOptions): HTMLPreElement;
-  mount(element: HTMLElement, options?: MountOptions): Model
-} = function papyrus (options: MountOptions) {
+  static(code: string, options: Options): string;
+  render(code: string, element: string | HTMLElement, options?: Options): Model;
+  mount(element: string | HTMLElement, options?: Options): Model
+} = function papyrus (options: Options) {
 
   if (document.readyState === 'loading') return;
 
@@ -38,27 +37,25 @@ papyrus.get = function get (id?: string) {
 
 };
 
-papyrus.render = function render (code: string, options: CreateOptions) {
+papyrus.render = function render (code: string, element: string | HTMLElement, options?: Options) {
 
-  const element = document.createElement('div');
-  element.innerHTML = create(code, options);
+  const config = mergeOptions(options);
+  const generate = create(code, config as Options);
+  const output = typeof element === 'string'
+    ? document.querySelector(element) as HTMLElement
+    : element;
 
-  return element.firstElementChild as HTMLPreElement;
+  output.innerHTML = generate;
+
+  return mount(output, config as Options);
 
 };
 
 papyrus.mount = mount;
-papyrus.create = create;
+papyrus.static = create;
 
-Object.defineProperty(papyrus, 'model', {
-  get () {
-    return model;
-  }
-});
-
-if (typeof window !== 'undefined') {
-
-  Object.defineProperty(window, 'papyrus', {
+if (!('model' in papyrus)) {
+  Object.defineProperty(papyrus, 'model', {
     get () {
       return model;
     }

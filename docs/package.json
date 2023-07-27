@@ -46,17 +46,17 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@brixtol/bootstrap": "^1.4.3",
+    "@brixtol/bootstrap": "^1.6.0",
     "@liquify/eslint-config": "workspace:^",
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
     "@panoply/11ty": "^0.2.0",
-    "concurrently": "^8.0.1",
+    "concurrently": "^8.2.0",
     "markdown-it": "^13.0.1",
     "mithril": "^2.2.2",
-    "sass": "^1.61.0",
-    "terser": "^5.16.8",
-    "tsup": "^6.7.0"
+    "sass": "^1.63.6",
+    "terser": "^5.18.1",
+    "tsup": "^7.0.0"
   }
 }

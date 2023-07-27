@@ -62,14 +62,15 @@ export default function () {
       pattern: /(\{%-?\s*comment\s*-?%\}[\s\S]+\{%-?\s*endcomment\s*-?%\}|\{%-?\s*#[\s\S]+?-?%\})/
     },
     liquid: {
-      pattern: /{[{%]-?[\s\S]+-?[%}]}/,
+      pattern: /({{|{%)[\s\S]+(}}|%})/,
+      global: true,
       inside: Inside
     }
   };
 
   Prism.languages.insertBefore('css', 'property', {
     liquid: {
-      pattern: /{[{%]-?[\s\S]+-?[%}]}/,
+      pattern: /{[{%][\s\S]+[%}]}/,
       inside: Inside
     }
   });

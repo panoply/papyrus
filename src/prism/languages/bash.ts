@@ -3,14 +3,11 @@ import Prism from 'prismjs';
 export default function () {
 
   Prism.languages.bash = {
-    keyword: {
-      pattern: /(esthetic\s)/
-    },
     argument: {
       pattern: /<(.*?)>/
     },
     punctuation: {
-      pattern: /[<>]|--?(?=[a-z])/
+      pattern: /\$|&{2}|[<>]|--?(?=[a-z])/
     },
     comment: {
       pattern: /#.*?(?=\n)/

@@ -20,11 +20,7 @@ export default function () {
     number: /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
     punctuation: /[{}[\],]/,
     operator: /:/,
-    boolean: /\b(?:false|true)\b/,
-    null: {
-      pattern: /\bnull\b/,
-      alias: 'keyword'
-    }
+    boolean: /\b(?:false|true|null)\b/
   };
 
   return Prism.languages.json;

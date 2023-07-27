@@ -1,19 +1,44 @@
 import { defineConfig } from 'tsup';
 import { utimes } from 'node:fs/promises';
 
+const prism = `
+/**
+ * 𓁁 PAPYRUS ~ https://papyrus.js.org
+ *
+ * MIT LICENSE
+ *
+ * © 2023 Νίκος Σαβίδης
+ *
+ * ---
+ *
+ * ⟁ PRISM ~ https://prismjs.com
+ *
+ * MIT LICENSE
+ *
+ * © 2012 Lea Verou
+ */
+if(typeof window!=='undefined')window.Prism=window.Prism||{};window.Prism.manual=true;`;
+
 export default defineConfig([
   {
     entry: {
       papyrus: './src/index.ts'
     },
     noExternal: [
-      'morphdom',
       'prismjs',
-      'indent-textarea'
+      'morphdom',
+      '@textcomplete/core',
+      '@textcomplete/textarea'
     ],
     clean: false,
     name: 'papyrus',
-    globalName: 'papyrus',
+    banner (context) {
+      if (context.format === 'esm') {
+        return {
+          js: prism
+        };
+      }
+    },
     treeshake: 'smallest',
     platform: 'neutral',
     async onSuccess () {
@@ -23,6 +48,7 @@ export default defineConfig([
     },
     esbuildOptions: options => {
       options.treeShaking = true;
+      options.legalComments = 'none';
     },
     outExtension ({ format }) {
 

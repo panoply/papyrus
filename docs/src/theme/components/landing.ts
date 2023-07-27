@@ -61,15 +61,14 @@ export const Landing: m.Component = {
           }
           , 'Theme'
         ),
-        m(
-          'a'
+        m('a'
           , {
-            href: '/usage/',
+            href: '/overview/',
             class: 'btn btn-outline-black rd-1 bc-black px-4 py-1 mt-5 mx-2',
-            selector: 'a[data-tooltip="right"][aria-label="Usage Examples"]'
+            'data-tooltip': 'right',
+            'aria-label': 'Usage Examples'
           }
-          , 'Usage'
-        )
+          , 'Overview')
       )
       // m(
       //   '.col-4.pb-5'

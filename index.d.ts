@@ -7,8 +7,20 @@ import type Prism from 'prismjs';
 import * as M from './types/model';
 import * as O from './types/options';
 import { PartialDeep, SetRequired } from 'type-fest';
+import type { StrategyProps } from '@textcomplete/core';
 
 declare namespace Papyrus {
+
+  /**
+   * #### PAPYRUS 𓁁
+   *
+   * Completion Strategies (Type)
+   *
+   * Completions are made possible using [TextComplete](https://yuku.takahashi.coffee/textcomplete)
+   * by [Yuku Takahashi](https://github.com/yuku). Papyrus will pass `strategies` to the editor
+   * runtime. Provide completions a per language id basis.
+   */
+  type Completions = StrategyProps
 
   /**
    * #### PAPYRUS 𓁁
@@ -37,17 +49,17 @@ declare namespace Papyrus {
    * The available options of Papyrus when auto-invoking via the
    * default export of `papyrus`
    */
-  type DOMOptions = Partial<O.DOMOptions>
+  type EditorOptions = PartialDeep<O.EditorOptions>
 
   /**
    * #### PAPYRUS 𓁁
    *
-   * Mount Options (Type)
+   * DOM Options (Type)
    *
-   * The available options of Papyrus when targeting a specific
-   * element in the dom via the default export of `papyrus.mount`
+   * The available options of Papyrus when auto-invoking via the
+   * default export of `papyrus`
    */
-  type MountOptions = Partial<O.MountOptions>
+  type Options = PartialDeep<O.Options>
 
   /**
    * #### PAPYRUS 𓁁
@@ -58,7 +70,7 @@ declare namespace Papyrus {
    * via the `papyrus.create` method. The `create` method is Typically
    * used in NodeJS environments and returns a string.
    */
-  type CreateOptions = SetRequired<PartialDeep<O.CreateOptions>, 'language'>
+  type StaticOptions = Omit<SetRequired<PartialDeep<O.Options>, 'language'>, 'input'>
   /**
    * #### PAPYRUS 𓁁
    *
@@ -134,7 +146,7 @@ declare namespace Papyrus {
      *
      * // Using the above markup example
      * //
-     * const code = papyrus(prism, {
+     * const code = papyrus({
      *  // When <code> element has no language-* class, code will be treated as JavaScript
      *   language: 'javascript',
      * });
@@ -144,7 +156,7 @@ declare namespace Papyrus {
      * code[0] // Returns the papyrus model for # 1
      * code[1] // Returns the papyrus model for # 2
      */
-    (options?: Omit<DOMOptions, 'language' | 'input'>): M.Model[];
+    (options?: Omit<Options, 'language' | 'input'>): M.Model[];
     /**
      * #### MOUNT
      *
@@ -161,9 +173,12 @@ declare namespace Papyrus {
      * const code = papyrus.mount(document.querySelector('pre'), {
      *
      * // Create with editor mode enabled, disabled by default.
-     *  editor: true,
+     *  editor: {
+     *    lineNumber: 5,
+     *    renderSpace: false
+     *  },
      *  lineNumbers: true,
-     *  showSpace: true,
+     *  showSpace: true
      *  // etc etc ....
      * });
      *
@@ -180,15 +195,15 @@ declare namespace Papyrus {
      *
      * // You may also update the input
      * //
-     * code.updateCode('{ "foo": "bar" }')
+     * code.update('{ "foo": "bar" }')
      *
      * // Optionally, provide a language id to switch modes
      * //
-     * code.updateCode('const foo: string = "bar";', 'typescript')
+     * code.update('const foo: string = "bar";', 'typescript')
      *
      * // Callback event upon change
      * //
-     * code.onUpdate(function(input, language) {
+     * code.onupdate(function(input, language) {
      *
      *   console.log(input)
      *   console.log(language)
@@ -200,7 +215,7 @@ declare namespace Papyrus {
      *
      * })
      */
-    mount(dom: HTMLElement, options?: MountOptions): M.Model;
+    mount(dom: string | HTMLElement, options?: Options): M.Model;
     /**
      * #### CREATE
      *
@@ -215,7 +230,7 @@ declare namespace Papyrus {
      * <hr>
      * `;
      *
-     * const output = papyrus.create(input, {
+     * const output = papyrus.static(input, {
      *   language: 'html',  // Required
      *   editor: true,
      *   lineNumbers: true,
@@ -240,7 +255,7 @@ declare namespace Papyrus {
      *  </pre>
      * `;
      */
-    create(code: string, options: CreateOptions): string;
+    static(code: string, options: StaticOptions): string;
     /**
      * #### RENDER
      *
@@ -254,7 +269,9 @@ declare namespace Papyrus {
     * <hr>
     * `;
     *
-    * const output = papyrus.create(input, {
+    * const output = document.querySelector('#element')
+    *
+    * papyrus.render(input, output, {
     *   language: 'html',  // Required
     *   editor: true,
     *   lineNumbers: true,
@@ -262,14 +279,8 @@ declare namespace Papyrus {
     *   trimStart: false  // optionally disable trims
     * })
     *
-    * // Append or insert the element
-    *
-    * const element = document.querySelector('#foo);
-    *
-    * element.appendChild(output);
-    *
     */
-    render(code: string, options: CreateOptions): HTMLPreElement
+    render(code: string, output: string | HTMLElement, options?: Options): Model
   }
 }
 

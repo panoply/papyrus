@@ -1,6 +1,10 @@
-code.language-json {
+.language-json {
 
   .token {
+
+    &.comment {
+      color: var(--papyrus-json-comment);
+    }
 
     &.property {
       color: var(--papyrus-json-property);

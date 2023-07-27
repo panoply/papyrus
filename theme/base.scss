@@ -22,22 +22,39 @@ code {
 /* EDITOR                                       */
 /* -------------------------------------------- */
 
+
 pre.papyrus {
   position: relative !important;
   width: var(--papyrus-width);
   height: var(--papyrus-height);
+  padding: initial;
   overflow: hidden;
   font-size: var(--papyrus-font-size-root);
   background-color: var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
+
 
   *::selection {
     text-shadow: none;
     background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
   }
 
+  /* LINE FENCE --------------------------------- */
+
   &.no-fence::before {
-    border: none;
+    content: normal;
+  }
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--papyrus-line-number-width);
+    display: block;
+    height: 100%;
+    background-color: var(--papyrus-code-bg);
+    border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+    content: "";
   }
 
 
@@ -97,20 +114,6 @@ pre.papyrus {
     }
   }
 
-  /* LINE FENCE --------------------------------- */
-
-  &::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--papyrus-line-number-width);
-    display: block;
-    height: 100%;
-    background-color: var(--papyrus-code-bg);
-    border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
-    content: "";
-
-  }
 
   /* CODE ELEMENT ------------------------------- */
 
@@ -127,9 +130,21 @@ pre.papyrus {
     color: var(--papyrus-code-color);
     line-height: var(--papyrus-line-height);
 
+    &::after {
+      position: sticky;
+      top: 0;
+      right: 0;
+      display: none;
+      float: right;
+      padding-right: 10px;
+      color: var(--papyrus-line-number-color);
+      font-size: .8em;
+      text-align: right;
+      content: attr(aria-label);
+    }
 
     &.lines,
-    &.lines + textarea.editor  {
+    &.lines + textarea.editor {
       padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
     }
 
@@ -147,17 +162,17 @@ pre.papyrus {
 
     > .line-numbers {
       position: absolute;
-      top: 0;
+      top: var(--papyrus-code-padding-y);
+      bottom: var(--papyrus-code-padding-y);
       left: 0;
       z-index: 200;
       display: block;
       width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
-      height: 100%;
-      padding-top: var(--papyrus-code-padding-y);
-      padding-bottom: var(--papyrus-code-padding-y);
+      height: 100%;;
+      padding-top: 0.1rem;
+      padding-bottom: 0.1rem;
       user-select: none;
       pointer-events: none;
-
 
       span.ln {
         z-index: 100;
@@ -166,7 +181,7 @@ pre.papyrus {
         line-height: var(--papyrus-line-height);
         counter-increment: linenumber;
 
-        &.highlight {
+        &.active {
           background-color: rgba(var(--papyrus-line-highlight-bg), var(--papyrus-line-highlight-alpha));
 
           &::before {
@@ -221,12 +236,87 @@ pre.papyrus {
       width: var(--papyrus-scrollbar-width);
       height: var(--papyrus-scrollbar-width);
       background-color: var(--papyrus-scrollbar-bg);
+
     }
 
     &::-webkit-scrollbar-thumb {
       background-color: var(--papyrus-scrollbar-thumb);
     }
   }
+}
+
+
+.textcomplete {
+
+  &-dropdown {
+    width: var(--papyrus-complete-dropdown-width);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: var(--papyrus-code-bg);
+    border: var(--papyrus-complete-border-width) solid var(--papyrus-complete-border-color);
+    border-radius: var(--papyrus-complete-border-radius);
+
+
+    li {
+      margin: 0;
+    }
+  }
+
+  &-item + &-footer,
+  &-item.active + &-footer,
+  &-item.active:hover + &-footer {
+    border-bottom: 0;
+    border-bottom-right-radius: var(--papyrus-complete-border-radius);
+    border-bottom-left-radius: var(--papyrus-complete-border-radius);
+  }
+
+  &-header + &-item.active,
+  &-header + &-item.active:hover {
+    border-top-left-radius: var(--papyrus-complete-border-radius);
+    border-top-right-radius: var(--papyrus-complete-border-radius);
+  }
+
+  &-item {
+    position: relative;
+    padding: 2px 5px 2px 25px;
+    color: var(--papyrus-complete-color);
+    font-size: var(--papyrus-complete-font-size);
+    font-family: var(--papyrus-font-family);
+    border-bottom: var(--papyrus-complete-border-width) solid var(--papyrus-complete-border-color);
+    cursor: pointer;
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 5px;
+      color: var(--papyrus-complete-icon-color);
+      font-weight: 600;
+      font-size: 1.5em;
+      line-height: 1;
+      content: "⥂";
+    }
+  }
+
+  &-footer {
+    border: none;
+  }
+
+
+  &-item:hover,
+  &-item.active {
+    color: var(--papyrus-complete-highlight-color);
+    background-color: var(--papyrus-complete-highlight-bg);
+
+    &::before {
+      color: var(--papyrus-complete-icon-active-color);
+    }
+  }
+
 }
 
 

@@ -1,6 +1,7 @@
 @import "theme/vars";
 @import "theme/root";
 @import "theme/base";
+@import "theme/languages/bash";
 @import "theme/languages/html";
 @import "theme/languages/liquid";
 @import "theme/languages/javascript";
@@ -9,3 +10,5 @@
 @import "theme/languages/css";
 @import "theme/languages/scss";
 @import "theme/languages/json";
+@import "theme/languages/yaml";
+@import "theme/languages/treeview";

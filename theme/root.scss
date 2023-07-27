@@ -31,6 +31,18 @@
   --papyrus-code-border-radius              : #{$papyrus-code-border-radius};
   --papyrus-code-caret-color                : #{$papyrus-code-caret-color};
 
+  // COMPLETIONS
+  --papyrus-complete-color                  : #{$papyrus-complete-color};
+  --papyrus-complete-highlight-color        : #{$papyrus-complete-highlight-color};
+  --papyrus-complete-highlight-bg           : #{$papyrus-complete-highlight-bg};
+  --papyrus-complete-border-color           : #{$papyrus-complete-border-color};
+  --papyrus-complete-border-radius          : #{$papyrus-complete-border-radius};
+  --papyrus-complete-border-width           : #{$papyrus-complete-border-width};
+  --papyrus-complete-font-size              : #{$papyrus-complete-font-size};
+  --papyrus-complete-icon-color             : #{$papyrus-complete-icon-color};
+  --papyrus-complete-icon-active-color      : #{$papyrus-complete-icon-active-color};
+  --papyrus-complete-dropdown-width         : #{$papyrus-complete-dropdown-width};
+
   // SCROLLBAR
   --papyrus-scrollbar-width                 : #{$papyrus-scrollbar-width};
   --papyrus-scrollbar-track                 : #{$papyrus-scrollbar-track};
@@ -163,6 +175,19 @@
   --papyrus-json-boolean                     : #{$papyrus-json-boolean};
   --papyrus-json-number                      : #{$papyrus-json-number};
   --papyrus-json-operator                    : #{$papyrus-json-operator};
+  --papyrus-json-comment                     : #{$papyrus-json-comment};
+
+  /* -------------------------------------------- */
+  /* YAML LANGUAGE                                */
+  /* -------------------------------------------- */
+
+
+  --papyrus-yaml-punctuation                 : #{$papyrus-yaml-punctuation};
+  --papyrus-yaml-key                         : #{$papyrus-yaml-key};
+  --papyrus-yaml-string                      : #{$papyrus-yaml-string};
+  --papyrus-yaml-boolean                     : #{$papyrus-yaml-boolean};
+  --papyrus-yaml-number                      : #{$papyrus-yaml-number};
+  --papyrus-yaml-comment                     : #{$papyrus-yaml-comment};
 
   /* -------------------------------------------- */
   /* JAVASCRIPT LANGUAGE                          */
@@ -177,6 +202,7 @@
   --papyrus-js-special-chars                 : #{$papyrus-js-special-chars};
   --papyrus-js-parameter                     : #{$papyrus-js-parameter};
   --papyrus-js-variable                      : #{$papyrus-js-variable};
+  --papyrus-js-object                        : #{$papyrus-js-object};
   --papyrus-js-operator                      : #{$papyrus-js-operator};
   --papyrus-js-operation                     : #{$papyrus-js-operation};
   --papyrus-js-module                        : #{$papyrus-js-module};
@@ -205,4 +231,19 @@
   --papyrus-ts-filter-name                   : #{$papyrus-ts-filter-name};
   --papyrus-ts-string                        : #{$papyrus-ts-string};
   --papyrus-ts-comment                       : #{$papyrus-ts-comment};
+
+  /* -------------------------------------------- */
+  /* TREEVIEW                                     */
+  /* -------------------------------------------- */
+
+  --papyrus-bash-comment                     : #{$papyrus-bash-comment};
+  --papyrus-bash-punctuation                 : #{$papyrus-bash-punctuation};
+  --papyrus-bash-argument                    : #{$papyrus-bash-argument};
+
+  /* -------------------------------------------- */
+  /* TREEVIEW                                     */
+  /* -------------------------------------------- */
+
+  --papyrus-treeview-line-width              : #{$papyrus-treeview-line-width};
+  --papyrus-treeview-line-color              : #{$papyrus-treeview-line-color};
 }

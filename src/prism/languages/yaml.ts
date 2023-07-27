@@ -41,8 +41,7 @@ export default function () {
         .replace(/<<prop>>/g, properties)
         .replace(/<<key>>/g, '(?:' + plainKey + '|' + string + ')')),
       lookbehind: true,
-      greedy: true,
-      alias: 'atrule'
+      greedy: true
     },
     directive: {
       pattern: /(^[ \t]*)%.+/m,

@@ -1,9 +1,11 @@
-import { MountOptions, CreateOptions, Languages } from '../types/options';
+import { Merge } from 'type-fest';
+import { Options, Languages, EditorOptions } from '../types/options';
+import merge from 'mergerino';
 
 /**
  * **Utility** ~ Trim Code Input
  */
-export function trimInput (input: string, options: MountOptions | CreateOptions) {
+export function trimInput (input: string, options: Options) {
 
   if (options.trimStart && options.trimStart) {
     return input.trim();
@@ -14,17 +16,6 @@ export function trimInput (input: string, options: MountOptions | CreateOptions)
   }
 
   return input;
-}
-
-/**
- * **Utility** ~ Safe text insertion
- */
-export function safeTextInsert (text: string): boolean {
-
-  return text === ''
-    ? document.execCommand('delete')
-    : document.execCommand('insertText', false, text);
-
 }
 
 /**
@@ -63,7 +54,9 @@ export function getLanguageName (language: string): Languages | null {
     tsx: 'tsx',
     yaml: 'yaml',
     yml: 'yaml',
-    plaintext: 'plaintext'
+    plaintext: 'plaintext',
+    treeview: 'treeview',
+    tree: 'treeview'
   };
 
   if (language in map) return map[language];
@@ -86,18 +79,28 @@ export function getLineCount (code: string) {
 /**
  * **Utility** ~ Returns the newline counter node
  */
-export function getLineNumbers (count: number) {
+export function getLineNumbers (count: number, highlight: number = 0) {
 
   if (isNaN(count)) return '';
 
+  highlight = highlight - 1;
+
   let nl = '';
   let i = 0;
-  for (; i < count; i++) nl += '<span class="ln"></span>';
+  for (; i < count; i++) {
+
+    if (highlight === i) {
+      nl += '<span class="ln highlight"></span>';
+    } else {
+      nl += '<span class="ln"></span>';
+    }
+  }
+
   return `<span class="line-numbers">${nl}</span>`;
 
 }
 
-export function mergePairs (config: MountOptions) {
+export function checkPairs (config: EditorOptions) {
 
   if ('autoClosingPairs' in config) {
     for (const [ open, close ] of config.autoClosingPairs) {
@@ -110,116 +113,110 @@ export function mergePairs (config: MountOptions) {
     }
   }
 
-  if ('newlineIndentPairs' in config) {
-    for (const [ open, close ] of config.newlineIndentPairs) {
+  if ('autoIndentPairs' in config) {
+    for (const [ open, close ] of config.autoIndentPairs) {
       if (open.length !== 1) {
-        throw new Error(`𓁁 Papyprus: Invalid "newlineIndentPairs" character ("${open}") - Single characters only!`);
+        throw new Error(`𓁁 Papyprus: Invalid "autoIndentPairs" character ("${open}") - Single characters only!`);
       }
       if (open.length !== 1) {
-        throw new Error(`𓁁 Papyprus: Invalid "newlineIndentPairs" character ("${close}") - Single characters only!`);
+        throw new Error(`𓁁 Papyprus: Invalid "autoIndentPairs" character ("${close}") - Single characters only!`);
       }
     }
   }
 
-  const defaults = {
-    autoClosingPairs: [
-      [ '"', '"' ],
-      [ "'", "'" ],
-      [ '(', ')' ],
-      [ '{', '}' ],
-      [ '[', ']' ]
-    ],
-    newlineIndentPairs: [
-      [ '{', '}' ],
-      [ '[', ']' ]
-    ]
-  };
+}
 
-  for (const key in config) defaults[key] = config[key];
+export function mergeEditorOptions (options: true | EditorOptions, defaults = <EditorOptions>{
+  autoClosingPairs: [
+    [ '"', '"' ],
+    [ '(', ')' ],
+    [ '{', '}' ],
+    [ '[', ']' ]
+  ],
+  autoIndentPairs: [
+    [ '{', '}' ],
+    [ '[', ']' ]
+  ],
+  indentChar: ' ',
+  indentSize: 2,
+  lineHighlight: true,
+  lineIndent: true,
+  lineNumber: 1,
+  locLimit: 1500,
+  renderSpace: false,
+  renderTab: false,
+  spellcheck: false,
+  tabConvert: true,
+  tabIndent: true,
+  completions: {}
+}) {
 
-  return defaults;
+  if (options === true) return defaults;
+
+  const config = merge<EditorOptions>(defaults, options);
+
+  checkPairs(config);
+
+  return config;
 
 }
 
-export function mergeShared <T = any> (config: T): T {
+export function mergeOptions (options: Options): Merge<Options, {
+  editor: false | EditorOptions
+}> {
 
-  const defaults = {
+  const config = merge<Options>({
     id: null,
-    autoSave: true,
-    editor: true,
-    tabConvert: true,
-    input: '',
-    indentChar: ' ',
-    indentSize: 2,
     language: null,
-    lineIndent: true,
+    input: '',
+    lineFence: true,
     lineNumbers: true,
-    lineHighlight: true,
-    locLimit: 1500,
-    spellcheck: false,
     showCRLF: false,
     showSpace: false,
     showCR: false,
     showLF: false,
     showTab: false,
     trimEnd: true,
-    trimStart: true
-  } as any;
-
-  for (const key in config) defaults[key] = config[key];
-
-  return defaults;
-
-}
-
-/**
- * **Utility** ~ Merge options
- */
-export function mergeOptions (config: MountOptions): MountOptions {
-
-  const combined = mergeShared(config) as MountOptions;
-  const pairs = mergePairs(config) as MountOptions;
-  const defaults = Object.assign(config, combined, pairs);
-
-  for (const option in config) defaults[option] = config[option];
-
-  return defaults;
-
-}
-
-export function mergeCreateOptions (config: CreateOptions) {
-
-  const combined = mergeShared<CreateOptions>(config);
-
-  combined.addClass = {
-    pre: [],
-    code: []
-  };
-
-  combined.addAttrs = {
-    pre: [],
-    code: []
-  };
-
-  for (const option in config) {
-    if (option === 'addAttrs' || option === 'addClass') {
-      for (const attr in config[option]) {
-        combined[option][attr] = config[option][attr];
-      }
-    } else {
-      combined[option] = config[option];
+    trimStart: true,
+    editor: false,
+    addAttrs: {
+      pre: [],
+      code: []
+    },
+    addClass: {
+      pre: [],
+      code: []
     }
+  }, options);
+
+  if (config.editor !== false) {
+    config.editor = mergeEditorOptions(config.editor);
   }
 
-  combined.language = getLanguageName(combined.language as Languages);
+  if (config.language === 'treeview') {
+    config.lineNumbers = false;
+    config.editor = false;
+    config.showSpace = false;
+  }
 
-  return combined;
+  return config as Merge<Options, {
+    editor: false | EditorOptions
+  }>;
 
 }
 
 /* -------------------------------------------- */
 /* EDITOR UTILS                                 */
 /* -------------------------------------------- */
+
+/**
+ * Return a UUID
+ */
+export function uuid () {
+
+  return Math.random().toString(36).slice(2);
+
+}
 
 /**
  * Debounce wrapper outside the event loop
@@ -232,5 +229,28 @@ export function debounce (cb: any, wait: number) {
     clearTimeout(timeout);
     timeout = window.setTimeout(() => cb(...args), wait);
   };
+
+}
+
+/**
+ * **Utility** ~ Safe text insertion
+ */
+export function safeTextInsert (text: string): boolean {
+
+  return text === ''
+    ? document.execCommand('delete')
+    : document.execCommand('insertText', false, text);
+
+}
+
+export function findLineEnd (value: string, currentEnd: number): number {
+
+  // Go to the beginning of the last line
+  const lastLineStart = value.lastIndexOf('\n', currentEnd - 1) + 1;
+
+  // There's nothing to unindent after the last cursor, so leave it as is
+  if (value.charAt(lastLineStart) !== '\t') return currentEnd;
+
+  return lastLineStart + 1; // Include the first character, which will be a tab
 
 }

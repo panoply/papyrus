@@ -1,9 +1,9 @@
 {
   "name": "papyrus",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
-    "name": "Νίκος Σαβίδης ",
+    "name": "Νίκος Σαβίδης",
     "email": "n.savvidis@gmx.com"
   },
   "license": "MIT",
@@ -53,13 +53,15 @@
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
-    "ava": "^5.2.0",
-    "terser": "^5.18.0"
+    "ava": "^5.3.1",
+    "terser": "^5.19.2"
   },
   "dependencies": {
-    "indent-textarea": "^3.0.0",
+    "@textcomplete/core": "^0.1.12",
+    "@textcomplete/textarea": "^0.1.12",
+    "mergerino": "^0.4.0",
     "morphdom": "^2.7.0",
     "prismjs": "^1.29.0",
-    "type-fest": "^3.11.1"
+    "type-fest": "^4.0.0"
   }
 }

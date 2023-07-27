@@ -1,15 +1,14 @@
 
-import type { Languages, CombinedOptions } from '../../types/options';
+import type { Languages, Options } from '../../types/options';
 import Prism, { Grammar } from 'prismjs';
 import { model } from '../model';
 import { grammars } from '../prism/grammars';
 import { invisibles } from '../prism/invisibles';
-import { getLanguageName, getLineCount, getLineNumbers } from '../utils';
+import { getLanguageName, getLineCount, getLineNumbers, uuid } from '../utils';
 import morphdom from 'morphdom';
+import { EditorOptions } from '../..';
 
-export function highlight (config: CombinedOptions) {
-
-  Prism.manual = true;
+export function highlight (config: Options) {
 
   let mode: 'error' | 'static' | 'editing' = 'static';
   let languageId: Languages = config.language;
@@ -17,13 +16,10 @@ export function highlight (config: CombinedOptions) {
   let preEl: HTMLPreElement;
   let codeEl: HTMLElement;
   let lineCount: number = NaN;
-  let locLimit: HTMLElement = null;
 
   grammars();
 
-  for (const lang in Prism.languages) {
-    invisibles(lang as Languages, config);
-  }
+  for (const lang in Prism.languages) invisibles(lang as Languages, config);
 
   function language (languageName: Languages) {
 
@@ -89,7 +85,7 @@ export function highlight (config: CombinedOptions) {
       if (config.id) {
         preEl.id = config.id;
       } else {
-        preEl.id = Math.random().toString(36).slice(2);
+        preEl.id = uuid();
       }
     }
 
@@ -97,44 +93,37 @@ export function highlight (config: CombinedOptions) {
 
   function raw (input: string) {
 
-    lineCount = getLineCount(input);
-
     const output = Prism.highlight(input, grammar, languageId);
 
-    return `${output}${getLineNumbers(lineCount)}`;
+    if (config.lineNumbers) {
 
+      const editorOpts = (config.editor as EditorOptions);
+
+      lineCount = getLineCount(input);
+
+      if (editorOpts.lineHighlight) {
+        return `${output}${getLineNumbers(lineCount, (config.editor as EditorOptions).lineNumber)}`;
+      } else {
+        return `${output}${getLineNumbers(lineCount, 0)}`;
+      }
+    } else {
+      return `${output}`;
+    }
   }
 
   function highlight (input: string) {
 
-    if (lineCount > config.locLimit) {
+    const output = Prism.highlight(input, grammar, languageId);
 
-      if (locLimit === null) {
-        const node = document.createElement('div');
-        node.innerHTML = `<div class="loc-limit">LOC LIMIT (${config.locLimit}) EXCEEDED</div>`;
-        preEl.insertBefore(codeEl, node.firstElementChild);
-        locLimit = preEl.firstElementChild as HTMLElement;
-      }
-
-    } else {
-
-      if (locLimit !== null) {
-        locLimit.remove();
-        locLimit = null;
-      }
-
-      const output = Prism.highlight(input, grammar, languageId);
-
-      morphdom(codeEl, `<code>${output}${getLineNumbers(lineCount)}</code>`, {
-        childrenOnly: true,
-        onBeforeElUpdated: (from, to) => {
+    morphdom(codeEl, `<code>${output}${getLineNumbers(lineCount)}</code>`, {
+      childrenOnly: true,
+      onBeforeElUpdated: (from, to) => {
         // Skip line numbers
-          if (from.classList.contains('highlight')) return false;
-          if (from.isEqualNode(to)) return false;
-          return true;
-        }
-      });
-    }
+        if (from.classList.contains('active')) return false;
+        if (from.isEqualNode(to)) return false;
+        return true;
+      }
+    });
 
   }
 

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { IAttrs, IEditor, IModel, Languages } from './attrs';
+import { IAttrs, IEditor, IModel } from './attrs';
 import { Layout } from './components/layout';
 import { Landing } from './components/landing';
 import { editor } from './states/editor';
@@ -95,23 +95,24 @@ function render () {
     },
     style,
     papyrus: {
-      editor: true,
       input: '',
       language: 'liquid',
       lineNumbers: true,
-      tabIndent: true,
-      showSpace: false,
-      autoSave: true,
-      indentChar: 'space',
-      indentSize: 2,
-      lineHighlight: true,
-      lineIndent: true,
-      locLimit: 2000,
+      editor: {
+        tabIndent: true,
+        indentChar: 'space',
+        indentSize: 2,
+        lineHighlight: true,
+        lineIndent: true,
+        locLimit: 2000,
+        renderSpace: false,
+        renderTab: false,
+        spellcheck: false
+      },
       showCR: false,
       showCRLF: false,
       showLF: false,
-      showTab: false,
-      spellcheck: false,
+      showSpace: false,
       trimEnd: true,
       trimStart: true
     },

@@ -1,189 +1,155 @@
 ---
 layout: usage.liquid
 permalink: '/usage/index.html'
-title: '𓁁 Papyrus'
+title: '𓁁 Papyrus Usage'
 description: ''
 ---
-
-# What is Papyrus?
-
-Papyrus is a syntax highlighter and embedded web based text editor for code sample showcasing. Papyrus leverages [PrismJS](https://prismjs.com) and its editor features have been adapted from [CodeJar](https://github.com/antonmedv/codejar). The module exposes a simple API and provides developers with customized theming capabilities.
-
-> The module was created for usage in the documentation of [Æsthetic](https://æsthetic.dev).
-
-# Getting Started
-
-Papyrus can be used in both CJS and ESM projects.
-
-```
-pnpm add papyrus
-```
 
 # Usage
 
 Papyrus exposes 3 methods from it's default export. The `papyrus.render()` method is for usage within Node and will render a Papyrus code block, whereas the `papyrus.mount()` method is for usage within the web browser.
 
-### Theme
-
-The default theming used by Papyrus is known as [Potion](https://github.com/panoply/vscode-potion-theme). You can create custom theming using the [Theme Tool](/theme) or alternatively provide an existing Prism theme.
-
-### Render
-
-The `render` method is for usage within Node and will render a Papyrus code block. You will typically leverage this with a solution like [markdown-it](https://github.com/markdown-it/markdown-it).
-
-```js
-const papyrus = require('papyrus');
-const markdown = require('markdown-it');
-
-const md = markdown({
-  html: true,
-  highlight: (string, language) => papyrus.render(string, {
-    language,
-    autoSave: true,
-    editor: true,
-    indentChar: ' ',
-    indentSize: 2,
-    language: null,
-    autoClosing: true,
-    lineHighlight: true,
-    lineIndent: true,
-    lineNumbers: true,
-    locLimit: 1500,
-    history: true,
-    newlineChars: [ '(', '{', '[' ],
-    spellcheck: false,
-    showCRLF: false,
-    showSpace: true,
-    showCR: false,
-    showLF: false,
-    showTab: false,
-    trimEnd: true,
-    trimStart: true,
-    class: {
-      pre: [],
-      code: []
-    },
-    attrs: {
-      pre: [],
-      code: []
-    }
-  });
-
-});
-
-```
-
-### Mount
-
-The `mouth` method is for usage within the browser and can be used for enabling a basic text editor.
+### Methods
 
 ```js
 import papyrus from 'papyrus';
 
-const code = document.querySelector('pre');
+// DEFAULT
 
-papyrus.mount(string, {
-  input: '',
-  language: 'plaintext',
-  autoSave: true,
-  autoClosing: true,
-  editor: true,
-  indentChar: ' ',
-  indentSize: 2,
-  lineHighlight: true,
-  lineIndent: true,
+// Invokes on all <pre class="papyrus"> elements
+papyrus(options?: {}): Papyrus[];
+
+// METHODS
+
+// Mounts a specific <pre> element
+papyrus.mount(element: string | HTMLPreElement, options?: {}): Papyrus;
+
+// Render papyrus to a specific element
+papyrus.render(input: string, output: string | HTMLElement, options?: {}): Papyrus;
+
+// Returns generated papyrus markup
+papyrus.static(input: string, options?: {}): string;
+
+// Return a specific papyrus instance or all instances
+papyrus.get(id?: string): Papyrus | Papyrus[];
+
+// GLOBAL SCOPE
+
+// Same as papyrus.get() but returns the instance Map
+window.papyrus: Map<string, Papyrus>;
+```
+
+### Instance
+
+Papyrus execution will return an instance. Instances will give you control over the element papyrus has been rendered and will allow you to hooks into editor logic to perform additional enhancements.
+
+```js
+import papyrus from 'papyrus';
+
+const p = papyrus.mount(document.querySelector('#code'))
+
+// INFORMATION
+
+p.mode: 'static' | 'error' | 'editing';        // The current mode
+p.language: Languages;                         // The current language id
+p.lines: number;                               // The number of lines
+p.raw: string                                  // The code input text content
+
+// ELEMENTS
+
+p.pre: HTMLPreElement;                        // The Papyrus HTML `<pre>` element
+p.code: HTMLElement;                          // The Papyrus HTML `<code>` element
+p.textarea: HTMLTextAreaElement;              // The Papyrus HTML `<textarea>` element
+
+// UPDATE CONTROL
+
+p.options(opts?: {}): Options;                // Update editor options
+p.update('', language?, history?);            // Update code input, language (optional history clear)
+
+// EDITOR CONTROL
+
+p.editor(opts?: {});                          // Enable text editing
+p.editor.disable();                           // Disable text editing
+
+// ERROR RENDERING
+
+p.error('', opts?: {});                       // Render an error overlay on the editor.
+p.error.hide();                               // Hide any errors that were previously shown.
+
+// CALLBACK
+
+p.onupdate(function(code: string, language: Language) {
+
+  // PARAMS
+
+  console.log(code)       // The code input
+  console.log(language)   // The language id
+
+  // SCOPES
+
+  this.element            // The <textarea> element;
+  this.lineNumber         // The current line number
+
+  // RETURN VALUES
+
+  return '';             // Updates the code
+  return false;          // Prevents further processing
+
+
+}, scope?: {});
+
+```
+
+### Options
+
+# Options
+
+Papyrus exposes a large set of configuration options. Depending on the available methods, different options will be available. Below is the complete schema for initializing a Papyrus instance.
+
+```js
+import papyrus from 'papyrus';
+
+papyrus({
+  id: null,
+  language: null,
   lineNumbers: true,
-  locLimit: 1500,
-  history: true,
-  newlineChars: ['(', '{', '['],
-  spellcheck: false,
-  showCRLF: false,
-  showSpace: true,
-  showCR: false,
-  showLF: false,
-  showTab: false,
+  lineFence: true,
   trimEnd: true,
-  trimStart: true
-});
-```
-
-### HTML
-
-HTML Language
-
-<!-- prettier-ignore-->
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-
-  <!--
-    comment
-  -->
-
-  <main>
-    <div>
-      Hello World!
-    </div>
-  </main>
-
-</body>
-</html>
-```
-
-### Liquid
-
-The Liquid Template Language
-
-```liquid
-
-<!--
-  comment
--->
-
-{%- if condition == assert -%}
-  <div
-    class="xxx"
-    id="some-id">
-      {% # comment %}
-    <ul>
-      <li
-        class="some-class"
-        data-attr="xxx"
-        {% if xxx %}
-          id="{{ object.prop }}"
-        {% endif %}>
-        {% for i in list %}
-          <ul>
-            <li data-attr="{{ i.xxx }}">
-              {{ i.something
-                | filter: 'some-filter'
-                | append: 'some-append'
-                | prepend: 'some-prepend'
-                | example:
-                  one: 1,
-                  two: 2,
-                  three: 3,
-                  four: 4
-              }}
-            </li>
-        </ul>
-      {% endfor %}
-      </li>
-    </ul>
-  </div>
-{% endif %}
-
-{% schema %}
-  {
-    "foo": "bar"
+  trimStart: true,
+  showSpace: false,
+  showTab: false,
+  showCRLF: false,
+  showLF: false,
+  showCR: false,
+  addClass: {
+    pre: [],
+    code: []
+  },
+  addAttrs: {
+    pre: [],
+    code: []
+  },
+  editor: {
+    autoClosingPairs: [
+      ['(', ')'],
+      ['{', '}']
+      ['[', ']']
+    ]
+    autoIndentPairs: [
+      ['{', '}']
+      ['[', ']']
+    ]
+    indentChar: ' ',
+    indentSize: 2,
+    lineNumber: 1,
+    lineHighlight: true,
+    lineIndent: true,
+    locLimit: 1500,
+    renderSpace: false,
+    renderTabs: false,
+    spellcheck: false,
+    tabConvert: true,
+    tabIndent: true,
   }
-{% endschema %}
-
+})
 ```
