@@ -27,6 +27,8 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
   let onUpdate: (code: string, language: Languages) => string | void | false;
   let onSave: (code: string, language: Languages) => string | void | false;
 
+  const initial = input;
+
   const editor: Editor = function editor (opts?: EditorOptions) {
 
     editorOpts = opts;
@@ -94,6 +96,13 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
     onactive(1);
   }
+
+  editor.enable = function enable () {
+
+    if (typeof config.editor === 'object') editor(config.editor);
+
+  };
+
   /**
    * Disable Text Editor
    */
@@ -516,6 +525,9 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
   }
 
   return {
+    get initial () {
+      return initial;
+    },
     get textarea () {
       return textarea;
     },

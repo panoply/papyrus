@@ -40,6 +40,10 @@ export interface Model {
    */
   get textarea(): HTMLTextAreaElement;
   /**
+   * The initial input raw string before any edits
+   */
+  get initial(): string;
+  /**
    * The raw string of the `<code>` element. This will only show
    * the most recent input state, use `onupdate` method to obtain
    * realtime edits being made.
@@ -89,6 +93,10 @@ export interface Model {
      * Disable editor mode
      */
     disable: () => void;
+    /**
+     * Enable editor mode
+     */
+    enable: () => void;
   }
   /**
    * Update the current editor options. This method exposes editor

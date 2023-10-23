@@ -122,6 +122,7 @@
   /* -------------------------------------------- */
 
   --papyrus-css-selector                     : #{$papyrus-css-selector};
+  --papyrus-css-comment                      : #{$papyrus-css-comment};
   --papyrus-css-tag-selector                 : #{$papyrus-css-tag-selector};
   --papyrus-css-colon                        : #{$papyrus-css-colon};
   --papyrus-css-function                     : #{$papyrus-css-function};
@@ -137,7 +138,8 @@
   --papyrus-css-combinator                   : #{$papyrus-css-combinator};
   --papyrus-css-unit                         : #{$papyrus-css-unit};
   --papyrus-css-attr-name                    : #{$papyrus-css-attr-name};
-  --papyrus-css-attr-value                   : #{$papyrus-css-attr-value};;
+  --papyrus-css-attr-value                   : #{$papyrus-css-attr-value};
+  --papyrus-css-string                       : #{$papyrus-css-string};
   --papyrus-css-attr-punctuation             : #{$papyrus-css-attr-punctuation};
   --papyrus-css-pseudo-element               : #{$papyrus-css-pseudo-element};
 

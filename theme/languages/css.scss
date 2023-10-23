@@ -4,6 +4,10 @@
 
   .token {
 
+    &.comment {
+      color: var(--papyrus-css-comment);
+    }
+
     &.selector {
       color: var(--papyrus-css-selector);
     }
@@ -72,6 +76,10 @@
 
     &.number {
       color: var(--papyrus-css-number);
+    }
+
+    &.string {
+      color: var(--papyrus-css-string);
     }
 
     &.unit{

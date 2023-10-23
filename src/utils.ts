@@ -197,6 +197,10 @@ export function mergeOptions (options: Options): Merge<Options, {
     config.lineNumbers = false;
     config.editor = false;
     config.showSpace = false;
+    config.showSpace = false;
+    config.showCR = false;
+    config.showLF = false;
+    config.showTab = false;
   }
 
   return config as Merge<Options, {

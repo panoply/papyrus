@@ -64,7 +64,13 @@ export function invisibles (language: Languages, options: Options) {
     if (!grammar || grammar.tab) return;
 
     // assign invisibles here to "mark" the grammar in case of self references
-    for (const name in config) if (name in config) grammar[name] = config[name];
+    for (const name in config) {
+      if (name in config) {
+        grammar[name] = config[name];
+      } else {
+        if (name in grammar) delete grammar[name];
+      }
+    }
 
     // eslint-disable-next-line no-redeclare
     for (const name in grammar) {

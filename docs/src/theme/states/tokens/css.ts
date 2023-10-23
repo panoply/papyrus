@@ -134,6 +134,17 @@ export default <IToken<IColor>[]>[
     }
   },
   {
+    label: 'String',
+    sass: '$papyrus-css-string',
+    css: '--papyrus-css-string',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FFF9A6',
+      value: '#FFF9A6'
+    }
+  },
+  {
     label: 'Hexcode',
     sass: '$papyrus-css-hexcode',
     css: '--papyrus-css-hexcode',

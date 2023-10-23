@@ -99,19 +99,21 @@ $papyrus-html-comment:                    #888888 !default;
 /* CSS LANGUAGE                                 */
 /* -------------------------------------------- */
 
-$papyrus-css-selector:                    #a5d447 !default;
+$papyrus-css-comment:                     #888888 !default;
+$papyrus-css-selector:                    #91ebc2 !default;
 $papyrus-css-tag-selector:                #FF93BC !default;
-$papyrus-css-colon:                       #91EBC2 !default;
+$papyrus-css-colon:                       #e91e63 !default;
 $papyrus-css-function:                    #a5d447 !default;
-$papyrus-css-variable:                    #b594d9 !default;
+$papyrus-css-variable:                    #ca99ff !default;
 $papyrus-css-operator:                    #E91E63 !default;
 $papyrus-css-punctuation:                 #fafafa !default;
 $papyrus-css-important:                   #E91E63 !default;
 $papyrus-css-atrule:                      #E91E63 !default;
 $papyrus-css-property:                    #81D4FA !default;
 $papyrus-css-property-value:              #FFF9A6 !default;
-$papyrus-css-number:                      #F48FB1 !default;
-$papyrus-css-hexcode:                     #F48FB1 !default;
+$papyrus-css-string:                      #FFF9A6 !default;
+$papyrus-css-number:                      #bc85ff !default;
+$papyrus-css-hexcode:                     #ff9494 !default;
 $papyrus-css-combinator:                  #E91E63 !default;
 $papyrus-css-unit:                        #E91E63 !default;
 $papyrus-css-attr-name:                   #91EBC2 !default;

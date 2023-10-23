@@ -27,6 +27,7 @@ export default defineConfig([
     noExternal: [
       'prismjs',
       'morphdom',
+      'mergerino',
       '@textcomplete/core',
       '@textcomplete/textarea'
     ],

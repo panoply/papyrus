@@ -93,6 +93,10 @@ export function highlight (config: Options) {
 
   function raw (input: string) {
 
+    grammars();
+
+    for (const lang in Prism.languages) invisibles(lang as Languages, config);
+
     const output = Prism.highlight(input, grammar, languageId);
 
     if (config.lineNumbers) {
