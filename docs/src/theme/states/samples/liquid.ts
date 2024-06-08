@@ -2,6 +2,14 @@ import { liquid } from 'language-literals';
 
 export default liquid`
 
+
+  {%
+    liquid
+    if condition == assertion
+      echo 'hello world!'
+    endif
+  %}
+
   {%- if condition == assert -%}
     <div
       class="xxx"
@@ -42,4 +50,15 @@ export default liquid`
     }
   {% endschema %}
 
+  {% comment %}
+    lorem ipsum
+  {% endcomment %}
+
+  <aside>
+    Hello World!
+  </aside>
+
+  {% comment %}
+    lorem ipsum
+  {% endcomment %}
 `;

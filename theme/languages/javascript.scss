@@ -1,8 +1,6 @@
-
-
 .language-javascript,
 .language-js {
-  color: var(--papyrus-ts-fallback);
+  color: var(--papyrus-js-fallback);
 
   .token {
 
@@ -42,10 +40,6 @@
       color: var(--papyrus-js-operation);
     }
 
-    &.module {
-      color: var(--papyrus-js-module);
-    }
-
     &.function {
       color: var(--papyrus-js-function);
     }
@@ -66,13 +60,20 @@
       color: var(--papyrus-js-flow);
     }
 
-    &.string {
-      color: var(--papyrus-js-string);
-    }
-
-
     &.semi {
       color: var(--papyrus-js-semi);
+    }
+
+    &.this {
+      color: var(--papyrus-js-this);
+    }
+
+    &.module {
+      color: var(--papyrus-js-module);
+    }
+
+    &.class {
+      color: var(--papyrus-js-class);
     }
 
     &.boolean {
@@ -87,8 +88,27 @@
       color: var(--papyrus-js-regex-flags);
     }
 
-    &.literal-property {
+    &.browser-objects {
+      color: var(--papyrus-js-browser-objects);
+    }
+
+    &.literal-property,
+    &.property {
       color: var(--papyrus-js-literal-property);
+    }
+
+    &.string,
+    &.string-property {
+      color: var(--papyrus-js-string);
+    }
+
+
+    &.bracket > .punctuation {
+      color: var(--papyrus-js-bracket);
+    }
+
+    &.bracket > .keyword {
+      color: var(--papyrus-js-this);
     }
   }
 }

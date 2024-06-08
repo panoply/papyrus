@@ -70,19 +70,20 @@ declare namespace Papyrus {
    * via the `papyrus.create` method. The `create` method is Typically
    * used in NodeJS environments and returns a string.
    */
-  type StaticOptions = Omit<SetRequired<PartialDeep<O.Options>, 'language'>, 'input'>
+  type StaticOptions = Omit<SetRequired<PartialDeep<O.Options>, 'language'>, 'input'>;
+
   /**
    * #### PAPYRUS 𓁁
    *
    * An embedded code editor leveraging PrismJS.
    */
-  interface Static {
+  interface Instance {
     /**
      * Map store reference of all current Papyrus instances on the page.
      */
     get model (): Map<string, Model>
     /**
-     * Retrive all active code instances tracked by Papyrus in the
+     * Retrive an active code instance by `id` tracked by Papyrus in the
      * current document. By default, Papyrus will assign elements with
      * UUID references.
      *
@@ -93,10 +94,6 @@ declare namespace Papyrus {
      * @example
      * import papyrus from 'papyrus';
      *
-     * // Returns a list of all current code regions in the DOM
-     * //
-     * papyrus.get(): Model[]
-     *
      * // Returns a papyrus model by id annotation
      * // Requires, an ID be passed on pre element, eg:
      * //
@@ -105,8 +102,26 @@ declare namespace Papyrus {
      * papyrus.get('foo'): Model;
      *
      */
-    get(): M.Model[];
     get(id: string): M.Model;
+    /**
+     * Retrive all active code instances tracked by Papyrus in the
+     * current document. By default, Papyrus will assign elements with
+     * UUID references.
+     *
+     * If you want refined controll, you can override that behaviour and
+     * pass a unqiue `id` value on the `<pre>` element, then from here
+     * query it with this method.
+     *
+     * @see {@link M.Model}
+     * @example
+     * import papyrus from 'papyrus';
+     *
+     * // Returns a list of all current code regions in the DOM
+     * //
+     * papyrus.get(): Model[]
+     *
+     */
+    list(): M.Model[];
     /**
      * #### BROWSER USAGE
      *
@@ -298,7 +313,7 @@ declare global {
      *
      * Map store reference of current Papyrus code regions
      */
-    get papyrus(): Map<string, Papyrus.Model>
+    get Papyrus(): Map<string, Papyrus.Model>
   }
 
 }
@@ -308,6 +323,6 @@ declare global {
  *
  * An embedded code editor leveraging PrismJS.
  */
-declare const Papyrus: Papyrus.Static;
+declare const Papyrus: Papyrus.Instance;
 
 export = Papyrus

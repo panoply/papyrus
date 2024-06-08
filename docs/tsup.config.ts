@@ -2,7 +2,8 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: {
-    'bundle.min': './src/theme/index.ts'
+    'bundle.min': './src/theme/index.ts',
+    'usage.min': './src/usage/app/index.ts'
   },
   noExternal: [
     'mithril',
@@ -24,5 +25,4 @@ export default defineConfig({
   format: [
     'esm'
   ]
-
 });

@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { Languages } from 'papyrus';
 import { IAttrs, IEditor, IModel } from './attrs';
 import { Layout } from './components/layout';
 import { Landing } from './components/landing';

@@ -3,13 +3,22 @@ import { Options, Languages, EditorOptions } from '../types/options';
 import merge from 'mergerino';
 
 /**
+ * **Utility** ~ Check if property exists in object
+ */
+export function has<T extends object> (prop: string, object: T): boolean {
+
+  return prop in object;
+
+}
+
+/**
  * **Utility** ~ Trim Code Input
  */
 export function trimInput (input: string, options: Options) {
 
-  if (options.trimStart && options.trimStart) {
+  if (options.trimStart && options.trimEnd) {
     return input.trim();
-  } else if (options.trimStart) {
+  } else if (options.trimStart === true && options.trimEnd === false) {
     return input.trimStart();
   } else if (options.trimStart === false && options.trimEnd === true) {
     return input.trimEnd();
@@ -88,7 +97,6 @@ export function getLineNumbers (count: number, highlight: number = 0) {
   let nl = '';
   let i = 0;
   for (; i < count; i++) {
-
     if (highlight === i) {
       nl += '<span class="ln highlight"></span>';
     } else {
@@ -96,7 +104,7 @@ export function getLineNumbers (count: number, highlight: number = 0) {
     }
   }
 
-  return `<span class="line-numbers">${nl}</span>`;
+  return `<div class="line-numbers">${nl}</div>`;
 
 }
 
@@ -161,9 +169,21 @@ export function mergeEditorOptions (options: true | EditorOptions, defaults = <E
 
 }
 
-export function mergeOptions (options: Options): Merge<Options, {
-  editor: false | EditorOptions
-}> {
+export function specificOptions (options: Options) {
+
+  if (options.language === 'treeview') {
+    options.lineNumbers = false;
+    options.editor = false;
+    options.showSpace = false;
+    options.showSpace = false;
+    options.showCR = false;
+    options.showLF = false;
+    options.showTab = false;
+  }
+
+}
+
+export function mergeOptions (options: Options): Merge<Options, { editor: false | EditorOptions }> {
 
   const config = merge<Options>({
     id: null,
@@ -179,6 +199,7 @@ export function mergeOptions (options: Options): Merge<Options, {
     trimEnd: true,
     trimStart: true,
     editor: false,
+    startMode: 'static',
     addAttrs: {
       pre: [],
       code: []
@@ -191,6 +212,7 @@ export function mergeOptions (options: Options): Merge<Options, {
 
   if (config.editor !== false) {
     config.editor = mergeEditorOptions(config.editor);
+    config.startMode = 'editor';
   }
 
   if (config.language === 'treeview') {
@@ -201,11 +223,10 @@ export function mergeOptions (options: Options): Merge<Options, {
     config.showCR = false;
     config.showLF = false;
     config.showTab = false;
+    config.startMode = 'static';
   }
 
-  return config as Merge<Options, {
-    editor: false | EditorOptions
-  }>;
+  return config as Merge<Options, { editor: false | EditorOptions }>;
 
 }
 

@@ -70,7 +70,6 @@ export const Preview: m.Component<IAttrs, {
 
                   state.tab = attrs.preview.opened;
                   state.editor.update(attrs.state.sample, attrs.language);
-                  console.log(attrs.state);
 
                 } else if (attrs.preview.opened === 1) {
 
@@ -85,6 +84,14 @@ export const Preview: m.Component<IAttrs, {
                 }
 
               }
+
+              if (state.language === 'treeview') {
+                state.editor.options({
+
+                });
+
+              }
+
             },
             oncreate: ({ dom }) => {
               attrs.papyrus.input = attrs.state.sample;

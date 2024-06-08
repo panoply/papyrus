@@ -22,59 +22,64 @@ papyrus(options?: {}): Papyrus[];
 // METHODS
 
 // Mounts a specific <pre> element
-papyrus.mount(element: string | HTMLPreElement, options?: {}): Papyrus;
+papyrus.mount('.selector', /* options */);
 
 // Render papyrus to a specific element
-papyrus.render(input: string, output: string | HTMLElement, options?: {}): Papyrus;
+papyrus.render('const x = 1', '.selector', /* options */);
 
 // Returns generated papyrus markup
-papyrus.static(input: string, options?: {}): string;
+papyrus.static('<ul><li> xxx </li></ul>', /* options */);
 
-// Return a specific papyrus instance or all instances
-papyrus.get(id?: string): Papyrus | Papyrus[];
+// Return a specific papyrus instance
+papyrus.get('some-id')
+
+// Return an array list of all papyrus instances
+papyrus.list()
+
 
 // GLOBAL SCOPE
 
 // Same as papyrus.get() but returns the instance Map
-window.papyrus: Map<string, Papyrus>;
+window.papyrus;
 ```
 
 ### Instance
 
 Papyrus execution will return an instance. Instances will give you control over the element papyrus has been rendered and will allow you to hooks into editor logic to perform additional enhancements.
 
-```js
+```ts
 import papyrus from 'papyrus';
 
 const p = papyrus.mount(document.querySelector('#code'))
 
 // INFORMATION
 
-p.mode: 'static' | 'error' | 'editing';        // The current mode
-p.language: Languages;                         // The current language id
-p.lines: number;                               // The number of lines
-p.raw: string                                  // The code input text content
+p.mode: 'static' | 'error' | 'editor';        // The current mode
+p.language: Languages;                        // The current language id
+p.lines: number;                             // The number of lines
+p.raw: string                                // The code input text content
 
 // ELEMENTS
 
-p.pre: HTMLPreElement;                        // The Papyrus HTML `<pre>` element
-p.code: HTMLElement;                          // The Papyrus HTML `<code>` element
-p.textarea: HTMLTextAreaElement;              // The Papyrus HTML `<textarea>` element
+p.pre: HTMLPreElement;                       // The Papyrus HTML `<pre>` element
+p.code: HTMLElement;                         // The Papyrus HTML `<code>` element
+p.textarea: HTMLTextAreaElement;             // The Papyrus HTML `<textarea>` element
 
 // UPDATE CONTROL
 
-p.options(opts?: {}): Options;                // Update editor options
-p.update('', language?, history?);            // Update code input, language (optional history clear)
+p.options(/* options */);                   // Update editor options
+p.update('', 'language', true);             // Update code input, language (optional history clear)
 
 // EDITOR CONTROL
 
-p.editor(opts?: {});                          // Enable text editing
-p.editor.disable();                           // Disable text editing
+p.editor(/* options */);                    // Enable text editing
+p.editor.disable();                         // Disable text editing
+p.editor.enable();                          // Enable text editing, uses default or preset options
 
 // ERROR RENDERING
 
-p.error('', opts?: {});                       // Render an error overlay on the editor.
-p.error.hide();                               // Hide any errors that were previously shown.
+p.showError('', /* options */);            // Render an error overlay on the editor.
+p.hideError();                             // Hide any errors that were previously shown.
 
 // CALLBACK
 
@@ -100,8 +105,6 @@ p.onupdate(function(code: string, language: Language) {
 
 ```
 
-### Options
-
 # Options
 
 Papyrus exposes a large set of configuration options. Depending on the available methods, different options will be available. Below is the complete schema for initializing a Papyrus instance.
@@ -115,6 +118,7 @@ papyrus({
   lineNumbers: true,
   lineFence: true,
   trimEnd: true,
+  startMode: 'static',
   trimStart: true,
   showSpace: false,
   showTab: false,

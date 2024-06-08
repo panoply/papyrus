@@ -4,6 +4,9 @@ import Prism from 'prismjs';
 export default function () {
 
   Prism.languages.treeview = {
+    comment: {
+      pattern: /#.*/
+    },
     'treeview-part': {
       pattern: /^.+/m,
       inside: {
@@ -43,8 +46,10 @@ export default function () {
       const folderPattern = /(^|[^\\])\/\s*$/;
 
       if (folderPattern.test(env.content)) {
+
         env.content = env.content.replace(folderPattern, '$1'); // remove trailing /
         classes.push('dir');
+
       } else {
 
         // file

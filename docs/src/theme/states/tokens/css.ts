@@ -8,8 +8,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#a5d447',
-      value: '#a5d447'
+      default: '#91ebc2',
+      value: '#91ebc2'
     }
   },
   {
@@ -30,8 +30,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#a5d447',
-      value: '#a5d447'
+      default: '#e91e63',
+      value: '#e91e63'
     }
   },
   {
@@ -52,8 +52,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#b594d9',
-      value: '#b594d9'
+      default: '#ca99ff',
+      value: '#ca99ff'
     }
   },
   {
@@ -74,8 +74,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#f4f4f4',
-      value: '#f4f4f4'
+      default: '#fafafa',
+      value: '#fafafa'
     }
   },
   {
@@ -129,8 +129,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#F48FB1',
-      value: '#F48FB1'
+      default: '#bc85ff',
+      value: '#bc85ff'
     }
   },
   {
@@ -151,8 +151,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#F48FB1',
-      value: '#F48FB1'
+      default: '#ff9494',
+      value: '#ff9494'
     }
   },
   {
@@ -206,8 +206,8 @@ export default <IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#f4f4f4',
-      value: '#f4f4f4'
+      default: '#FF93BC',
+      value: '#FF93BC'
     }
   },
   {

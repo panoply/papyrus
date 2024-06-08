@@ -2,8 +2,8 @@ import { EditorOptions } from './options';
 
 export type Editor = {
   (options?: EditorOptions, partial?: boolean): void;
-  disable: () => void;
-  enable: () => void;
+  disable(): void;
+  enable(): void;
 };
 
 export type ErrorFn = {

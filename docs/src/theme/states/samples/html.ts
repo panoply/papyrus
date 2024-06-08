@@ -12,8 +12,24 @@ export default html`
 </head>
 <body>
 
+  <style>
+
+    .class {
+      background: #fff;
+    }
+
+  </style>
+
   <main>
-    <div>
+    <div
+      spx@click="key.prop { once }"
+      spx-node="ref.name"
+      spx-ref:number="100"
+      spx-ref:boolean="true"
+      spx-ref:boolean="false"
+      spx-ref:string="hello world"
+      spx-ref:object="{ prop: 'string', num: 1000, bool: true }"
+      spx-ref:array="['string', 'string']">
       Hello World!
     </div>
   </main>

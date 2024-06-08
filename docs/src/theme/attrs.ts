@@ -148,7 +148,7 @@ export interface IModel {
   /**
    * SCSS
    */
-  scss: IState;
+  scss?: IState;
   /**
    * Liquid
    */
@@ -168,11 +168,11 @@ export interface IModel {
   /**
    * JSX
    */
-  jsx: IState;
+  jsx?: IState;
   /**
    * TSX
    */
-  tsx: IState;
+  tsx?: IState;
   /**
    * Yaml
    */

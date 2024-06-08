@@ -9,6 +9,63 @@ description: ''
 
 Below is the cherry-picked list of languages using the default Potion theme. You can enable/disable editing mode on each to see the how text editor behaves.
 
+# HTML
+
+<!--prettier-ignore-->
+```html
+<section
+  spx@click="key.prop"
+  spx-node="ref.name"
+  spx-ref:number="100"
+  spx-ref:boolean="true"
+  spx-ref:boolean="false"
+  spx-ref:string="hello world"
+  spx-ref:object="{ prop: 'string', num: 1000, bool: true }"
+  spx-ref:array="['string', 'string']"
+></section>
+
+```
+
+# TypeScript
+
+<!--prettier-ignore-->
+```ts
+export class Example extends spx.Component<typeof Example.connect> {
+
+    static connect = {
+      state: {
+        string: String,
+        boolean: Boolean,
+        number: Number,
+        object: Object,
+        array: Array,
+        defaults: {
+          typeof: Object,
+          default: {
+            name: 'sissel',
+            age: 34,
+            single: false,
+          }
+        }
+      },
+      nodes: [
+        'button'
+      ]
+    }
+
+    onInit () {
+      this.buttonNode      // => HTMLButtonElement
+      this.buttonNodes     // => HTMLButtonElement[]
+      this.hasButtonNode   // => true or false
+    }
+
+    public buttonNode: HTMLButtonElement;
+    public buttonNodes: HTMLButtonElement[];
+    public hasButtonNode: boolean;
+
+}
+```
+
 # Bash / CLI
 
 ```bash
@@ -17,6 +74,36 @@ $ cmd
 $ cmd && cmd
 $ cmd --flag, -f
 $ cmd <paths>
+```
+
+# JavaScript
+
+<!--prettier-ignore-->
+```js
+import { foo } from 'module';
+
+function example (param, object) {
+
+  if (object.prop === 1000) {
+    const condition = object.foo ? false : true;
+    return { foo: 'string' }
+  }
+
+  const regex = /(group)[a-zA-Z]+(?=)/gi
+  const instance = new Something()
+  const object = {
+    import: 'string',
+    export: false,
+    quotes: {
+      'some/path': {
+        items: [ 1, 2, 3 ]
+      }
+    }
+  }
+
+  instance.method()
+  return regex.test(param)
+}
 ```
 
 # JSON
@@ -66,8 +153,8 @@ prop: Unquoted
   </head>
   <body>
     <!--
-Some Comment
--->
+    Some Comment
+    -->
 
     <main>
       <div>Hello World!</div>
@@ -87,9 +174,7 @@ Some Comment
 ```liquid
 {%- if condition == assert -%}
   <div class="xxx" id="some-id">
-
     {% # comment %}
-
     <ul>
       <li
         class="some-class"
@@ -97,7 +182,6 @@ Some Comment
         {% if xxx %}
           id="{{ object.prop }}"
         {% endif %}>
-
           {% for i in list %}
             <ul>
               <li data-attr="{{ i.xxx }}">
@@ -114,7 +198,6 @@ Some Comment
               </li>
           </ul>
         {% endfor %}
-
       </li>
     </ul>
   </div>

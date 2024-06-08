@@ -10,7 +10,7 @@ import { EditorOptions } from '../..';
 
 export function highlight (config: Options) {
 
-  let mode: 'error' | 'static' | 'editing' = 'static';
+  let mode: 'error' | 'static' | 'editor' = 'static';
   let languageId: Languages = config.language;
   let grammar: Grammar;
   let preEl: HTMLPreElement;
@@ -19,7 +19,9 @@ export function highlight (config: Options) {
 
   grammars();
 
-  for (const lang in Prism.languages) invisibles(lang as Languages, config);
+  for (const language in Prism.languages) {
+    invisibles(language, config);
+  }
 
   function language (languageName: Languages) {
 
@@ -75,10 +77,19 @@ export function highlight (config: Options) {
       codeEl = document.createElement('code');
       preEl.appendChild(codeEl);
       element.append(preEl);
+
     }
 
     if (!preEl.classList.contains('papyrus')) {
       preEl.classList.add('papyrus');
+    }
+
+    if (preEl.hasAttribute('data-papyrus') === false) {
+      if (config.startMode === 'editor') {
+        preEl.setAttribute('data-papyrus', 'editor');
+      } else {
+        preEl.setAttribute('data-papyrus', 'static');
+      }
     }
 
     if (!preEl.hasAttribute('id')) {
@@ -162,13 +173,10 @@ export function highlight (config: Options) {
     set mode (modeName) {
       mode = modeName;
     },
-    get highlight () {
-      return highlight;
-    },
     raw,
+    highlight,
     nodes,
     language
-
   };
 
 }

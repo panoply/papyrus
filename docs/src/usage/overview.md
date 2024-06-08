@@ -20,15 +20,11 @@ Papyrus is pre-packaged (15kb ~ gzipped) [PrismJS](https://prismjs.com) syntax h
 
 ### Why Papyrus?
 
-Papyrus was created to help alleviate some of cumbersome configuration incurred for showcasing code snippets in [Æsthetic Documentation](https://æsthetic.dev). I wanted a lightweight alternative to Monaco and CodeMirror that could digest PrismJS grammars but also support basic level text editing capabilities.
-
-The value proposition for Papyrus over alternatives like PrismJS, Highlight.js or more advanced solutions (Monaco, CodeMirror etc) is mostly a matter of requirements and extensibility. Papyrus is a polished and refined variation that focuses on a small sub-set of languages and allows developers to have a customized drop-in solution for code samples.
+Papyrus was created to help alleviate some of cumbersome configuration incurred for showcasing code snippets in [Æsthetic Documentation](https://æsthetic.dev). I wanted a lightweight alternative to Monaco and CodeMirror that could digest PrismJS grammars but also support basic level text editing capabilities. The value proposition for Papyrus over alternatives like PrismJS, Highlight.js or more advanced solutions (Monaco, CodeMirror etc) is mostly a matter of requirements and extensibility. Papyrus is a polished and refined variation that focuses on a small sub-set of languages and allows developers to have a customized drop-in solution for code samples.
 
 ### Theming
 
-The default theme used by Papyrus is known as [Potion](https://github.com/panoply/vscode-potion-theme). You can create custom theming using the [Theme](/theme) generator or alternatively provide an existing Prism theme. It's typically preferred that you generate a custom theme as the grammars and highlight tokens differ on a per-language basis in Papyrus.
-
-You will need to include the [papyrus.css](#) CSS stylesheet into your project. For developers using SASS, they can import papyrus into the SCSS bundles (e.g: `@import "papyrus"`). The required styles can be customized using CSS (or SASS) variables.
+The default theme used by Papyrus is known as [Potion](https://github.com/panoply/vscode-potion-theme). You can create custom theming using the [Theme](/theme) generator or alternatively provide an existing Prism theme. It's typically preferred that you generate a custom theme as the grammars and highlight tokens differ on a per-language basis in Papyrus. You will need to include the [papyrus.css](#) CSS stylesheet into your project. For developers using SASS, they can import papyrus into the SCSS bundles (e.g: `@import "papyrus"`). The required styles can be customized using CSS (or SASS) variables.
 
 ### Browser Usage
 
@@ -49,7 +45,7 @@ console.log(window.papyrus); // Global scope holds all instances
 
 ### Node Usage
 
-For usage in Node use the `papyrus.static` method and Papyrus will return string markup. Using the module in Node is common with solutions like [markdown-it](https://github.com/markdown-it/markdown-it) or when using a SSG like [11ty](https://www.11ty.dev/).
+For usage in Node the `papyrus.static()` method is available and Papyrus will return string markup. Using the module in Node is common with solutions like [markdown-it](https://github.com/markdown-it/markdown-it) or when using a SSG like [11ty](https://www.11ty.dev/).
 
 Basic example with markdown-it:
 

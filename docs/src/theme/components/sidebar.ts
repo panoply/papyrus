@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { file } from './icons';
-import { IAttrs, Languages } from '../attrs';
+import { IAttrs } from '../attrs';
 
 export const Sidebar: m.Component<IAttrs> = {
   view: (
@@ -29,7 +29,7 @@ export const Sidebar: m.Component<IAttrs> = {
           style: {
             paddingTop: '15px'
           }
-        }, file(language as Languages)
+        }, file(language)
       ))
     )
 

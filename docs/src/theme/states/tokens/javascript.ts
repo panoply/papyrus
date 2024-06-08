@@ -220,5 +220,16 @@ export default <IToken<IColor>[]>[
       default: '#22c0cb',
       value: '#22c0cb'
     }
+  },
+  {
+    label: 'Browser Objects',
+    sass: '$papyrus-js-browser-objects',
+    css: '--papyrus-js-browser-objects',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#81D4FA',
+      value: '#81D4FA'
+    }
   }
 ];

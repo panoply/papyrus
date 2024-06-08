@@ -45,6 +45,7 @@ export default defineConfig([
     async onSuccess () {
       const time = new Date();
       await utimes('./docs/src/theme/index.ts', time, time);
+      await utimes('./docs/src/usage/layout/landing.liquid', time, time);
       return undefined;
     },
     esbuildOptions: options => {
@@ -54,21 +55,15 @@ export default defineConfig([
     outExtension ({ format }) {
 
       if (format === 'cjs') {
-        return {
-          js: '.cjs'
-        };
+        return { js: '.cjs' };
       } else if (format === 'esm') {
-        return {
-          js: '.mjs'
-        };
-
+        return { js: '.mjs' };
       } else {
-        return {
-          js: '.js'
-        };
+        return { js: '.js' };
       }
     },
     format: [
+      'iife',
       'cjs',
       'esm'
     ],

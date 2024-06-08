@@ -10,7 +10,7 @@ $prefix: null;
 
 $enable-rfs: true;
 $enable-font-smoothing: true;
-$enable-font-smoothing-heading: true;
+$enable-font-smoothing-heading: false;
 $enable-transitions: true;
 $enable-reduced-motion: true;
 $enable-grid-classes: true;
@@ -248,15 +248,31 @@ $zindex-tooltip: 99999;
 /* FONT FAMILY                                  */
 /* -------------------------------------------- */
 
+
+$font-family-base: system-ui,
+  -apple-system,
+  segoe ui,
+  roboto,
+  ubuntu,
+  cantarell,
+  noto sans,
+  sans-serif,
+  blinkmacsystemfont,
+  "Segoe UI",
+  helvetica,
+  arial,
+  sans-serif,
+  "Apple Color Emoji",
+  "Segoe UI Emoji",
+  "Segoe UI Symbol";
+$font-family-heading: "JetBrains Mono", monospace;
+$font-family-code: consolas, monaco, "Andale Mono", "Ubuntu Mono",
+  monospace;
+
 /// Base font family
 ///
-$font-family-base: system-ui, -apple-system, blinkmacsystemfont, "Open Sans", "Helvetica Neue", sans-serif;
 $font-family-base-var: var(--#{$prefix}font-base);
-
-$font-family-heading: $font-family-base;
 $font-family-heading-var: var(--#{$prefix}font-heading);
-
-$font-family-code: sfmono-regular, menlo, monaco, "Courier New", courier, monospace;
 $font-family-code-var: var(--#{$prefix}font-code);
 
 /// Fallback sans font family for situations when we
@@ -280,7 +296,7 @@ $body-letter-spacing: inherit;
 
 /// Base font size uses `.fs` class name.
 ///
-$font-size-base: 1.05rem;
+$font-size-base: 1rem;
 
 $font-size-xs: $font-size-base * .595;
 $font-size-sm: $font-size-base * .725;
@@ -294,16 +310,16 @@ $font-size-xl: $font-size-base * 1.75;
 
 $headings-letter-spacing: inherit;
 $headings-font-style: null;
-$headings-font-weight: 500;
+$headings-font-weight: 600;
 $headings-line-height: 1.4;
-$headings-uppercase: false;
-$headings-margin-bottom: 15px;    // We use spacing utilities for heading margins
+$headings-uppercase: true;
+$headings-margin-bottom: 10px;    // We use spacing utilities for heading margins
 
-$h1-font-size: $font-size-base * 2;
-$h2-font-size: $font-size-base * 1.75;
-$h3-font-size: $font-size-base * 1.5;
-$h4-font-size: $font-size-base * 1.3;
-$h5-font-size: $font-size-base * 1.2;
+$h1-font-size: $font-size-base * 1.3;
+$h2-font-size: $font-size-base * 1.5;
+$h3-font-size: $font-size-base * 1.3;
+$h4-font-size: $font-size-base * 1.2;
+$h5-font-size: $font-size-base * 1.1;
 $h6-font-size: $font-size-base * 1;
 
 /* -------------------------------------------- */
@@ -395,7 +411,7 @@ $pre-color: null;
 $pre-radius: .25rem;
 $pre-bg-color: inherit;
 
-$code-font-size: $font-size-md;
+$code-font-size: 1rem;
 $code-color: $pink;
 $code-bg-color: inherit;
 $code-radius: inherit;
@@ -586,7 +602,7 @@ $input-disabled-border-color: $gray-200;
 $input-border-color: $gray-400;
 $input-border-width: $border-width; // $input-btn-border-width;
 $input-height-border: $input-border-width * 2;
-$input-box-shadow: none; //$box-shadow-inset;
+$input-box-shadow: none; // $box-shadow-inset;
 
 $input-border-radius: 0; // $border-radius;
 $input-border-radius-sm: 0; // $border-radius-sm;
@@ -798,3 +814,4 @@ $form-validation-states: (
     "icon": icon-cross($form-feedback-invalid-color, 1.4)
   )
 );
+

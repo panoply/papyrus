@@ -1,4 +1,4 @@
-import { getLineCount, trimInput, safeTextInsert, findLineEnd, mergeEditorOptions } from '../utils';
+import { getLineCount, trimInput, safeTextInsert, findLineEnd, mergeEditorOptions, has } from '../utils';
 import { EditorOptions, Languages, Options } from '../../types/options';
 import { Editor } from '../../types/editor';
 import { highlight } from './highlight';
@@ -8,26 +8,66 @@ import merge from 'mergerino';
 import { Textcomplete, StrategyProps } from '@textcomplete/core';
 import { TextareaEditor } from '@textcomplete/textarea';
 
-export function texteditor (prism: ReturnType<typeof highlight>, config: Options) {
+export function texteditor (prism: ReturnType<typeof highlight>, config: Options): Model {
 
   const { code, pre } = prism;
 
+  /* -------------------------------------------- */
+  /* LEXICAL SCOPES                               */
+  /* -------------------------------------------- */
+
+  /** Editor Options */
   let editorOpts: EditorOptions;
+
+  /** Completions */
   let complete: Textcomplete;
+
+  /** Indentation Pairs */
   let indentPairs: string[];
+
+  /** Autoclose Pairs  */
   let autoClosePairs: string[];
+
+  /** The <textarea> Element */
   let textarea: HTMLTextAreaElement;
+
+  /** The indentation characted */
   let indentChar: string;
+
+  /** The current Language ID */
   let language: Languages = prism.languageId;
+
+  /** The active line number <span> */
   let lineActive: HTMLSpanElement = null;
+
+  /** The line number integer */
   let lineNo: number = -1;
+
+  /** The current scroll position */
   let scroll: number = 0;
+
+  /** The code input text */
   let input: string = trimInput(code.textContent, config);
+
+  /** The dropdown element */
   let dropdown: HTMLElement;
+
+  /** The onupdate function callback */
   let onUpdate: (code: string, language: Languages) => string | void | false;
+
+  /** The onsave function callback */
   let onSave: (code: string, language: Languages) => string | void | false;
 
+  /* -------------------------------------------- */
+  /* CONSTANTS                                    */
+  /* -------------------------------------------- */
+
+  /** Cache reference of {@link input} */
   const initial = input;
+
+  /* -------------------------------------------- */
+  /* EDITOR                                       */
+  /* -------------------------------------------- */
 
   const editor: Editor = function editor (opts?: EditorOptions) {
 
@@ -40,11 +80,18 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
     if (editorOpts.lineHighlight && lineActive === null) {
       lineActive = prism.lineNumbers.children[editorOpts.lineNumber - 1] as HTMLSpanElement;
-      if (!lineActive.classList.contains('active')) lineActive.classList.add('active');
+      if (!lineActive.classList.contains('active')) {
+        lineActive.classList.add('active');
+      }
     }
 
-    if (!textarea) textarea = document.createElement('textarea');
-    if (!textarea.classList.contains('editor')) textarea.classList.add('editor');
+    if (!textarea) {
+      textarea = document.createElement('textarea');
+    }
+
+    if (!textarea.classList.contains('papyrus-editor')) {
+      textarea.classList.add('papyrus-editor');
+    }
 
     textarea.spellcheck = editorOpts.spellcheck;
 
@@ -71,8 +118,10 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
     }
 
     if (config.lineNumbers) {
-      if (!code.classList.contains('lines')) code.classList.add('lines');
+      if (!code.classList.contains('line-numbers')) code.classList.add('line-numbers');
       prism.lines = getLineCount(input);
+    } else {
+      if (code.classList.contains('line-numbers')) code.classList.remove('line-numbers');
     }
 
     scroll = textarea.scrollTop;
@@ -82,31 +131,25 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
     textarea.oninput = oninput;
     textarea.onkeydown = onkeydown;
 
-    prism.mode = 'editing';
+    prism.mode = 'editor';
 
-    getloc();
-
-  };
-
-  function onclick ({ target }) {
-
-    if (complete && complete.isShown()) {
-      if (target !== dropdown) complete.hide();
+    if (pre.getAttribute('data-papyrus') !== 'editor') {
+      pre.setAttribute('data-papyrus', 'editor');
     }
 
-    onactive(1);
-  }
-
-  editor.enable = function enable () {
-
-    if (typeof config.editor === 'object') editor(config.editor);
+    loc();
 
   };
 
-  /**
-   * Disable Text Editor
-   */
-  editor.disable = function disable () {
+  function enable () {
+    if (typeof config.editor === 'object') {
+      editor(config.editor);
+    } else {
+      pre.setAttribute('data-papyrus', 'static');
+    }
+  };
+
+  function disable () {
 
     if (textarea) textarea.remove();
 
@@ -119,14 +162,20 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
     }
 
     prism.mode = 'static';
+    prism.pre.setAttribute('data-papyrus', 'static');
 
   };
 
-  if (typeof config.editor === 'object') editor(config.editor);
+  if (typeof config.editor === 'object') {
+    editor.enable = enable;
+    editor.disable = disable;
+    editor(config.editor);
+  }
 
-  /**
-   * onscroll event callback
-   */
+  /* -------------------------------------------- */
+  /* EVENTS                                       */
+  /* -------------------------------------------- */
+
   function onscroll () {
 
     scroll = textarea.scrollTop;
@@ -143,15 +192,36 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
     const left = code.scrollLeft = textarea.scrollLeft;
 
     if (left > 0) {
-      pre.classList.add('no-fence');
+
+      if (left > prism.lineNumbers.offsetLeft) {
+        lineActive.style.setProperty('width', `${textarea.offsetWidth + left}px`);
+        pre.style.setProperty('--papyrus-fence-offset', `${left}px`);
+      }
+
     } else {
-      pre.classList.remove('no-fence');
+
+      if (has('--papyrus-fence-offset', pre.style)) {
+        pre.style.removeProperty('--papyrus-fence-offset');
+      }
+
+      if (lineActive.hasAttribute('style')) {
+        lineActive.removeAttribute('style');
+      }
+
     }
   };
 
-  /**
-   * oninput event callback
-   */
+  function onclick ({ target }) {
+
+    if (complete && complete.isShown()) {
+      if (target !== dropdown) {
+        complete.hide();
+      }
+    }
+
+    onactive(1);
+  }
+
   function oninput (this: HTMLTextAreaElement) {
 
     if (input !== textarea.value) input = textarea.value;
@@ -165,7 +235,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
     prism.lines = newlines;
 
-    getloc();
+    loc();
 
     prism.highlight(input);
 
@@ -243,7 +313,8 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
       if (empty.trim() === '' && /[ \t]/.test(input[start])) {
         event.preventDefault();
-        textarea.setSelectionRange(textarea.selectionStart - editorOpts.indentSize, textarea.selectionEnd, 'backward');
+        const selection = textarea.selectionStart - editorOpts.indentSize;
+        textarea.setSelectionRange(selection, textarea.selectionEnd, 'backward');
         document.execCommand('delete', false);
         onactive();
         onscroll();
@@ -271,9 +342,7 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
       const empty = input.slice(from, start);
       const clear = input.slice(start, input.indexOf('\n', start)).trimEnd();
 
-      if (empty.length === 1 && empty.charCodeAt(0) === 10 && clear === '') {
-        insert(padding());
-      }
+      if (empty.length === 1 && empty.charCodeAt(0) === 10 && clear === '') insert(padding());
 
       onscroll();
 
@@ -322,12 +391,11 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
         }
       }
     }
-
   }
 
   function onactive (offset = 1) {
 
-    // Prevent highlight is completion is shown
+    // Prevent highlight if completion is shown
     if (complete && complete.isShown()) return;
 
     const count = getLineCount(input.slice(0, textarea.selectionStart));
@@ -339,18 +407,134 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
       if (lineActive && lineActive.classList.contains('active')) {
         lineActive.classList.remove('active');
+        if (lineActive.hasAttribute('style')) lineActive.removeAttribute('style');
       }
 
       lineActive = prism.lineNumbers.children[lineNo] as HTMLSpanElement;
 
       if (lineActive && lineActive.classList.contains('active') === false) {
         lineActive.classList.add('active');
+
+        // ensure line highlight is flush when width exceeds
+        const left = code.scrollLeft = textarea.scrollLeft;
+        if (left > prism.lineNumbers.offsetLeft) {
+          lineActive.style.setProperty('width', `${textarea.offsetWidth + left}px`);
+        }
       }
     }
 
-    getloc();
+    loc();
 
   }
+
+  function onupdate (cb: (code: string, language: Languages) => void, scope: any = {}) {
+
+    scope.textarea = textarea;
+    scope.lineNumber = lineNo;
+
+    onUpdate = cb.bind(scope);
+
+  }
+
+  function onsave (cb: (code: string, language: Languages) => void, scope: any = {}) {
+
+    const binding = Object.assign(scope, {
+      textarea,
+      lineNumber: lineNo
+    });
+
+    onSave = cb.bind(binding);
+
+  }
+
+  function update (newInput: string, newLanguage?: Languages, clearHistory?: boolean) {
+
+    if (prism.mode === 'error') hideError();
+
+    if (newLanguage) {
+      if (newLanguage !== language && newLanguage !== prism.languageId) {
+        updateInvisibles(true);
+        language = prism.language(newLanguage);
+        updateInvisibles(false);
+
+        if (complete) {
+          complete.removeAllListeners();
+          complete.destroy(true);
+        }
+
+        if (language in editorOpts.completions) {
+          autoCompletions(editorOpts.completions[language]);
+          console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
+        }
+
+        console.info(`𓁁 Papyprus: Changed Language: ${language}`);
+      }
+    }
+
+    input = newInput;
+
+    if (prism.mode !== 'static') {
+      if (clearHistory) {
+        textarea.value = input;
+      } else {
+        textarea.select();
+        insert(input);
+      }
+    }
+
+    if (config.lineNumbers) {
+
+      if (!code.classList.contains('line-numbers')) {
+        code.classList.add('line-numbers');
+      }
+
+      prism.lines = getLineCount(input);
+
+    } else if (code.classList.contains('line-numbers')) {
+
+      code.classList.remove('line-numbers');
+    }
+
+    prism.highlight(input);
+
+  }
+
+  function options (newOptions?: EditorOptions): EditorOptions {
+
+    if (typeof newOptions !== 'object') {
+      return config as unknown as EditorOptions;
+    }
+
+    if (newOptions?.lineNumber) {
+      lineNo = newOptions.lineNumber - 1;
+      lineActive = prism.lineNumbers.children[lineNo] as HTMLSpanElement;
+    }
+
+    editorOpts = mergeEditorOptions(newOptions, editorOpts);
+    indentChar = editorOpts.indentChar.repeat(editorOpts.indentSize + 1);
+    autoClosePairs = editorOpts.autoClosingPairs.map(char => char[0]);
+    indentPairs = editorOpts.autoIndentPairs.map(char => char[0]);
+
+    textarea.spellcheck = editorOpts.spellcheck;
+
+    if (editorOpts.lineHighlight === false) {
+      const activeLine = prism.lineNumbers.querySelector('.active');
+      if (activeLine) activeLine.classList.remove('active');
+    }
+
+    if (complete) complete.destroy();
+    if (language in editorOpts.completions) {
+      autoCompletions(editorOpts.completions[language]);
+      console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
+    }
+
+    return editorOpts;
+
+  }
+
+  /* -------------------------------------------- */
+  /* ERRORS                                       */
+  /* -------------------------------------------- */
 
   function showError (newInput:string, opts: any) {
 
@@ -395,134 +579,14 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
   };
 
-  function getloc () {
-    const value = textarea.value;
-    const col = value.slice(
-      value.lastIndexOf('\n', textarea.selectionStart - 1) + 1,
-      value.indexOf('\n', textarea.selectionStart)
-    );
-
-    code.ariaLabel = `Ln ${lineNo + 1}, Col ${col.length}`;
-
-  }
-
-  /**
-  * Hide any currently displayed error
-  */
   function hideError () {
 
     pre.querySelectorAll('.error-ref').forEach(node => node.remove());
     pre.classList.remove('error');
 
-    prism.mode = textarea ? 'editing' : 'static';
+    prism.mode = textarea ? 'editor' : 'static';
 
   };
-
-  /**
-   * The `onupdate` event
-   */
-  function onupdate (cb: (code: string, language: Languages) => void, scope: any = {}) {
-
-    const binding = Object.assign(scope, {
-      textarea,
-      lineNumber: lineNo
-    });
-
-    onUpdate = cb.bind(binding);
-
-  }
-
-  function onsave (cb: (code: string, language: Languages) => void, scope: any = {}) {
-
-    const binding = Object.assign(scope, {
-      textarea,
-      lineNumber: lineNo
-    });
-
-    onSave = cb.bind(binding);
-
-  }
-
-  /**
-   * Update code input
-   */
-  function update (newInput: string, newLanguage?: Languages, clearHistory?: boolean) {
-
-    if (prism.mode === 'error') hideError();
-
-    if (newLanguage) {
-      if (newLanguage !== language && newLanguage !== prism.languageId) {
-        updateInvisibles(true);
-        language = prism.language(newLanguage);
-        updateInvisibles(false);
-
-        if (complete) {
-          complete.removeAllListeners();
-          complete.destroy(true);
-        }
-
-        if (language in editorOpts.completions) {
-          autoCompletions(editorOpts.completions[language]);
-          console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
-        }
-
-        console.info(`𓁁 Papyprus: Changed Language: ${language}`);
-      }
-    }
-
-    input = newInput;
-
-    if (prism.mode !== 'static') {
-      if (clearHistory) {
-        textarea.value = input;
-      } else {
-        textarea.select();
-        insert(input);
-      }
-    }
-
-    if (config.lineNumbers) {
-      if (!code.classList.contains('lines')) code.classList.add('lines');
-      prism.lines = getLineCount(input);
-    }
-
-    prism.highlight(input);
-
-  }
-
-  /**
-   * Update options
-   */
-  function options (newOptions?: EditorOptions) {
-
-    if (typeof newOptions !== 'object') return config;
-
-    if (newOptions?.lineNumber) {
-      lineNo = newOptions.lineNumber - 1;
-      lineActive = prism.lineNumbers.children[lineNo] as HTMLSpanElement;
-    }
-
-    editorOpts = mergeEditorOptions(newOptions, editorOpts);
-    indentChar = editorOpts.indentChar.repeat(editorOpts.indentSize + 1);
-    autoClosePairs = editorOpts.autoClosingPairs.map(char => char[0]);
-    indentPairs = editorOpts.autoIndentPairs.map(char => char[0]);
-
-    textarea.spellcheck = editorOpts.spellcheck;
-
-    if (editorOpts.lineHighlight === false) {
-      const activeLine = prism.lineNumbers.querySelector('.active');
-      if (activeLine) activeLine.classList.remove('active');
-    }
-
-    if (complete) complete.destroy();
-    if (language in editorOpts.completions) {
-      autoCompletions(editorOpts.completions[language]);
-      console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
-    }
-
-    return editorOpts;
-
-  }
 
   return {
     get initial () {
@@ -561,19 +625,29 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
     update
   };
 
-  function updateInvisibles (revert = false) {
+  /* -------------------------------------------- */
+  /* UTILITIES                                    */
+  /* -------------------------------------------- */
 
-    if (editorOpts) {
-      if (editorOpts?.renderSpace !== config.showSpace || editorOpts?.renderTab !== config.showTab) {
-        invisibles(language, revert ? config : merge<Options>(config, {
-          showSpace: editorOpts.renderSpace,
-          showTab: editorOpts.renderTab
-        }));
-      }
-    }
+  /**
+   * Lines and Columns reference which will be updated and
+   * various points in the editing cylce.
+   */
+  function loc () {
+
+    const value = textarea.value;
+    const col = value.slice(
+      value.lastIndexOf('\n', textarea.selectionStart - 1) + 1,
+      value.indexOf('\n', textarea.selectionStart)
+    );
+
+    code.ariaLabel = `Ln ${lineNo + 1}, Col ${col.length}`;
 
   }
 
+  /**
+   * Auto indentation pairs logic
+   */
   function indent (start: number, match: number) {
 
     const closeChar = editorOpts.autoIndentPairs[match][1];
@@ -646,7 +720,20 @@ export function texteditor (prism: ReturnType<typeof highlight>, config: Options
 
     if (input !== textarea.value) input = textarea.value;
 
-    getloc();
+    loc();
+  }
+
+  function updateInvisibles (revert = false) {
+
+    if (editorOpts) {
+      if (editorOpts?.renderSpace !== config.showSpace || editorOpts?.renderTab !== config.showTab) {
+        invisibles(language, revert ? config : merge<Options>(config, {
+          showSpace: editorOpts.renderSpace,
+          showTab: editorOpts.renderTab
+        }));
+      }
+    }
+
   }
 
   /* -------------------------------------------- */

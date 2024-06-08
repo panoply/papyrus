@@ -1,4 +1,3 @@
-
 import Prism from 'prismjs';
 
 export default function () {
@@ -120,6 +119,11 @@ export default function () {
     unit,
     number
   });
+
+  Prism.languages.markup.tag.addInlined('style', 'css');
+  Prism.languages.markup.tag.addAttribute('style', 'css');
+  Prism.languages.liquid.tag.addInlined('style', 'css');
+  Prism.languages.liquid.tag.addAttribute('style', 'css');
 
   return Prism.languages.css;
 

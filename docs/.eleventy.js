@@ -14,9 +14,9 @@ function highlighter (md, raw, language) {
 
     try {
 
-      code = papyrus.static(raw, {
+      code = papyrus.static(raw.trim(), {
        language,
-       editor: false
+       editor: false,
       });
 
 
@@ -35,9 +35,6 @@ function highlighter (md, raw, language) {
     code = md.utils.escapeHtml(raw);
   }
 
-  let height = 0
-
-  code.split('\n').forEach(() => height = height + 24.1)
 
   return code
 
@@ -62,6 +59,7 @@ module.exports = eleventy(function (config) {
   //config.addLiquidFilter('sorting', sorting);
   config.setBrowserSyncConfig();
   config.setLibrary('md', md);
+  config.addPassthroughCopy('src/usage/assets')
 
 
   return {

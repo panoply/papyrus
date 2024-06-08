@@ -1,12 +1,23 @@
 import { Options } from '../../types/options';
 import { Model } from '../../types/model';
 import { highlight } from './highlight';
-import { getLineCount, mergeOptions, trimInput } from '../utils';
+import { getLineCount, mergeEditorOptions, mergeOptions, trimInput } from '../utils';
 import { texteditor } from './editor';
 
 export function mount (element: HTMLElement, options: Options): Model {
 
   const config = mergeOptions(options);
+  const attr = element.getAttribute('data-papyrus');
+
+  if (attr !== null) {
+    if (attr === 'editor' && config.editor === false) {
+      config.editor = mergeEditorOptions(true);
+      config.startMode = 'editor';
+    } else if (attr === 'static' && config.editor !== false) {
+      config.startMode = 'static';
+    }
+  }
+
   const prism = highlight(config as Options);
 
   prism.nodes(element);
@@ -21,9 +32,8 @@ export function mount (element: HTMLElement, options: Options): Model {
   }
 
   if (config.lineNumbers) {
-
-    if (!prism.code.classList.contains('lines')) {
-      prism.code.classList.add('lines');
+    if (!prism.code.classList.contains('line-numbers')) {
+      prism.code.classList.add('line-numbers');
       prism.lines = getLineCount(input);
     } else {
       prism.lines = getLineCount(input);
@@ -32,17 +42,22 @@ export function mount (element: HTMLElement, options: Options): Model {
 
   prism.highlight(input);
 
-  if (prism.code.style.position === 'relative') {
-    const height = prism.code.getBoundingClientRect().height + 'px';
-    prism.code.style.position = 'absolute';
-    prism.pre.style.height = height;
+  if (config.editor) {
+    prism.pre.setAttribute('data-papyrus', 'editor');
+  } else {
+    prism.pre.setAttribute('data-papyrus', 'static');
+  }
+
+  if (prism.code.style.position === 'initial') {
+    prism.code.style.setProperty('position', 'absolute');
+    prism.pre.style.setProperty('height', `${prism.code.offsetHeight}px`);
   }
 
   const model = texteditor(prism, config as Options);
 
-  if (config.editor) {
+  if (config.editor && config.startMode === 'editor') {
     if (model.textarea.style.position === 'relative') {
-      model.textarea.style.position = 'absolute';
+      model.textarea.style.setProperty('position', 'relative');
     }
   }
 

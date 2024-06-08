@@ -10,8 +10,8 @@
     "netlify:deploy": "netlify deploy",
     "tsup:watch": "tsup --watch",
     "tsup:build": "tsup --minify",
-    "scss:watch": "sass --load-path=node_modules/ src/styles/stylesheet.scss public/style.css --watch",
-    "scss:build": "sass --load-path=node_modules/ src/styles/stylesheet.scss public/style.css --no-source-map",
+    "scss:watch": "sass src/styles/stylesheet.scss public/style.css --watch",
+    "scss:build": "sass src/styles/stylesheet.scss public/style.css --no-source-map",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "module": "./public/bundle.min.js",
@@ -42,21 +42,21 @@
     "mithril": "^2.2.2",
     "papyrus": "workspace:^",
     "prismjs": "^1.29.0",
-    "relapse": "^0.5.0"
+    "relapse": "^0.8.1"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@brixtol/bootstrap": "^1.6.0",
+    "@brixtol/bootstrap": "^1.7.3",
     "@liquify/eslint-config": "workspace:^",
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
-    "@panoply/11ty": "^0.2.0",
-    "concurrently": "^8.2.0",
-    "markdown-it": "^13.0.1",
+    "@panoply/11ty": "^0.3.0",
+    "concurrently": "^8.2.2",
+    "markdown-it": "^14.0.0",
     "mithril": "^2.2.2",
-    "sass": "^1.63.6",
-    "terser": "^5.18.1",
-    "tsup": "^7.0.0"
+    "sass": "^1.72.0",
+    "terser": "^5.29.2",
+    "tsup": "^8.0.2"
   }
 }

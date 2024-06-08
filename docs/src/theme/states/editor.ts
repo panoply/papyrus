@@ -196,6 +196,17 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
           default: '#181b20',
           value: '#181b20'
         }
+      },
+      {
+        label: 'Thumb Hover',
+        sass: '$papyrus-scrollbar-thumb-hover',
+        css: '--papyrus-scrollbar-thumb-hover',
+        input: {
+          type: 'color',
+          format: 'hex',
+          default: '#5f6672',
+          value: '#5f6672'
+        }
       }
     ]
   ]

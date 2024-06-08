@@ -1,5 +1,5 @@
-import { Languages } from '../attrs';
 import m from 'mithril';
+import { Languages } from '../../../..';
 
 type Icons = (
   | 'logo'

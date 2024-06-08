@@ -23,7 +23,7 @@
     "**/node_modules"
   ],
   "editor.codeActionsOnSave": {
-    "source.fixAll.stylelint": true
+    "source.fixAll.stylelint": "explicit"
   },
   "workbench.colorCustomizations": {
     "window.inactiveBorder": "#00aeff",
@@ -31,5 +31,16 @@
   "[liquid]": {
     "editor.defaultFormatter": "sissel.shopify-liquid",
     "editor.formatOnSave": true
+  },
+  "liquid.format.rules": {
+    "wrap": 0,
+    "liquid": {
+      "forceArgument": 3
+    },
+    "markup": {
+      "forceAttribute": 2,
+      "preserveText": true,
+      "forceIndent": true
+    }
   }
 }

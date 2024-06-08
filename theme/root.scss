@@ -5,6 +5,11 @@
 :root {
 
   /* -------------------------------------------- */
+  /* INTERNAL USE                                 */
+  /* -------------------------------------------- */
+  --papyrus-fence-offset                       : 0;
+
+  /* -------------------------------------------- */
   /* BASE VARIABLES                               */
   /* -------------------------------------------- */
 
@@ -45,9 +50,11 @@
 
   // SCROLLBAR
   --papyrus-scrollbar-width                 : #{$papyrus-scrollbar-width};
+  --papyrus-scrollbar-padding               : #{$papyrus-scrollbar-padding};
   --papyrus-scrollbar-track                 : #{$papyrus-scrollbar-track};
   --papyrus-scrollbar-bg                    : #{$papyrus-scrollbar-bg};
   --papyrus-scrollbar-thumb                 : #{$papyrus-scrollbar-thumb};
+  --papyrus-scrollbar-thumb-hover           : #{$papyrus-scrollbar-thumb-hover};
 
   // INVISIBLE CHARACTERS
   --papyrus-invisible-space-color           : #{$papyrus-invisible-space-color};
@@ -203,11 +210,13 @@
   --papyrus-js-punctuation                   : #{$papyrus-js-punctuation};
   --papyrus-js-special-chars                 : #{$papyrus-js-special-chars};
   --papyrus-js-parameter                     : #{$papyrus-js-parameter};
+  --papyrus-js-this                          : #{$papyrus-js-this};
   --papyrus-js-variable                      : #{$papyrus-js-variable};
   --papyrus-js-object                        : #{$papyrus-js-object};
   --papyrus-js-operator                      : #{$papyrus-js-operator};
   --papyrus-js-operation                     : #{$papyrus-js-operation};
   --papyrus-js-module                        : #{$papyrus-js-module};
+  --papyrus-js-class                         : #{$papyrus-js-class};
   --papyrus-js-semi                          : #{$papyrus-js-semi};
   --papyrus-js-flow                          : #{$papyrus-js-flow};
   --papyrus-js-number                        : #{$papyrus-js-number};
@@ -217,6 +226,9 @@
   --papyrus-js-regex-flags                   : #{$papyrus-js-regex-flags};
   --papyrus-js-literal-property              : #{$papyrus-js-literal-property};
   --papyrus-js-comment                       : #{$papyrus-js-comment};
+  --papyrus-js-bracket                       : #{$papyrus-js-bracket};
+  --papyrus-js-browser-objects               : #{$papyrus-js-browser-objects};
+  --papyrus-js-type-constructor              : #{$papyrus-js-type-constructor};
 
   /* -------------------------------------------- */
   /* TYPESCRIPT LANGUAGE                          */
@@ -224,15 +236,33 @@
 
   --papyrus-ts-fallback                      : #{$papyrus-ts-fallback};
   --papyrus-ts-types                         : #{$papyrus-ts-types};
-  --papyrus-ts-boolean                       : #{$papyrus-ts-boolean};
-  --papyrus-ts-number                        : #{$papyrus-ts-number};
-  --papyrus-ts-operator                      : #{$papyrus-ts-operator};
-  --papyrus-ts-parameter                     : #{$papyrus-ts-parameter};
-  --papyrus-ts-method                        : #{$papyrus-ts-method};
+  --papyrus-ts-keyword                       : #{$papyrus-ts-keyword};
+  --papyrus-ts-function                      : #{$papyrus-ts-function};
+  --papyrus-ts-class-name                    : #{$papyrus-ts-class-name};
   --papyrus-ts-function-name                 : #{$papyrus-ts-function-name};
-  --papyrus-ts-filter-name                   : #{$papyrus-ts-filter-name};
+  --papyrus-ts-punctuation                   : #{$papyrus-ts-punctuation};
+  --papyrus-ts-special-chars                 : #{$papyrus-ts-special-chars};
+  --papyrus-ts-parameter                     : #{$papyrus-ts-parameter};
+  --papyrus-ts-this                          : #{$papyrus-ts-this};
+  --papyrus-ts-variable                      : #{$papyrus-ts-variable};
+  --papyrus-ts-object                        : #{$papyrus-ts-object};
+  --papyrus-ts-operator                      : #{$papyrus-ts-operator};
+  --papyrus-ts-operation                     : #{$papyrus-ts-operation};
+  --papyrus-ts-module                        : #{$papyrus-ts-module};
+  --papyrus-ts-class                         : #{$papyrus-ts-class};
+  --papyrus-ts-constant                      : #{$papyrus-ts-constant};
+  --papyrus-ts-semi                          : #{$papyrus-ts-semi};
+  --papyrus-ts-flow                          : #{$papyrus-ts-flow};
+  --papyrus-ts-number                        : #{$papyrus-ts-number};
+  --papyrus-ts-boolean                       : #{$papyrus-ts-boolean};
   --papyrus-ts-string                        : #{$papyrus-ts-string};
+  --papyrus-ts-regex                         : #{$papyrus-ts-regex};
+  --papyrus-ts-regex-flags                   : #{$papyrus-ts-regex-flags};
+  --papyrus-ts-literal-property              : #{$papyrus-ts-literal-property};
   --papyrus-ts-comment                       : #{$papyrus-ts-comment};
+  --papyrus-ts-bracket                       : #{$papyrus-ts-bracket};
+  --papyrus-ts-browser-objects               : #{$papyrus-ts-browser-objects};
+  --papyrus-ts-type-constructor              : #{$papyrus-ts-type-constructor};
 
   /* -------------------------------------------- */
   /* TREEVIEW                                     */
@@ -248,4 +278,5 @@
 
   --papyrus-treeview-line-width              : #{$papyrus-treeview-line-width};
   --papyrus-treeview-line-color              : #{$papyrus-treeview-line-color};
+  --papyrus-treeview-comment                 : #{$papyrus-treeview-comment};
 }

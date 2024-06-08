@@ -1,9 +1,9 @@
 export default `
 root_folder/
-|-- a first folder/
+|-- a first folder/    # some comment
 |   |-- holidays.mov
 |   |-- javascript-file.js
-|   └── some_picture.jpg
+|   └── some_picture.jpg  # another comment
 |-- documents/
 |   |-- spreadsheet.xls
 |   |-- manual.pdf

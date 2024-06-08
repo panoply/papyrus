@@ -38,12 +38,200 @@
       color: var(--papyrus-html-equals);
     }
 
+    &.spx-attr-name {
+      color: #81D4FA;
+    }
+
     &.attr-name {
       color: var(--papyrus-html-attr-name);
+
+      > .spx-name {
+        color: #81D4FA;
+      }
+
+      > .at-notation {
+
+        > .prefix,
+        &.spx-name {
+          color: #81D4FA;
+        }
+
+        > .symbol {
+          color: #E91E63;
+        }
+
+        > .suffix {
+          color: #9EE34F;
+        }
+      }
+
+
+      > .ns-notation {
+
+        > .prefix,
+        &.spx-name {
+          color: #81D4FA;
+        }
+
+        > .symbol {
+          color: #E91E63;
+        }
+
+        > .suffix {
+          color: #f2f2f3;
+        }
+      }
+    }
+
+    &.spx-attr {
+
+      .attr-equals {
+        color: var(--papyrus-html-equals);
+      }
+
+      .punctuation {
+        color: var(--papyrus-html-attr-value);
+
+        &.attr-equals {
+          color: var(--papyrus-html-equals);
+        }
+      }
+
+      .component-name {
+        color: var(--papyrus-html-attr-value);
+      }
+
+      .separtor {
+        color: #E91E63;
+      }
+
+      .event-key {
+        color: #FFAB40;
+      }
+
+      > .bind-notation > .token {
+
+        &.key {
+          color: #FFAB40;
+        }
+
+        &.dot {
+          color: #E91E63;
+        }
+
+        &.val {
+          color: #f2f2f3;
+        }
+
+      }
+      > .dot-notation > .token {
+
+        &.key {
+          color: #FFAB40;
+        }
+
+        &.dot {
+          color: #E91E63;
+        }
+
+        &.val {
+          color: var(--papyrus-html-attr-value);
+        }
+
+      }
+
+      > .event-struct-on > .token,
+      > .event-struct > .token {
+
+        &.prop {
+          color: #f2f2f3;
+        }
+
+        &.comma {
+          color: #E91E63;
+        }
+
+        &.delim {
+          color: #979797;
+        }
+
+      }
+
     }
 
     &.attr-value {
       color: var(--papyrus-html-attr-value);
+
+      > .token.punctuation:not(.attr-equals) {
+        color: var(--papyrus-html-attr-value);
+      }
+
+      > .token {
+
+        &.number,
+        &.integer {
+          color: #7b60ff
+        }
+
+        &.boolean {
+          color: #ba6ffe;
+        }
+
+        &.script {
+
+          > .token {
+
+            &.keyword {
+              color: var(--papyrus-js-keyword);
+            }
+
+            &.punctuation {
+              color: #979797;
+            }
+
+            &.punctuation-chars {
+              color: var(--papyrus-js-special-chars);
+            }
+
+            &.variable {
+              color: var(--papyrus-js-variable);
+            }
+
+            &.object {
+              color: var(--papyrus-js-object);
+            }
+
+            &.operator {
+              color: var(--papyrus-js-operator);
+            }
+
+            &.operation {
+              color: var(--papyrus-js-operation);
+            }
+
+            &.function-name {
+              color: var(--papyrus-js-function-name);
+            }
+
+            &.number {
+              color: #7b60ff
+            }
+
+            &.literal-property,
+            &.property {
+              color: var(--papyrus-js-literal-property);
+            }
+
+            &.semi {
+              color: var(--papyrus-js-semi);
+            }
+
+            &.boolean {
+              color: #ba6ffe;
+            }
+          }
+        }
+      }
     }
   }
 }

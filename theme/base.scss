@@ -2,7 +2,7 @@
 
 
 code {
-  &.inline {
+  &.papyrus-inline {
     padding: 0.1em;
     white-space: normal;
     background: var(--papyrus-code-inline-bg);
@@ -26,11 +26,12 @@ code {
 pre.papyrus {
   position: relative !important;
   width: var(--papyrus-width);
-  height: var(--papyrus-height);
-  padding: initial;
+  height: auto;
+  padding: 0;
   overflow: hidden;
   font-size: var(--papyrus-font-size-root);
   background-color: var(--papyrus-code-bg);
+  border: 1px solid var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
 
 
@@ -39,23 +40,51 @@ pre.papyrus {
     background-color: rgba(var(--papyrus-selection-bg), var(--papyrus-selection-alpha));
   }
 
-  /* LINE FENCE --------------------------------- */
+  /* STATIC MODE -------------------------------- */
 
-  &.no-fence::before {
-    content: normal;
+
+  &[data-papyrus="static"] > code[class*="language-"] {
+    position: relative;
+
+    > div.line-numbers {
+      top: 0;
+      bottom: 0;
+      width: var(--papyrus-line-number-width);
+      height: fit-content;
+      margin-bottom: calc(0.1em + var(--papyrus-code-padding-y));
+      padding-top: calc(0.1em + var(--papyrus-code-padding-y));
+      border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);;
+    }
   }
 
-  &::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--papyrus-line-number-width);
-    display: block;
-    height: 100%;
-    background-color: var(--papyrus-code-bg);
-    border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
-    content: "";
+
+  /* EDITOR MODE -------------------------------- */
+
+
+  &[data-papyrus="editor"] {
+
+
+    &::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(-1 * var(--papyrus-fence-offset, 0));
+      display: block;
+      width: var(--papyrus-line-number-width);
+      height: 100%;
+      border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
+      content: "";
+    }
+
+    > code[class*="language-"] {
+      overflow: hidden;
+    }
+
+
   }
+
+
+  /* ERROR MESSAGE ------------------------------ */
 
 
   &.error {
@@ -65,13 +94,11 @@ pre.papyrus {
       display: none !important;
     }
 
-    textarea.editor,
+    textarea.papyrus-editor,
     code[class*="language-"] {
       display: none !important;
     }
   }
-
-  /* ERROR MESSAGE ------------------------------ */
 
   .error {
 
@@ -117,7 +144,7 @@ pre.papyrus {
 
   /* CODE ELEMENT ------------------------------- */
 
-  textarea.editor {
+  textarea.papyrus-editor {
     color: transparent !important;
     background: transparent !important;
     border: none !important;
@@ -143,12 +170,12 @@ pre.papyrus {
       content: attr(aria-label);
     }
 
-    &.lines,
-    &.lines + textarea.editor {
+    &.line-numbers,
+    &.line-numbers + textarea.papyrus-editor {
       padding-left: calc(var(--papyrus-line-number-width) + var(--papyrus-code-padding-x));
     }
 
-    > .papyrus-loc-limit {
+    > .papyrus-loc {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -159,8 +186,7 @@ pre.papyrus {
     /* LINE NUMBERS                                 */
     /* -------------------------------------------- */
 
-
-    > .line-numbers {
+    > div.line-numbers {
       position: absolute;
       top: var(--papyrus-code-padding-y);
       bottom: var(--papyrus-code-padding-y);
@@ -168,11 +194,12 @@ pre.papyrus {
       z-index: 200;
       display: block;
       width: 100%; // 3.2em; /* works for line-numbers below 1000 lines */
-      height: 100%;;
+      height: 100%;
       padding-top: 0.1rem;
       padding-bottom: 0.1rem;
       user-select: none;
       pointer-events: none;
+
 
       span.ln {
         z-index: 100;
@@ -182,7 +209,10 @@ pre.papyrus {
         counter-increment: linenumber;
 
         &.active {
-          background-color: rgba(var(--papyrus-line-highlight-bg), var(--papyrus-line-highlight-alpha));
+          background-color: rgba(
+            var(--papyrus-line-highlight-bg),
+            var(--papyrus-line-highlight-alpha)
+          );
 
           &::before {
             color: var(--papyrus-line-highlight-number);
@@ -202,13 +232,14 @@ pre.papyrus {
   }
 
 
-  textarea.editor,
+  textarea.papyrus-editor,
   code[class*="language-"] {
     position: absolute;
     z-index: 100;
     display: block;
     width: 100%;
     height: 100%;
+    max-height: var(--papyrus-height);
     margin: 0;
     padding: var(--papyrus-code-padding-y) calc(var(--papyrus-code-padding-x));
     overflow: auto;
@@ -226,23 +257,41 @@ pre.papyrus {
     inset: 0;
     caret-color: var(--papyrus-code-caret-color);
 
-    /* SCROLLBARS --------------------------------- */
-
-    &::-webkit-scrollbar-track {
-      background-color: var(--papyrus-scrollbar-track);
-    }
-
     &::-webkit-scrollbar {
       width: var(--papyrus-scrollbar-width);
       height: var(--papyrus-scrollbar-width);
-      background-color: var(--papyrus-scrollbar-bg);
+    }
 
+
+    &::-webkit-scrollbar-track {
+      background: var(--papyrus-scrollbar-track);
+    }
+
+    &::-webkit-scrollbar-thumb:vertical {
+      border-top: var(--papyrus-scrollbar-padding) solid var(--papyrus-code-bg);
+      border-bottom: var(--papyrus-scrollbar-padding) solid var(--papyrus-code-bg);
+      border-radius: var(--papyrus-code-border-radius);
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+      border-right: var(--papyrus-scrollbar-padding) solid var(--papyrus-code-bg);
+      border-left: var(--papyrus-scrollbar-padding) solid var(--papyrus-code-bg);
+      border-radius: var(--papyrus-code-border-radius);
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: var(--papyrus-scrollbar-thumb);
+      background: var(--papyrus-scrollbar-thumb);
+
+      &:hover {
+        background: var(--papyrus-scrollbar-thumb-hover);
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: transparent;
     }
   }
+
 }
 
 
@@ -359,7 +408,6 @@ pre.papyrus {
     position: absolute;
     opacity: 1;
   }
-
 
   &.tab:not(:empty)::before {
     color: var(--papyrus-invisible-tab-color);

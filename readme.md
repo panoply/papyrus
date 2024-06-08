@@ -10,9 +10,9 @@ Papyrus was created to help alleviate some of cumbersome configuration incurred 
 
 ### Benefits
 
-Papyrus extends upon the default grammars provided by prism which allows for more control of syntax highlighting. It applied a more advanced capture approach so token colors are more granular in Papyrus theming. The module comes pre-packaged and supports only a small subset of languages common in font-end development, you simply drop it with no additional configuration required. The text editor capabilities are perfect for quick showcases while adhering to common expectations when writing code.
+Papyrus extends upon the default grammars provided by Prism which allows for more control of syntax highlighting. It applies a more advanced capture approach so token colors are more granular with Papyrus theming. The module comes pre-packaged and supports only a small subset of languages common in font-end development, you simply drop it with no additional configuration required. The text editor capabilities are perfect for quick showcases while adhering to common expectations when writing code.
 
-Papyrus is tiny, it's only 12kb~gzip and supports the following languages
+Papyrus is tiny, it's only 12kb ~ gzip and supports the following languages
 
 - XML
 - HTML
@@ -29,9 +29,9 @@ Papyrus is tiny, it's only 12kb~gzip and supports the following languages
 
 ### Limitations
 
-Papyrus is appropriating PrismJS and extending its grammars. PrismJS is not built for incremental code edits or frequent changes so performance bottleneck's are incurred at around 3k~loc. There is some rumblings that PrismJS will improve its parse algorithm for use cases such as that being appropriated by Papyrus, so future in versions we may see better performance overall in when working in large documents.
+Papyrus is appropriating PrismJS and extending its grammars. PrismJS is not built for incremental code edits or frequent changes so performance bottleneck's are incurred at around 3k~loc. There is some rumblings that PrismJS will improve its parse algorithm for use cases such as that being appropriated by Papyrus and so future in versions we may see better performance overall in when working (editing) large documents.
 
-If you require support for large files which exceed 3k~loc maybe choose [ACE](https://github.com/ajaxorg/ace), [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/). Papyrus is not designed to be a ful-featured editor, it's intended use case is for basic code editing and code sample showcasing.
+If you require support for large files which exceed 3k~loc maybe choose [ACE](https://github.com/ajaxorg/ace), [Monaco](https://github.com/microsoft/monaco-editor), [CodeMirror](https://codemirror.net/) or [Copenhagen](https://copenhagen.autocode.com/). Papyrus is not designed to be a full-featured editor, it's intended use case is for basic code editing and code sample showcasing.
 
 > **Note**
 > Papyrus does not provide completions or intelliSense capabilities.
@@ -41,7 +41,7 @@ If you require support for large files which exceed 3k~loc maybe choose [ACE](ht
 Papyrus ships with PrismJS pre-installed, so you only need this module.
 
 ```bash
-pnpm add papyrus
+$ pnpm add papyrus
 ```
 
 # Options
@@ -77,7 +77,7 @@ Papyrus defaults to using the following options.
 
 # Usage
 
-The module acts a wrapper around PrismJS and aims to make the applied syntax highlighting as simple as possible. There are 3 different distribution bundles available depending on how you wish to invoke and use Papyrus will reflect on the build you'll use. You can leverage attributes to customizing the applied highlighting operations using `data-papyrus-*` annotations or alternatively use the default function on the export namespace.
+Because the module acts a wrapper around PrismJS the applied syntax highlighting is intended to be as simple as possible. There are 3 different distribution bundles available depending on how you wish to invoke and use Papyrus. You may also prefer leverage attributes on `<pre>` elements to customize operations using `data-papyrus-*` annotations or alternatively use the default function on the exported namespace.
 
 Take the following markup in a static HTML file:
 
@@ -118,7 +118,7 @@ papyrus();
 
 # Methods
 
-The default export exposes the following methods. Most cases you'll leverage the `papyrus.mount()` method which will give you refined control over the code block instance
+The default export exposes the following methods. Most cases you'll use `papyrus.mount()` which will give you refined control over the code block instance
 
 ```ts
 import papyrus from 'papyrus';
@@ -231,7 +231,7 @@ const p = papyrus.create('...', {
 
 ### Render
 
-The `papyrus.render()` method is for cases where you want to return a HTMLPreElement and insert it somewhere into the DOM. It works identical to `papyrus.create()` but instead returns a element instead of a string.
+The `papyrus.render()` method is for cases where you want to return a HTMLPreElement and insert it somewhere into the DOM. It works identical to `papyrus.create()` but returns an element instead of a string.
 
 ```ts
 import papyrus from 'papyrus';

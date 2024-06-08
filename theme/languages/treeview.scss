@@ -1,195 +1,211 @@
-.token.treeview-part {
-  .entry-line {
-    position: relative;
-    display: inline-block;
-    width: 1.2em;
-    text-indent: -99em;
-    vertical-align: top;
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+/* stylelint-disable selector-class-pattern */
 
-    &::before {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 50%;
-      height: 100%;
-      content: "";
-    }
-  }
+.language-treeview {
 
-  .line-h {
+  .token {
 
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 50%;
-      height: 100%;
-      content: "";
+    &.comment {
+      color: var(--papyrus-treeview-comment);
     }
 
-    &::before {
-      border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+    &.treeview-part {
+
+
+      .entry-line {
+        position: relative;
+        display: inline-block;
+        width: 1.2em;
+        text-indent: -99em;
+        vertical-align: top;
+
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 50%;
+          height: 100%;
+          content: "";
+        }
+      }
+
+      .line-h {
+
+        &::after {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 50%;
+          height: 50%;
+          border-bottom: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+          content: "";
+        }
+
+        &::before {
+          border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+        }
+      }
+
+      .line-v::before {
+        border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+      }
+
+      .line-v-last::before {
+        height: 50%;
+        border-bottom: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+        border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
+      }
+
+
+      .entry-name:not(.comment) {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+
+        &.dotfile {
+          opacity: 0.5;
+        }
+
+        &::before {
+          display: inline-block;
+          width: 2.5ex;
+          font-size: inherit;
+          font-family: PrismTreeview;
+          font-style: normal;
+          content: "\ea01";
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        &.dir::before {
+          content: "\ea02";
+        }
+
+        &.ext-bmp::before,
+        &.ext-eps::before,
+        &.ext-gif::before,
+        &.ext-jpe::before,
+        &.ext-jpg::before,
+        &.ext-jpeg::before,
+        &.ext-png::before,
+        &.ext-svg::before,
+        &.ext-tiff::before {
+          content: "\ea03";
+        }
+
+        &.ext-cfg::before,
+        &.ext-conf::before,
+        &.ext-config::before,
+        &.ext-csv::before,
+        &.ext-ini::before,
+        &.ext-log::before,
+        &.ext-md::before,
+        &.ext-nfo::before,
+        &.ext-txt::before {
+          content: "\ea06";
+        }
+
+        &.ext-asp::before,
+        &.ext-aspx::before,
+        &.ext-c::before,
+        &.ext-cc::before,
+        &.ext-cpp::before,
+        &.ext-cs::before,
+        &.ext-css::before,
+        &.ext-h::before,
+        &.ext-hh::before,
+        &.ext-htm::before,
+        &.ext-html::before,
+        &.ext-jav::before,
+        &.ext-java::before,
+        &.ext-js::before,
+        &.ext-ts::before,
+        &.ext-php::before,
+        &.ext-liquid::before,
+        &.ext-rb::before,
+        &.ext-xml::before {
+          content: "\ea07";
+        }
+
+        &.ext-7z::before,
+        &.ext-bz::before,
+        &.ext-bz2::before,
+        &.ext-gz::before,
+        &.ext-rar::before,
+        &.ext-tar::before,
+        &.ext-tgz::before,
+        &.ext-zip::before {
+          content: "\ea08";
+        }
+
+        &.ext-aac::before,
+        &.ext-au::before,
+        &.ext-cda::before,
+        &.ext-flac::before,
+        &.ext-mp3::before,
+        &.ext-oga::before,
+        &.ext-ogg::before,
+        &.ext-wav::before,
+        &.ext-wma::before {
+          content: "\ea04";
+        }
+
+        &.ext-avi::before,
+        &.ext-flv::before,
+        &.ext-mkv::before,
+        &.ext-mov::before,
+        &.ext-mp4::before,
+        &.ext-mpeg::before,
+        &.ext-mpg::before,
+        &.ext-ogv::before,
+        &.ext-webm::before {
+          content: "\ea05";
+        }
+
+        &.ext-pdf::before {
+          content: "\ea09";
+        }
+
+        &.ext-xls::before, &.ext-xlsx::before {
+          content: "\ea0a";
+        }
+
+        &.ext-doc::before, &.ext-docm::before, &.ext-docx::before {
+          content: "\ea0c";
+        }
+
+        &.ext-pps::before, &.ext-ppt::before, &.ext-pptx::before {
+          content: "\ea0b";
+        }
+      }
     }
-  }
 
-  .line-v::before {
-    border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
-  }
-
-  .line-v-last::before {
-    height: 50%;
-    border-bottom: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
-    border-left: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
-  }
-
-  .line-h::after {
-    height: 50%;
-    border-bottom: var(--papyrus-treeview-line-width) solid var(--papyrus-treeview-line-color);
-  }
-
-  .entry-name {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-
-    &.dotfile {
-      opacity: 0.5;
-    }
-
-    &::before {
-      display: inline-block;
-      width: 2.5ex;
-      font-size: inherit;
+    /* @GENERATED-FONT */
+    @font-face {
       font-family: PrismTreeview;
-      font-style: normal;
-      content: "\ea01";
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+
+      /**
+       * This font is generated from the .svg files in the `icons` folder. See the `treeviewIconFont` function in
+       * `gulpfile.js/index.js` for more information.
+       *
+       * Use the following escape sequences to refer to a specific icon:
+       *
+       * - \ea01 file
+       * - \ea02 folder
+       * - \ea03 image
+       * - \ea04 audio
+       * - \ea05 video
+       * - \ea06 text
+       * - \ea07 code
+       * - \ea08 archive
+       * - \ea09 pdf
+       * - \ea0a excel
+       * - \ea0b powerpoint
+       * - \ea0c word
+       */
+      src: url("data:application/font-woff;base64,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") format("woff");
     }
 
-    &.dir::before {
-      content: "\ea02";
-    }
-
-    &.ext-bmp::before,
-    &.ext-eps::before,
-    &.ext-gif::before,
-    &.ext-jpe::before,
-    &.ext-jpg::before,
-    &.ext-jpeg::before,
-    &.ext-png::before,
-    &.ext-svg::before,
-    &.ext-tiff::before {
-      content: "\ea03";
-    }
-
-    &.ext-cfg::before,
-    &.ext-conf::before,
-    &.ext-config::before,
-    &.ext-csv::before,
-    &.ext-ini::before,
-    &.ext-log::before,
-    &.ext-md::before,
-    &.ext-nfo::before,
-    &.ext-txt::before {
-      content: "\ea06";
-    }
-
-    &.ext-asp::before,
-    &.ext-aspx::before,
-    &.ext-c::before,
-    &.ext-cc::before,
-    &.ext-cpp::before,
-    &.ext-cs::before,
-    &.ext-css::before,
-    &.ext-h::before,
-    &.ext-hh::before,
-    &.ext-htm::before,
-    &.ext-html::before,
-    &.ext-jav::before,
-    &.ext-java::before,
-    &.ext-js::before,
-    &.ext-php::before,
-    &.ext-rb::before,
-    &.ext-xml::before {
-      content: "\ea07";
-    }
-
-    &.ext-7z::before,
-    &.ext-bz::before,
-    &.ext-bz2::before,
-    &.ext-gz::before,
-    &.ext-rar::before,
-    &.ext-tar::before,
-    &.ext-tgz::before,
-    &.ext-zip::before {
-      content: "\ea08";
-    }
-
-    &.ext-aac::before,
-    &.ext-au::before,
-    &.ext-cda::before,
-    &.ext-flac::before,
-    &.ext-mp3::before,
-    &.ext-oga::before,
-    &.ext-ogg::before,
-    &.ext-wav::before,
-    &.ext-wma::before {
-      content: "\ea04";
-    }
-
-    &.ext-avi::before,
-    &.ext-flv::before,
-    &.ext-mkv::before,
-    &.ext-mov::before,
-    &.ext-mp4::before,
-    &.ext-mpeg::before,
-    &.ext-mpg::before,
-    &.ext-ogv::before,
-    &.ext-webm::before {
-      content: "\ea05";
-    }
-
-    &.ext-pdf::before {
-      content: "\ea09";
-    }
-
-    &.ext-xls::before, &.ext-xlsx::before {
-      content: "\ea0a";
-    }
-
-    &.ext-doc::before, &.ext-docm::before, &.ext-docx::before {
-      content: "\ea0c";
-    }
-
-    &.ext-pps::before, &.ext-ppt::before, &.ext-pptx::before {
-      content: "\ea0b";
-    }
   }
 }
 
-/* @GENERATED-FONT */
-@font-face {
-  font-family: PrismTreeview;
-
-  /**
-   * This font is generated from the .svg files in the `icons` folder. See the `treeviewIconFont` function in
-   * `gulpfile.js/index.js` for more information.
-   *
-   * Use the following escape sequences to refer to a specific icon:
-   *
-   * - \ea01 file
-   * - \ea02 folder
-   * - \ea03 image
-   * - \ea04 audio
-   * - \ea05 video
-   * - \ea06 text
-   * - \ea07 code
-   * - \ea08 archive
-   * - \ea09 pdf
-   * - \ea0a excel
-   * - \ea0b powerpoint
-   * - \ea0c word
-   */
-  src: url("data:application/font-woff;base64,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") format("woff");
-}

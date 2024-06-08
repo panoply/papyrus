@@ -1,12 +1,52 @@
-[
-  {
-    "group": "introduction",
-    "title": "What is Æsthetic?",
-    "url": "/introduction/what-is-esthetic/"
-  },
-  {
-    "group": "introduction",
-    "title": "Installation",
-    "url": "/introduction/installation/"
-  }
-]
+{
+  "items": [
+    {
+      "title": "Overview",
+      "url": "/overview"
+    },
+    {
+      "title": "Usage",
+      "url": "/usage"
+    },
+    {
+      "title": "HTML",
+      "url": "/examples/html"
+    },
+    {
+      "title": "HTML SPX",
+      "url": "/examples/html-spx"
+    },
+    {
+      "title": "XML",
+      "url": "/examples/xml"
+    },
+    {
+      "title": "Liquid",
+      "url": "/examples/liquid"
+    },
+    {
+      "title": "TypeScript",
+      "url": "/examples/typescript"
+    },
+    {
+      "title": "JavaScript",
+      "url": "/examples/javascript"
+    },
+    {
+      "title": "JSON",
+      "url": "/examples/json"
+    },
+    {
+      "title": "YAML",
+      "url": "/examples/yaml"
+    },
+    {
+      "title": "Bash / CLI",
+      "url": "/examples/bash"
+    },
+    {
+      "title": "Treeview",
+      "url": "/examples/treeview"
+    }
+  ]
+}

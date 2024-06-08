@@ -3,46 +3,50 @@ import { mount } from './modes/mount';
 import { create } from './modes/create';
 import { Options } from '../types/options';
 import { Model } from '../types/model';
-import { mergeOptions } from './utils';
+import { Instance } from '../index';
+import { has, mergeOptions } from './utils';
 
-if (typeof window !== 'undefined' && !('papyrus' in window)) {
-  Object.defineProperty(window, 'papyrus', { get () { return model; } });
-}
-
-const papyrus: {
-  (options?: Options): Model[];
-  get(id?: string): Model | Model[];
-  static(code: string, options: Options): string;
-  render(code: string, element: string | HTMLElement, options?: Options): Model;
-  mount(element: string | HTMLElement, options?: Options): Model
-} = function papyrus (options: Options) {
+const papyrus: Partial<Instance> = function papyrus (options: Options) {
 
   if (document.readyState === 'loading') return;
 
-  document.querySelectorAll('pre').forEach(pre => mount(pre, options));
+  const nodes = document.querySelectorAll('pre');
 
-  return Array.from(model.values());
-
-};
-
-papyrus.get = function get (id?: string) {
-
-  if (typeof id === 'string') {
-    if (model.has(id)) return model.get(id);
-    console.error(`𓁁 Papyprus: No code (<pre>) element using id: "${id}" `);
-    return;
+  if (nodes.length > 0) {
+    for (const pre of nodes) {
+      mount(pre, options);
+    }
   }
 
   return Array.from(model.values());
 
 };
 
-papyrus.render = function render (code: string, element: string | HTMLElement, options?: Options) {
+function list (): Model[] {
+
+  return Array.from(model.values());
+
+}
+
+function get (id: string) {
+
+  if (typeof id === 'string') {
+    if (model.has(id)) return model.get(id);
+    console.error(`𓁁 Papyprus: No code (<pre>) element using id: "${id}"`);
+  } else {
+    throw new Error(`𓁁 Papyprus: Invalid id parameter type, expected string, recevied: ${typeof id}`);
+  }
+
+  return null;
+
+};
+
+function render (code: string, element: string | HTMLElement, options?: Options) {
 
   const config = mergeOptions(options);
   const generate = create(code, config as Options);
   const output = typeof element === 'string'
-    ? document.querySelector(element) as HTMLElement
+    ? document.querySelector<HTMLElement>(element)
     : element;
 
   output.innerHTML = generate;
@@ -51,15 +55,26 @@ papyrus.render = function render (code: string, element: string | HTMLElement, o
 
 };
 
-papyrus.mount = mount;
-papyrus.static = create;
+if (typeof window !== 'undefined' && has('Papyprus', window) === false) {
+  Object.defineProperty(window, 'Papyrus', {
+    get () {
+      return model;
+    }
+  });
+}
 
-if (!('model' in papyrus)) {
+if (has('model', papyrus) === false) {
   Object.defineProperty(papyrus, 'model', {
     get () {
       return model;
     }
   });
 }
+
+papyrus.get = get;
+papyrus.list = list;
+papyrus.render = render;
+papyrus.mount = mount;
+papyrus.static = create;
 
 export default papyrus;

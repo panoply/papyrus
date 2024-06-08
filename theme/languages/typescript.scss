@@ -6,50 +6,60 @@
 
 
   .token {
-    &.parameter-type,
-    &.return-type,
-    &.semi {
+
+    &.types {
       color: var(--papyrus-ts-types);
     }
 
+    &.keyword {
+      color: var(--papyrus-ts-keyword);
+    }
+
     &.punctuation {
-      color: var(--papyrus-ts-types);
+      color: var(--papyrus-ts-punctuation);
+    }
+
+    &.punctuation-chars {
+      color: var(--papyrus-ts-special-chars);
     }
 
     &.comment {
       color: var(--papyrus-ts-comment);
     }
 
-    &.parameter-optional,
     &.parameter {
       color: var(--papyrus-ts-parameter);
     }
 
-    &.type-object,
-    &.type-array {
-      color: #30adc3;
-    }
-
-    &.types {
-      color: var(--papyrus-ts-types);
-    }
-
-    &.method,
-    &.keyword,
-    &.browser-objects,
     &.variable {
-      color: var(--papyrus-ts-method);
+      color: var(--papyrus-ts-variable);
     }
 
-    &.op,
-    &.tag,
-    &.punctuation-chars,
-    &.operator,
-    &.module {
+    &.object {
+      color: var(--papyrus-ts-object);
+    }
+
+    &.operator {
       color: var(--papyrus-ts-operator);
     }
 
+    &.operation {
+      color: var(--papyrus-ts-operation);
+    }
+
     &.function {
+      color: var(--papyrus-ts-function);
+    }
+
+    &.class-name {
+      color: var(--papyrus-ts-class-name);
+    }
+
+    &.builtin {
+      color: var(--papyrus-ts-function-name);
+    }
+
+    &.function-name {
       color: var(--papyrus-ts-function-name);
     }
 
@@ -57,10 +67,64 @@
       color: var(--papyrus-ts-number);
     }
 
-    &.nil,
+    &.flow {
+      color: var(--papyrus-ts-flow);
+    }
+
+    &.semi {
+      color: var(--papyrus-ts-semi);
+    }
+
+    &.module {
+      color: var(--papyrus-ts-module);
+    }
+
+    &.this {
+      color: var(--papyrus-ts-this);
+    }
+
+    &.constant {
+      color: var(--papyrus-ts-constant);
+    }
+
+    &.class {
+      color: var(--papyrus-ts-class);
+    }
+
     &.boolean {
       color: var(--papyrus-ts-boolean);
     }
 
+    &.regex {
+      color: var(--papyrus-ts-regex);
+    }
+
+    &.regex-flags {
+      color: var(--papyrus-ts-regex-flags);
+    }
+
+    &.literal-property,
+    &.property {
+      color: var(--papyrus-ts-literal-property);
+    }
+
+    &.string,
+    &.string-property {
+      color: var(--papyrus-ts-string);
+    }
+
+    &.type-constructors {
+      color: var(--papyrus-ts-type-constructor);
+    }
+
+    &.bracket > .punctuation {
+      color: var(--papyrus-ts-bracket);
+    }
+
+    &.bracket > .keyword {
+      color: var(--papyrus-ts-this);
+    }
   }
+
+
 }

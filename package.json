@@ -1,6 +1,6 @@
 {
   "name": "papyrus",
-  "version": "0.4.5",
+  "version": "0.6.0",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης",
@@ -13,7 +13,8 @@
   "exports": {
     "types": "./index.d.ts",
     "require": "./dist/papyrus.cjs",
-    "import": "./dist/papyrus.mjs"
+    "import": "./dist/papyrus.mjs",
+    "default": "./dist/papyrus.js"
   },
   "private": false,
   "repository": {
@@ -24,17 +25,18 @@
     "url": "https://github.com/panoply/papyrus/issues"
   },
   "scripts": {
-    "dev": "concurrently \"pnpm run scss:dev\" \"tsup --watch\"",
+    "dev": "concurrently \"pnpm run scss:dev\" \"tsup --watch\" \"cd docs; pnpm run dev; cd ..;\"",
     "build": "rm -rf dist && pnpm run scss:build && tsup --minify --env.NODE_ENV production && gzip-size dist/papyrus.mjs --include-original",
     "scss:dev": "sass ./index.scss:./docs/public/papyrus.css --watch",
     "scss:build": "sass ./index.scss:./papyrus.css --no-source-map --style=compressed",
     "pack": "cd versions; pnpm pack ../ && cd .."
   },
   "stylelint": {
-    "extends": "@liquify/stylelint-config",
-    "rules": {
-      "color-hex-length": "long"
-    }
+    "extends": "@sissel/stylelint-config",
+    "ignoreFiles": [
+      "public",
+      "node_modules"
+    ]
   },
   "prettier": "@liquify/prettier-config",
   "eslintConfig": {
@@ -53,15 +55,16 @@
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
-    "ava": "^5.3.1",
-    "terser": "^5.19.2"
+    "@sissel/stylelint-config": "^1.2.2",
+    "ava": "^6.1.2",
+    "terser": "^5.29.2"
   },
   "dependencies": {
-    "@textcomplete/core": "^0.1.12",
-    "@textcomplete/textarea": "^0.1.12",
+    "@textcomplete/core": "^0.1.13",
+    "@textcomplete/textarea": "^0.1.13",
     "mergerino": "^0.4.0",
-    "morphdom": "^2.7.0",
+    "morphdom": "^2.7.2",
     "prismjs": "^1.29.0",
-    "type-fest": "^4.0.0"
+    "type-fest": "^4.12.0"
   }
 }

@@ -1,4 +1,5 @@
 import Prism from 'prismjs';
+import Markup from './languages/markup';
 import Liquid from './languages/liquid';
 import TypeScript from './languages/typescript';
 import JavaScript from './languages/javascript';
@@ -16,6 +17,7 @@ export function grammars () {
   if (!Prism.papyrus) {
 
     for (const call of [
+      Markup,
       Liquid,
       JavaScript,
       TypeScript,

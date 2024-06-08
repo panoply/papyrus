@@ -18,7 +18,7 @@ export interface Model {
    *
    * Editing is enabled in the code block
    */
-  get mode(): 'static' | 'error' | 'editing';
+  get mode(): 'static' | 'error' | 'editor';
   /**
    * Returns the current language of the code region (as per the `class="language-xxx"`)
    */
@@ -88,15 +88,15 @@ export interface Model {
    * custom editor options
    */
   editor: {
-    (options?: EditorOptions): () => void;
+    (options?: EditorOptions): void;
     /**
      * Disable editor mode
      */
-    disable: () => void;
+    disable(): void;
     /**
      * Enable editor mode
      */
-    enable: () => void;
+    enable(): void;
   }
   /**
    * Update the current editor options. This method exposes editor

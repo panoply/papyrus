@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import type { StrategyProps } from '@textcomplete/core';
+import { LiteralUnion } from 'type-fest';
 
 /**
  * List of supported options
  */
-export type Languages = (
+export type Languages = LiteralUnion<(
   | 'html'
   | 'bash'
   | 'css'
@@ -19,7 +20,7 @@ export type Languages = (
   | 'yaml'
   | 'plaintext'
   | 'treeview'
-)
+), string>
 
 export interface EditorOptions {
   /**
@@ -204,7 +205,7 @@ export interface Options {
    */
   trimEnd: boolean;
   /**
-   * Whether or not to render a line fence (i.e: right border on the line count)
+   * Whether or not to render a line fence (i.e: right border on the line numbers count)
    *
    * @default true
    */
@@ -225,6 +226,17 @@ export interface Options {
    * @default false
    */
   editor: boolean | EditorOptions;
+  /**
+   * Infers a start mode for Papyrus. In some cases, you may need to start Papyrus
+   * in `static` mode and switch to `editor` mode after a certain action has taken place.
+   * Setting the start mode to `static` will signal to Papyrus that `editor` defined options
+   * may be required, but to initialize in `static` mode.
+   *
+   * The `<pre>` element can also accept `data-papyrus="editor"` or `data-papyrus="static"`
+   * annotations to control the start mode. When this options is `undefined` then Papyrus will
+   * automatically determine the value of this option.
+   */
+  startMode: 'editor' | 'static';
   /**
    * Show Invisible whitespace characters, eg: ` `
    *

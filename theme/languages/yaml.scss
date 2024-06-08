@@ -20,6 +20,7 @@
       color: var(--papyrus-yaml-number);
     }
 
+    &.null,
     &.boolean {
       color: var(--papyrus-yaml-boolean);
     }
@@ -27,7 +28,6 @@
     &.punctuation {
       color: var(--papyrus-yaml-punctuation);
     }
-
 
   }
 

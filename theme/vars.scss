@@ -11,7 +11,7 @@ $papyrus-font-size:                     1em !default;
 $papyrus-line-height:                   1.7 !default;
 
 // EDITOR SIZING
-$papyrus-height:                        auto !default;
+$papyrus-height:                        fit-content !default;
 $papyrus-width:                         100% !default;
 
 // SELECTION
@@ -41,10 +41,12 @@ $papyrus-complete-font-size:                  .7em !default;
 $papyrus-complete-dropdown-width:            250px !default;
 
 // SCROLLBAR
-$papyrus-scrollbar-width:                    2px !default;
+$papyrus-scrollbar-width:                    4px !default;
+$papyrus-scrollbar-padding:                  8px !default;
 $papyrus-scrollbar-track:               #181b20 !default;
-$papyrus-scrollbar-bg:                  #384355 !default;
-$papyrus-scrollbar-thumb:               #384355 !default;
+$papyrus-scrollbar-bg:                  #181b20 !default;
+$papyrus-scrollbar-thumb:               #444b57 !default;
+$papyrus-scrollbar-thumb-hover:         #5f6672 !default;
 
 // INVISIBLE CHARACTERS
 $papyrus-invisible-space-color:         #42454D !default;
@@ -105,7 +107,7 @@ $papyrus-css-tag-selector:                #FF93BC !default;
 $papyrus-css-colon:                       #e91e63 !default;
 $papyrus-css-function:                    #a5d447 !default;
 $papyrus-css-variable:                    #ca99ff !default;
-$papyrus-css-operator:                    #E91E63 !default;
+$papyrus-css-operator:                    #FF93BC !default;
 $papyrus-css-punctuation:                 #fafafa !default;
 $papyrus-css-important:                   #E91E63 !default;
 $papyrus-css-atrule:                      #E91E63 !default;
@@ -201,11 +203,13 @@ $papyrus-js-function-name:                #81D4FA !default;;
 $papyrus-js-punctuation:                  #FAFAFA !default;
 $papyrus-js-special-chars:                #E91E63 !default;
 $papyrus-js-parameter:                    #FFAB40 !default;
+$papyrus-js-this:                         #FFAB40 !default;
 $papyrus-js-variable:                     #81D4FA !default;
 $papyrus-js-object:                       #8BD3FD !default;
 $papyrus-js-operator:                     #E91E63 !default;
 $papyrus-js-operation:                    #E91E63 !default;
 $papyrus-js-module:                       #E91E63 !default;
+$papyrus-js-class:                        #8BD3FD !default;
 $papyrus-js-semi:                         #fafafa !default;
 $papyrus-js-flow:                         #E91E63 !default;
 $papyrus-js-number:                       #F48FB1 !default;
@@ -215,23 +219,44 @@ $papyrus-js-regex:                        #FFF9A6 !default;
 $papyrus-js-regex-flags:                  #E91E63 !default;
 $papyrus-js-literal-property:             #22c0cb !default;
 $papyrus-js-comment:                      #888888 !default;
-
+$papyrus-js-bracket:                      #8d6fb1 !default;
+$papyrus-js-browser-objects:              #81D4FA !default;
+$papyrus-js-type-constructor:             #81D4FA !default;
 
 /* -------------------------------------------- */
 /* TYPESCRIPT                                   */
 /* -------------------------------------------- */
 
 $papyrus-ts-fallback:                     #fafafa !default;
-$papyrus-ts-types:                        #177fd4 !default;
-$papyrus-ts-boolean:                      #ff80f4 !default;
-$papyrus-ts-number:                       #935eff !default;
+$papyrus-ts-semi:                         #fafafa !default;
+$papyrus-ts-types:                        #8BD3FD !default;
+$papyrus-ts-keyword:                      #E91E63 !default;
+$papyrus-ts-function:                     #9EE34F !default;
+$papyrus-ts-class-name:                   #81D4FA !default;
+$papyrus-ts-function-name:                #81D4FA !default;
+$papyrus-ts-punctuation:                  #FAFAFA !default;
+$papyrus-ts-special-chars:                #E91E63 !default;
+$papyrus-ts-parameter:                    #FFAB40 !default;
+$papyrus-ts-this:                         #FFAB40 !default;
+$papyrus-ts-variable:                     #81D4FA !default;
+$papyrus-ts-object:                       #8BD3FD !default;
+$papyrus-ts-constant:                     #8BD3FD !default;
 $papyrus-ts-operator:                     #E91E63 !default;
-$papyrus-ts-parameter:                    #ff953c !default;
-$papyrus-ts-method:                       #7ef0ff !default;
-$papyrus-ts-function-name:                #9EE34F !default;
-$papyrus-ts-filter-name:                  #3defb9 !default;
+$papyrus-ts-operation:                    #E91E63 !default;
+$papyrus-ts-module:                       #E91E63 !default;
+$papyrus-ts-class:                        #8BD3FD !default;
+$papyrus-ts-semi:                         #fafafa !default;
+$papyrus-ts-flow:                         #E91E63 !default;
+$papyrus-ts-number:                       #F48FB1 !default;
+$papyrus-ts-boolean:                      #F48FB1 !default;
 $papyrus-ts-string:                       #FFF9A6 !default;
+$papyrus-ts-regex:                        #FFF9A6 !default;
+$papyrus-ts-regex-flags:                  #E91E63 !default;
+$papyrus-ts-literal-property:             #FFAB40 !default;
 $papyrus-ts-comment:                      #888888 !default;
+$papyrus-ts-bracket:                      #8d6fb1 !default;
+$papyrus-ts-browser-objects:              #81D4FA !default;
+$papyrus-ts-type-constructor:             #81D4FA !default;
 
 /* -------------------------------------------- */
 /* BASH                                         */
@@ -247,3 +272,4 @@ $papyrus-bash-argument:                   #F48FB1 !default;
 
 $papyrus-treeview-line-width:                 0.05em !default;
 $papyrus-treeview-line-color:                 #8a8a8a !default;
+$papyrus-treeview-comment:                    #888888!default;
