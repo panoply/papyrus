@@ -104,7 +104,7 @@ export default function () {
             }
           },
           {
-            pattern: /(spx@[a-z]+)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
+            pattern: /(spx@[a-z:]+)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
             lookbehind: true,
             global: true,
             inside: {
@@ -118,16 +118,6 @@ export default function () {
               },
               'event-struct': {
                 pattern: /(\s)\{[\s\S]*?\}\s*/,
-                greedy: true,
-                lookbehind: true,
-                inside: {
-                  delim: /[{}]/,
-                  comma: /,/,
-                  prop: /[a-z]+/
-                }
-              },
-              'event-struct-on': {
-                pattern: /([a-zA-Z0-9])\{[\s\S]*?\}\s*/,
                 greedy: true,
                 lookbehind: true,
                 inside: {
@@ -176,20 +166,29 @@ export default function () {
             'spx-name': {
               pattern: /(spx-target|spx-morph|spx-replace|spx-hover|spx-eval|spx-data|spx-component|spx-node|spx-bind|spx-watch|spx-hydrate|spx-intersect|spx-prepend|spx-append|spx-threshold|spx-proximity|spx-position|spx-progress|spx-scroll|spx-cache|spx-disable|spx-history)\b/
             },
+            'at-notation': {
+              pattern: /[a-zA-Z0-9]+@[a-zA-Z0-9]+$/,
+              inside: {
+                prefix: /^[\w-]+?(?=@)/,
+                symbol: /[@]/,
+                suffix: /[a-zA-Z0-9]+/
+              }
+            },
+            'at-window-notation': {
+              pattern: /[a-zA-Z0-9]+@window:[a-zA-Z0-9]+$/,
+              inside: {
+                prefix: /^[\w-]+?(?=@)/,
+                window: /\bwindow\b(?=:)/,
+                symbol: /[:@]/,
+                suffix: /[a-zA-Z0-9]+$/
+              }
+            },
             'ns-notation': {
               pattern: /[a-zA-Z0-9-]+:[a-zA-Z0-9-]+$/,
               inside: {
                 prefix: /^[\w-]+?(?=:)/,
                 symbol: /:/,
                 suffix: /[a-zA-Z0-9-]+?$/
-              }
-            },
-            'at-notation': {
-              pattern: /[a-zA-Z0-9]+@[a-zA-Z0-9]+$/,
-              inside: {
-                prefix: /^[\w-]+?(?=@)/,
-                symbol: /@/,
-                suffix: /[a-zA-Z0-9]+?$/
               }
             },
             namespace: /^[^\s>/:]+:/

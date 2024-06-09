@@ -49,10 +49,16 @@
         color: #81D4FA;
       }
 
+      > .at-window-notation,
       > .at-notation {
 
         > .prefix,
-        &.spx-name {
+        > .window,
+        > .spx-name {
+          color: #81D4FA;
+        }
+
+        > .window {
           color: #81D4FA;
         }
 

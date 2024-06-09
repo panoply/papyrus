@@ -23,6 +23,7 @@ export default html`
   <main>
     <div
       spx@click="key.prop { once }"
+      spx@window:click="key.prop { once }"
       spx-node="ref.name"
       spx-ref:number="100"
       spx-ref:boolean="true"
