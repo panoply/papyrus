@@ -6,6 +6,10 @@
       color: var(--papyrus-json-comment);
     }
 
+    &.quotes {
+      color: var(--papyrus-json-quotes);
+    }
+
     &.property {
       color: var(--papyrus-json-property);
     }

@@ -1,4 +1,3 @@
-
 import type { Languages, Options } from '../../types/options';
 import Prism, { Grammar } from 'prismjs';
 import { model } from '../model';
@@ -20,7 +19,9 @@ export function highlight (config: Options) {
   grammars();
 
   for (const language in Prism.languages) {
+
     invisibles(language, config);
+
   }
 
   function language (languageName: Languages) {

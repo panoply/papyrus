@@ -4,6 +4,7 @@ export default css`
 
   :root {
     --some-variable: #fff;
+    --another-variable: 3rem;
   }
 
   code[class*="language-"] {

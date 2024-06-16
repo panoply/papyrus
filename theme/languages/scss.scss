@@ -4,6 +4,10 @@
 
   .token {
 
+    &.comment {
+      color: var(--papyrus-scss-comment);
+    }
+
     &.selector {
       color: var(--papyrus-scss-selector);
     }

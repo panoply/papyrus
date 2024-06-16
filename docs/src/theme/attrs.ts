@@ -119,6 +119,10 @@ export interface IState {
    */
   language: string;
   /**
+   * Alias
+   */
+  alias?: string;
+  /**
    * The sample string of the language
    */
   sample: string;
@@ -133,6 +137,10 @@ export interface IModel {
    * HTML
    */
   html: IState;
+  /**
+   * HTML
+   */
+  spx: IState;
   /**
    * XML
    */
@@ -234,6 +242,10 @@ export interface IAttrs {
    * The current state model
    */
   get state(): IState;
+  /**
+   * Mode
+   */
+  mode(): 'editor' | 'static' | 'error'
   /**
    * Update style variables
    */

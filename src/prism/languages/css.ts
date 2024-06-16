@@ -2,7 +2,8 @@ import Prism from 'prismjs';
 
 export default function () {
 
-  const STRING = /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/;
+  const string = /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/;
+
   const CSS = <Prism.Grammar>{
     'pseudo-element': /:(?:after|before|first-letter|first-line|selection)|::[-\w]+/,
     'pseudo-class': /:[-\w]+/,
@@ -10,7 +11,7 @@ export default function () {
     id: /#[-\w]+/,
     'css-tag': /\w+/,
     attribute: {
-      pattern: RegExp('\\[(?:[^[\\]"\']|' + STRING.source + ')*\\]'),
+      pattern: RegExp('\\[(?:[^[\\]"\']|' + string.source + ')*\\]'),
       greedy: true,
       inside: {
         punctuation: /^\[|\]$/,
@@ -31,7 +32,7 @@ export default function () {
           lookbehind: true
         },
         'css-attr-value': [
-          STRING,
+          string,
           {
             pattern: /(=\s*)(?:(?!\s)[-\w\xA0-\uFFFF])+(?=\s*$)/,
             lookbehind: true
@@ -55,7 +56,7 @@ export default function () {
       }
     ],
     combinator: />|\+|~|\|\|/,
-    punctuation: /[(),]/
+    punctuation: /[(),:]/
   };
 
   Prism.languages.css.selector = {
@@ -97,8 +98,6 @@ export default function () {
       pattern: /(\s)[+\-*/](?=\s)/,
       lookbehind: true
     },
-    // CAREFUL!
-    // Previewers and Inline color use hexcode and color.
     hexcode: {
       pattern: /\B#[\da-f]{3,8}\b/i,
       alias: 'color'
@@ -120,9 +119,13 @@ export default function () {
     number
   });
 
+  // @ts-expect-error
   Prism.languages.markup.tag.addInlined('style', 'css');
+  // @ts-expect-error
   Prism.languages.markup.tag.addAttribute('style', 'css');
+  // @ts-expect-error
   Prism.languages.liquid.tag.addInlined('style', 'css');
+  // @ts-expect-error
   Prism.languages.liquid.tag.addAttribute('style', 'css');
 
   return Prism.languages.css;

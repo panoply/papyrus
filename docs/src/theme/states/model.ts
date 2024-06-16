@@ -3,6 +3,8 @@ import liquidSample from './samples/liquid';
 import liquidTokens from './tokens/liquid';
 import htmlSample from './samples/html';
 import htmlTokens from './tokens/html';
+import spxSample from './samples/spx';
+import spxTokens from './tokens/spx';
 import xmlSample from './samples/xml';
 import xmlTokens from './tokens/xml';
 import cssSample from './samples/css';
@@ -37,6 +39,13 @@ export const model: IModel = {
     language: 'HTML',
     get sample () { return htmlSample; },
     get tokens () { return htmlTokens; }
+  }
+  ,
+  spx: {
+    language: 'SPX',
+    alias: 'html',
+    get sample () { return spxSample; },
+    get tokens () { return spxTokens; }
   }
   ,
   xml: {

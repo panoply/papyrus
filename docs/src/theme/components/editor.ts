@@ -11,7 +11,7 @@ export const Editor: m.Component<IAttrs> = {
     {
       dom
     }
-  ) => relapse(dom, {
+  ) => relapse(dom as HTMLElement, {
     multiple: false,
     persist: true
   }),

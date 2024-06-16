@@ -1,9 +1,5 @@
 import m from 'mithril';
-import { icons, file } from './icons';
-import data from '../static/content';
-import papyrus from 'papyrusjs';
-import { ts, liquid } from 'language-literals';
-import { Languages } from 'src/attrs';
+import { icons } from './icons';
 
 export const Landing: m.Component = {
   view: () => m(

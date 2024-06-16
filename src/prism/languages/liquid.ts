@@ -83,7 +83,9 @@ export default function () {
     liquid: {
       pattern: /({{|{%)[\s\S]+(}}|%})/,
       global: true,
-      inside: Inside
+      inside: Object.assign({}, Inside, {
+        'string-delimiters': /{%|{{|}}|%}/
+      })
     }
   };
 
@@ -175,6 +177,7 @@ export default function () {
     }
   });
 
+  // @ts-ignore
   Object.defineProperty(Prism.languages.liquid.tag, 'addAttribute', {
     /**
      * Adds an pattern to highlight languages embedded in HTML attributes.

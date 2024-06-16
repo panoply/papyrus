@@ -1,6 +1,6 @@
 # 𓁁 Papyrus
 
-Embedded syntax highlighting and code editing with textarea enhancements leveraging [PrismJS](https://prismjs.com). Papyrus is a drop-in solution for code sample showcasing which offers theme customizations and ships pre-stacked.
+Syntax highlighting and code editing with textarea enhancements. Papyrus is a drop-in solution for code sample showcasing which offers theme customizations and ships pre-stacked.
 
 Documentation + Custom Theming: [papyrus.js.og](https://papyrus.js.org)
 

@@ -3,8 +3,8 @@ import { IColor, IToken } from '../../attrs';
 export default <IToken<IColor>[]>[
   {
     label: 'Punctuation',
-    sass: '$papyrus-punctuation-comment',
-    css: '--papyrus-punctuation-comment',
+    sass: '$papyrus-bash-comment',
+    css: '--papyrus-bash-comment',
     input: {
       type: 'color',
       format: 'hex',

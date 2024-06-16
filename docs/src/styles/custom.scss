@@ -16,8 +16,26 @@
   }
 }
 
+.pointer {
+  &:hover {
+    cursor: pointer;
+    opacity: .5;
+  }
+}
+
 .btn-preview {
   border-width: 0.01rem !important;
+  color: #8a8a8a;
+  position: relative;
+  overflow: hidden;
+  &.fc-white {
+    border-top: .5px #8dc4b2 solid !important;
+    font-weight: 900 !important;
+  }
+
+  &:hover {
+    color: #666;
+  }
 
   &.rd-l {
     border-radius: 3px ;

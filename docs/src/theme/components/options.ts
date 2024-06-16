@@ -24,14 +24,10 @@ export const Options: m.Component<IAttrs> = {
       m(
         '.row.jc-between.ai-center.py-3'
         , [
+          m('.col-auto.pl-4.ml-3.mt-2.pointer', {
+            onclick: () => m.route.set('/')
+          }, icons('logo', 100, '2')),
           m(
-            '.col-auto'
-            , m(
-              'h6.uncase.mb-0.pl-4.fw-bold.bg-smoke'
-              , attrs.settings ? 'Editor Settings' : attrs.state.language
-            )
-          )
-          , m(
             '.col-auto.pl-0.pr-4.mr-1[data-tooltip="left"]'
             , {
               ariaLabel: 'Editor Options'
@@ -43,7 +39,14 @@ export const Options: m.Component<IAttrs> = {
                   attrs.settings = !attrs.settings;
                 }
               }
-              , icons('gears', 25)
+              , attrs.settings ? icons('close', 25) : icons('gears', 25)
+            )
+          ),
+          m(
+            '.col-12.my-2'
+            , m(
+              'h6.mb-0.mt-4.pl-4.fw-bold.bg-smoke.upper'
+              , attrs.settings ? 'Editor Settings' : attrs.state.language
             )
           )
         ]

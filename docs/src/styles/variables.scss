@@ -10,7 +10,7 @@ $prefix: null;
 
 $enable-rfs: true;
 $enable-font-smoothing: true;
-$enable-font-smoothing-heading: false;
+$enable-font-smoothing-heading: true;
 $enable-transitions: true;
 $enable-reduced-motion: true;
 $enable-grid-classes: true;
@@ -265,7 +265,7 @@ $font-family-base: system-ui,
   "Apple Color Emoji",
   "Segoe UI Emoji",
   "Segoe UI Symbol";
-$font-family-heading: "JetBrains Mono", monospace;
+$font-family-heading: 'JetBrains Mono', monospace;
 $font-family-code: consolas, monaco, "Andale Mono", "Ubuntu Mono",
   monospace;
 
@@ -460,7 +460,7 @@ $btn-border-radius-sm: 0;
 $btn-border-radius-lg: 0;
 
 $btn-link-color: var(--#{$prefix}link-color);
-$btn-link-hover-color: var(--#{$prefix}link-hover-color);
+$btn-link-hover-color: $gray-500;
 
 $btn-font-family: $font-family-heading;
 $btn-font-size: $font-size-sm;

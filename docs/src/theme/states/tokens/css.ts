@@ -2,7 +2,18 @@ import { IColor, IToken } from '../../attrs';
 
 export default <IToken<IColor>[]>[
   {
-    label: 'Selector',
+    label: 'CSS Comment',
+    sass: '$papyrus-css-comment',
+    css: '--papyrus-css-comment',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#888888',
+      value: '#888888'
+    }
+  },
+  {
+    label: 'CSS Selector',
     sass: '$papyrus-css-selector',
     css: '--papyrus-css-selector',
     input: {
@@ -13,7 +24,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Tag Selector',
+    label: 'CSS Tag Selector',
     sass: '$papyrus-css-tag-selector',
     css: '--papyrus-css-tag-selector',
     input: {
@@ -24,7 +35,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Colon',
+    label: 'CSS Colon',
     sass: '$papyrus-css-colon',
     css: '--papyrus-css-colon',
     input: {
@@ -35,7 +46,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Function',
+    label: 'CSS Function',
     sass: '$papyrus-css-function',
     css: '--papyrus-css-function',
     input: {
@@ -46,7 +57,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Variable',
+    label: 'CSS Variable',
     sass: '$papyrus-css-variable',
     css: '--papyrus-css-variable',
     input: {
@@ -57,7 +68,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Operator',
+    label: 'CSS Operator',
     sass: '$papyrus-css-operator',
     css: '--papyrus-css-operator',
     input: {
@@ -68,7 +79,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Punctuation',
+    label: 'CSS Punctuation',
     sass: '$papyrus-css-punctuation',
     css: '--papyrus-css-punctuation',
     input: {
@@ -79,7 +90,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Important',
+    label: 'CSS Important',
     sass: '$papyrus-css-important',
     css: '--papyrus-css-important',
     input: {
@@ -90,7 +101,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Atrule',
+    label: 'CSS AtRule',
     sass: '$papyrus-css-atrule',
     css: '--papyrus-css-atrule',
     input: {
@@ -101,7 +112,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Property',
+    label: 'CSS Property',
     sass: '$papyrus-css-property',
     css: '--papyrus-css-property',
     input: {
@@ -112,7 +123,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Property Value',
+    label: 'CSS Property Value',
     sass: '$papyrus-css-property-value',
     css: '--papyrus-css-property-value',
     input: {
@@ -123,18 +134,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Number',
-    sass: '$papyrus-css-number',
-    css: '--papyrus-css-number',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#bc85ff',
-      value: '#bc85ff'
-    }
-  },
-  {
-    label: 'String',
+    label: 'CSS String',
     sass: '$papyrus-css-string',
     css: '--papyrus-css-string',
     input: {
@@ -145,7 +145,18 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Hexcode',
+    label: 'CSS Number',
+    sass: '$papyrus-css-number',
+    css: '--papyrus-css-number',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#bc85ff',
+      value: '#bc85ff'
+    }
+  },
+  {
+    label: 'CSS Hexcode',
     sass: '$papyrus-css-hexcode',
     css: '--papyrus-css-hexcode',
     input: {
@@ -156,7 +167,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Combinator',
+    label: 'CSS Combinator',
     sass: '$papyrus-css-combinator',
     css: '--papyrus-css-combinator',
     input: {
@@ -167,7 +178,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Unit',
+    label: 'CSS Unit',
     sass: '$papyrus-css-unit',
     css: '--papyrus-css-unit',
     input: {
@@ -178,7 +189,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Attribute Name',
+    label: 'CSS Attribute Name',
     sass: '$papyrus-css-attr-name',
     css: '--papyrus-css-attr-name',
     input: {
@@ -189,7 +200,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Attribute Value',
+    label: 'CSS Attribute Value',
     sass: '$papyrus-css-attr-value',
     css: '--papyrus-css-attr-value',
     input: {
@@ -200,7 +211,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Attribute Punctuation',
+    label: 'CSS Attribute Punctuation',
     sass: '$papyrus-css-attr-punctuation',
     css: '--papyrus-css-attr-punctuation',
     input: {
@@ -211,7 +222,7 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Attribute Punctuation',
+    label: 'CSS Pseudo Element',
     sass: '$papyrus-css-pseudo-element',
     css: '--papyrus-css-pseudo-element',
     input: {

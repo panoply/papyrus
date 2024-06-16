@@ -1,5 +1,6 @@
 import m from 'mithril';
-import { IAttrs, Languages } from '../attrs';
+import { Languages } from 'papyrus';
+import { IAttrs } from '../attrs';
 import { Options } from './options';
 import { Preview } from './preview';
 import { Sidebar } from './sidebar';

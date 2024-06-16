@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Languages } from 'papyrus';
+import papyrus, { Languages } from 'papyrus';
 import { IAttrs, IEditor, IModel } from './attrs';
 import { Layout } from './components/layout';
 import { Landing } from './components/landing';
@@ -35,7 +35,11 @@ function replace (model: IModel, editor: IEditor) {
 
     const string = [ ':root {' ];
 
-    for (const [ variable, hex ] of style.entries()) string.push(`${variable}: ${hex};`);
+    for (const [ variable, hex ] of style.entries()) {
+
+      string.push(`${variable}: ${hex};`);
+
+    }
 
     string.push('}');
     node.innerHTML = string.join('\n  ');
@@ -44,18 +48,81 @@ function replace (model: IModel, editor: IEditor) {
 
   write();
 
+  const languages = new RegExp(
+    '(' + Object
+      .keys(model)
+      .map(n => n === 'typescript' ? 'ts' : n === 'javascript' ? 'js' : n)
+      .join('|') +
+     ')'
+  );
+
+  function variables (top: string[], vars: string[]) {
+
+    let currLang: any;
+
+    const comments = (variable: string, entry: string) => {
+
+      if (languages.test(variable)) {
+
+        const langName = variable.match(languages);
+
+        if (currLang !== langName[1]) {
+
+          currLang = langName[1];
+
+          if (currLang === 'ts') {
+            vars.push('\n/* TypeScript */\n');
+          } else if (currLang === 'js') {
+            vars.push('\n/* JavaScript */\n');
+          } else {
+            vars.push(`\n/* ${currLang.toUpperCase()} */\n`);
+          }
+
+        }
+
+        vars.push(entry);
+
+      } else {
+
+        if (currLang !== 'settings') {
+
+          currLang = 'settings';
+          top.push('\n/* Papyrus Settings */\n');
+
+        }
+
+        top.push(entry);
+      }
+    };
+
+    return { comments, write: () => top.join('\n') };
+  }
+
   return {
     write,
     map: style,
     get css () {
+
       const vars: string[] = [];
-      for (const [ variable, hex ] of style.entries()) vars.push(`${variable}: ${hex};`);
-      return vars.join('\n');
+      const sort = variables([], vars);
+
+      for (const [ variable, hex ] of style.entries()) {
+        sort.comments(variable, `--${variable.slice(2)}: ${hex};`);
+      }
+
+      return sort.write() + '\n' + vars.join('\n');
+
     },
     get sass () {
+
       const vars: string[] = [];
-      for (const [ variable, hex ] of style.entries()) vars.push(`$${variable.slice(2)}: ${hex};`);
-      return vars.join('\n');
+      const sort = variables([], vars);
+
+      for (const [ variable, hex ] of style.entries()) {
+        sort.comments(variable, `$${variable.slice(2)}: ${hex};`);
+      }
+
+      return sort.write() + '\n' + vars.join('\n');
     }
   };
 }
@@ -94,6 +161,9 @@ function render () {
     get model () {
       return model;
     },
+    mode () {
+      return papyrus.model.has('editor') ? papyrus.get('editor').mode : null;
+    },
     style,
     papyrus: {
       input: '',
@@ -124,8 +194,13 @@ function render () {
         return cache;
       },
       save (store) {
+
         localStorage.removeItem(store);
         localStorage.setItem(store, JSON.stringify(model));
+
+        papyrus.get('css-vars').update(style.css);
+        papyrus.get('scss-vars').update(style.sass);
+
       }
     }
   };

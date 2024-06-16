@@ -12,8 +12,8 @@ export const editor: Array<[ string, IToken<IColor | IRange>[]]> = [
         css: '--papyrus-font-size-root',
         input: {
           type: 'range',
-          default: '15',
-          value: '15',
+          default: '14',
+          value: '14',
           min: '2',
           max: '30',
           step: '1',

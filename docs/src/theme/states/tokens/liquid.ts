@@ -2,14 +2,14 @@ import { IColor, IToken } from '../../attrs';
 
 export default <IToken<IColor>[]> [
   {
-    label: 'Delimiters',
-    sass: '$papyrus-liquid-delimiters',
-    css: '--papyrus-liquid-delimiters',
+    label: 'Boolean',
+    sass: '$papyrus-liquid-boolean',
+    css: '--papyrus-liquid-boolean',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#fafafa',
-      value: '#fafafa'
+      default: '#ff80f4',
+      value: '#ff80f4'
     }
   },
   {
@@ -24,14 +24,36 @@ export default <IToken<IColor>[]> [
     }
   },
   {
-    label: 'Boolean',
-    sass: '$papyrus-liquid-boolean',
-    css: '--papyrus-liquid-boolean',
+    label: 'Delimiters',
+    sass: '$papyrus-liquid-delimiters',
+    css: '--papyrus-liquid-delimiters',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#ff80f4',
-      value: '#ff80f4'
+      default: '#fafafa',
+      value: '#fafafa'
+    }
+  },
+  {
+    label: 'Fallback',
+    sass: '$papyrus-liquid-fallback',
+    css: '--papyrus-liquid-fallback',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#fafafa',
+      value: '#fafafa'
+    }
+  },
+  {
+    label: 'Filter Name',
+    sass: '$papyrus-liquid-filter-name',
+    css: '--papyrus-liquid-filter-name',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#3defb9',
+      value: '#3defb9'
     }
   },
   {
@@ -46,18 +68,7 @@ export default <IToken<IColor>[]> [
     }
   },
   {
-    label: 'Parameter',
-    sass: '$papyrus-liquid-parameter',
-    css: '--papyrus-liquid-parameter',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#ff953c',
-      value: '#ff953c'
-    }
-  },
-  {
-    label: 'Objects',
+    label: 'Object Name',
     sass: '$papyrus-liquid-object-name',
     css: '--papyrus-liquid-object-name',
     input: {
@@ -68,18 +79,18 @@ export default <IToken<IColor>[]> [
     }
   },
   {
-    label: 'Filters',
-    sass: '$papyrus-liquid-filter-name',
-    css: '--papyrus-liquid-filter-name',
+    label: 'Object Property',
+    sass: '$papyrus-liquid-object-prop',
+    css: '--papyrus-liquid-object-prop',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#3defb9',
-      value: '#3defb9'
+      default: '#fafafa',
+      value: '#fafafa'
     }
   },
   {
-    label: 'Operators',
+    label: 'Operator',
     sass: '$papyrus-liquid-operator',
     css: '--papyrus-liquid-operator',
     input: {
@@ -90,14 +101,25 @@ export default <IToken<IColor>[]> [
     }
   },
   {
-    label: 'Tags',
-    sass: '$papyrus-liquid-tag-name',
-    css: '--papyrus-liquid-tag-name',
+    label: 'Output',
+    sass: '$papyrus-liquid-output',
+    css: '--papyrus-liquid-output',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#E91E63',
-      value: '#E91E63'
+      default: '#81d4fa',
+      value: '#81d4fa'
+    }
+  },
+  {
+    label: 'Parameter',
+    sass: '$papyrus-liquid-parameter',
+    css: '--papyrus-liquid-parameter',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#ff953c',
+      value: '#ff953c'
     }
   },
   {
@@ -112,7 +134,7 @@ export default <IToken<IColor>[]> [
     }
   },
   {
-    label: 'Strings',
+    label: 'String',
     sass: '$papyrus-liquid-string',
     css: '--papyrus-liquid-string',
     input: {
@@ -124,14 +146,36 @@ export default <IToken<IColor>[]> [
   },
   {
     label: 'String Delimiters',
-    describe: 'Delimiter token expressions contained within HTML attribute value strings.',
     sass: '$papyrus-liquid-string-delimiters',
     css: '--papyrus-liquid-string-delimiters',
+    describe: 'Delimiter token expressions contained within HTML attribute value strings.',
     input: {
       type: 'color',
       format: 'hex',
       default: '#888888',
       value: '#888888'
+    }
+  },
+  {
+    label: 'String Object Name',
+    sass: '$papyrus-liquid-string-object-name',
+    css: '--papyrus-liquid-string-object-name',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#81d4fa',
+      value: '#81d4fa'
+    }
+  },
+  {
+    label: 'Tag',
+    sass: '$papyrus-liquid-tag',
+    css: '--papyrus-liquid-tag',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#E91E63',
+      value: '#E91E63'
     }
   }
 ];

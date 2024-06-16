@@ -104,6 +104,22 @@
   --papyrus-html-comment                    : #{$papyrus-html-comment};
 
   /* -------------------------------------------- */
+  /* SPX                                          */
+  /* -------------------------------------------- */
+
+  --papyrus-spx-attr-name                   : #{$papyrus-spx-attr-name};
+  --papyrus-spx-window                      : #{$papyrus-spx-window};
+  --papyrus-spx-symbol                      : #{$papyrus-spx-symbol};
+  --papyrus-spx-method                      : #{$papyrus-spx-method};
+  --papyrus-spx-suffix                      : #{$papyrus-spx-suffix};
+  --papyrus-spx-event-key                   : #{$papyrus-spx-event-key};
+  --papyrus-spx-punctuation                 : #{$papyrus-spx-punctuation};
+  --papyrus-spx-props                       : #{$papyrus-spx-props};
+  --papyrus-spx-delims                      : #{$papyrus-spx-delims};
+  --papyrus-spx-number                      : #{$papyrus-spx-number};
+  --papyrus-spx-boolean                     : #{$papyrus-spx-boolean};
+
+  /* -------------------------------------------- */
   /* LIQUID LANGUAGE                              */
   /* -------------------------------------------- */
 
@@ -154,6 +170,7 @@
   /* SCSS LANGUAGE                                */
   /* -------------------------------------------- */
 
+  --papyrus-scss-comment                      : #{$papyrus-scss-comment};
   --papyrus-scss-selector                     : #{$papyrus-scss-selector};
   --papyrus-scss-tag-selector                 : #{$papyrus-scss-tag-selector};
   --papyrus-scss-colon                        : #{$papyrus-scss-colon};
@@ -180,6 +197,7 @@
 
   --papyrus-json-punctuation                 : #{$papyrus-json-punctuation};
   --papyrus-json-property                    : #{$papyrus-json-property};
+  --papyrus-json-quotes                      : #{$papyrus-json-quotes};
   --papyrus-json-string                      : #{$papyrus-json-string};
   --papyrus-json-boolean                     : #{$papyrus-json-boolean};
   --papyrus-json-number                      : #{$papyrus-json-number};

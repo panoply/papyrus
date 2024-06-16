@@ -79,6 +79,11 @@
       .property {
         color: var(--papyrus-liquid-string);
       }
+
+
+      .delimiters {
+        color: var(--papyrus-liquid-string-delimiters);
+      }
     }
 
     &.comment {

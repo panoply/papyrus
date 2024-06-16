@@ -42,21 +42,21 @@
     "mithril": "^2.2.2",
     "papyrus": "workspace:^",
     "prismjs": "^1.29.0",
-    "relapse": "^0.8.1"
+    "relapse": "^0.9.0"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@brixtol/bootstrap": "^1.7.3",
+    "@brixtol/bootstrap": "^1.7.5",
     "@liquify/eslint-config": "workspace:^",
     "@liquify/prettier-config": "workspace:^",
     "@liquify/stylelint-config": "workspace:^",
     "@liquify/tsconfig": "workspace:^",
     "@panoply/11ty": "^0.3.0",
     "concurrently": "^8.2.2",
-    "markdown-it": "^14.0.0",
+    "markdown-it": "^14.1.0",
     "mithril": "^2.2.2",
-    "sass": "^1.72.0",
-    "terser": "^5.29.2",
-    "tsup": "^8.0.2"
+    "sass": "^1.77.5",
+    "terser": "^5.31.1",
+    "tsup": "^8.1.0"
   }
 }

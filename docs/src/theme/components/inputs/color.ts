@@ -103,7 +103,7 @@ export const ColorInput: m.Component<{
       ) => {
 
         if (token.sass === '$papyrus-selection-bg') {
-          const { textarea } = papyrus.get();
+          const { textarea } = papyrus.get('editor');
           textarea.setSelectionRange(100, 250);
           textarea.focus();
         }
@@ -126,6 +126,7 @@ export const ColorInput: m.Component<{
         });
 
         cache.save(store);
+
       }
 
     }

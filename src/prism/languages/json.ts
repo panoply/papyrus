@@ -6,7 +6,13 @@ export default function () {
     property: {
       pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
       lookbehind: true,
-      greedy: true
+      greedy: true,
+      inside: {
+        quotes: {
+          pattern: /"/,
+          greedy: true
+        }
+      }
     },
     string: {
       pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,

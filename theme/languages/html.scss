@@ -39,14 +39,14 @@
     }
 
     &.spx-attr-name {
-      color: #81D4FA;
+      color: var(--papyrus-spx-attr-name);
     }
 
     &.attr-name {
       color: var(--papyrus-html-attr-name);
 
       > .spx-name {
-        color: #81D4FA;
+        color: var(--papyrus-spx-attr-name);
       }
 
       > .at-window-notation,
@@ -55,19 +55,19 @@
         > .prefix,
         > .window,
         > .spx-name {
-          color: #81D4FA;
+          color: var(--papyrus-spx-attr-name);
         }
 
         > .window {
-          color: #81D4FA;
+          color: var(--papyrus-spx-window);
         }
 
         > .symbol {
-          color: #E91E63;
+          color:var(--papyrus-spx-symbol);
         }
 
         > .suffix {
-          color: #9EE34F;
+          color: var(--papyrus-spx-method);
         }
       }
 
@@ -76,15 +76,15 @@
 
         > .prefix,
         &.spx-name {
-          color: #81D4FA;
+          color: var(--papyrus-spx-attr-name);
         }
 
         > .symbol {
-          color: #E91E63;
+          color: var(--papyrus-spx-symbol);
         }
 
         > .suffix {
-          color: #f2f2f3;
+          color: var(--papyrus-spx-suffix);
         }
       }
     }
@@ -108,36 +108,37 @@
       }
 
       .separtor {
-        color: #E91E63;
+        color: var(--papyrus-spx-punctuation);
       }
 
+
       .event-key {
-        color: #FFAB40;
+        color: var(--papyrus-spx-event-key);
       }
 
       > .bind-notation > .token {
 
         &.key {
-          color: #FFAB40;
+          color:  var(--papyrus-spx-event-key);
         }
 
         &.dot {
-          color: #E91E63;
+          color: var(--papyrus-spx-punctuation);
         }
 
         &.val {
-          color: #f2f2f3;
+          color: var(--papyrus-spx-props);
         }
 
       }
       > .dot-notation > .token {
 
         &.key {
-          color: #FFAB40;
+          color: var(--papyrus-spx-event-key);
         }
 
         &.dot {
-          color: #E91E63;
+          color: var(--papyrus-spx-punctuation);
         }
 
         &.val {
@@ -146,19 +147,22 @@
 
       }
 
+
+
+
       > .event-struct-on > .token,
       > .event-struct > .token {
 
         &.prop {
-          color: #f2f2f3;
+          color: var(--papyrus-spx-props);
         }
 
         &.comma {
-          color: #E91E63;
+          color: var(--papyrus-spx-punctuation);
         }
 
         &.delim {
-          color: #979797;
+          color: var(--papyrus-spx-delims);
         }
 
       }
@@ -176,11 +180,11 @@
 
         &.number,
         &.integer {
-          color: #7b60ff
+          color: var(--papyrus-spx-number);
         }
 
         &.boolean {
-          color: #ba6ffe;
+          color: var(--papyrus-spx-boolean);
         }
 
         &.script {
@@ -192,7 +196,7 @@
             }
 
             &.punctuation {
-              color: #979797;
+              color: var(--papyrus-spx-delims);
             }
 
             &.punctuation-chars {
@@ -220,7 +224,7 @@
             }
 
             &.number {
-              color: #7b60ff
+              color: var(--papyrus-spx-number);
             }
 
             &.literal-property,
@@ -233,7 +237,7 @@
             }
 
             &.boolean {
-              color: #ba6ffe;
+              color: var(--papyrus-spx-boolean);
             }
           }
         }

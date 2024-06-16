@@ -2,42 +2,9 @@ import { IColor, IToken } from '../../attrs';
 
 export default <IToken<IColor>[]>[
   {
-    label: 'Prolog',
-    sass: '$papyrus-xml-prolog',
-    css: '--papyrus-xml-prolog',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#BECAFF',
-      value: '#BECAFF'
-    }
-  },
-  {
-    label: 'Punctuation',
-    sass: '$papyrus-html-delimiter',
-    css: '--papyrus-html-delimiter',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#BECAFF',
-      value: '#BECAFF'
-    }
-  },
-  {
-    label: 'Tags',
-    sass: '$papyrus-html-tag-name',
-    css: '--papyrus-html-tag-name',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#FF93BC',
-      value: '#FF93BC'
-    }
-  },
-  {
-    label: 'Attribute',
-    sass: '$papyrus-html-attr-name',
-    css: '--papyrus-html-attr-name',
+    label: 'Attribute Name',
+    sass: '$papyrus-xml-attr-name',
+    css: '--papyrus-xml-attr-name',
     input: {
       type: 'color',
       format: 'hex',
@@ -46,20 +13,9 @@ export default <IToken<IColor>[]>[
     }
   },
   {
-    label: 'Equal',
-    sass: '$papyrus-html-equals',
-    css: '--papyrus-html-equals',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#FF93BC',
-      value: '#FF93BC'
-    }
-  },
-  {
-    label: 'Value',
-    sass: '$papyrus-html-attr-value',
-    css: '--papyrus-html-attr-value',
+    label: 'Attribute Value',
+    sass: '$papyrus-xml-attr-value',
+    css: '--papyrus-xml-attr-value',
     input: {
       type: 'color',
       format: 'hex',
@@ -69,13 +25,46 @@ export default <IToken<IColor>[]>[
   },
   {
     label: 'Comment',
-    sass: '$papyrus-html-comment',
-    css: '--papyrus-html-comment',
+    sass: '$papyrus-xml-comment',
+    css: '--papyrus-xml-comment',
     input: {
       type: 'color',
       format: 'hex',
       default: '#888888',
       value: '#888888'
+    }
+  },
+  {
+    label: 'Delimiter',
+    sass: '$papyrus-xml-delimiter',
+    css: '--papyrus-xml-delimiter',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#BECAFF',
+      value: '#BECAFF'
+    }
+  },
+  {
+    label: 'Equals',
+    sass: '$papyrus-xml-equals',
+    css: '--papyrus-xml-equals',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FF93BC',
+      value: '#FF93BC'
+    }
+  },
+  {
+    label: 'Name',
+    sass: '$papyrus-xml-name',
+    css: '--papyrus-xml-name',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FF93BC',
+      value: '#FF93BC'
     }
   },
   {
@@ -87,6 +76,28 @@ export default <IToken<IColor>[]>[
       format: 'hex',
       default: '#BECAFF',
       value: '#BECAFF'
+    }
+  },
+  {
+    label: 'Prolog',
+    sass: '$papyrus-xml-prolog',
+    css: '--papyrus-xml-prolog',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#BECAFF',
+      value: '#BECAFF'
+    }
+  },
+  {
+    label: 'Tag Name',
+    sass: '$papyrus-xml-tag-name',
+    css: '--papyrus-xml-tag-name',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FF93BC',
+      value: '#FF93BC'
     }
   }
 ];

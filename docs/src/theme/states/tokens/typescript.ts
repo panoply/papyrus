@@ -1,6 +1,61 @@
 import { IColor, IToken } from '../../attrs';
 
-export default <IToken<IColor>[]><IToken<IColor>[]>[
+export default <IToken<IColor>[]>[
+  {
+    label: 'Boolean',
+    sass: '$papyrus-ts-boolean',
+    css: '--papyrus-ts-boolean',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#F48FB1',
+      value: '#F48FB1'
+    }
+  },
+  {
+    label: 'Bracket',
+    sass: '$papyrus-ts-bracket',
+    css: '--papyrus-ts-bracket',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#8d6fb1',
+      value: '#8d6fb1'
+    }
+  },
+  {
+    label: 'Browser Objects',
+    sass: '$papyrus-ts-browser-objects',
+    css: '--papyrus-ts-browser-objects',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#81D4FA',
+      value: '#81D4FA'
+    }
+  },
+  {
+    label: 'Class',
+    sass: '$papyrus-ts-class',
+    css: '--papyrus-ts-class',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#8BD3FD',
+      value: '#8BD3FD'
+    }
+  },
+  {
+    label: 'Class Name',
+    sass: '$papyrus-ts-class-name',
+    css: '--papyrus-ts-class-name',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#81D4FA',
+      value: '#81D4FA'
+    }
+  },
   {
     label: 'Comment',
     sass: '$papyrus-ts-comment',
@@ -13,9 +68,31 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Keyword',
-    sass: '$papyrus-ts-keyword',
-    css: '--papyrus-ts-keyword',
+    label: 'Constant',
+    sass: '$papyrus-ts-constant',
+    css: '--papyrus-ts-constant',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#8BD3FD',
+      value: '#8BD3FD'
+    }
+  },
+  {
+    label: 'Fallback',
+    sass: '$papyrus-ts-fallback',
+    css: '--papyrus-ts-fallback',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#fafafa',
+      value: '#fafafa'
+    }
+  },
+  {
+    label: 'Flow',
+    sass: '$papyrus-ts-flow',
+    css: '--papyrus-ts-flow',
     input: {
       type: 'color',
       format: 'hex',
@@ -46,31 +123,9 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Class Name',
-    sass: '$papyrus-ts-class-name',
-    css: '--papyrus-ts-class-name',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#9EE34F',
-      value: '#9EE34F'
-    }
-  },
-  {
-    label: 'Punctuation',
-    sass: '$papyrus-ts-punctuation',
-    css: '--papyrus-ts-punctuation',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#fafafa',
-      value: '#fafafa'
-    }
-  },
-  {
-    label: 'Special Characters',
-    sass: '$papyrus-ts-special-chars',
-    css: '--papyrus-ts-special-chars',
+    label: 'Keyword',
+    sass: '$papyrus-ts-keyword',
+    css: '--papyrus-ts-keyword',
     input: {
       type: 'color',
       format: 'hex',
@@ -79,9 +134,9 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Parameter',
-    sass: '$papyrus-ts-parameter',
-    css: '--papyrus-ts-parameter',
+    label: 'Literal Property',
+    sass: '$papyrus-ts-literal-property',
+    css: '--papyrus-ts-literal-property',
     input: {
       type: 'color',
       format: 'hex',
@@ -90,64 +145,9 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Variable',
-    sass: '$papyrus-ts-variable',
-    css: '--papyrus-ts-variable',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#81D4FA',
-      value: '#81D4FA'
-    }
-  },
-  {
-    label: 'Operator',
-    sass: '$papyrus-ts-operator',
-    css: '--papyrus-ts-operator',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#E91E63',
-      value: '#E91E63'
-    }
-  },
-  {
-    label: 'Operation',
-    sass: '$papyrus-ts-operation',
-    css: '--papyrus-ts-operation',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#E91E63',
-      value: '#E91E63'
-    }
-  },
-  {
     label: 'Module',
     sass: '$papyrus-ts-module',
     css: '--papyrus-ts-module',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#E91E63',
-      value: '#E91E63'
-    }
-  },
-  {
-    label: 'Semi',
-    sass: '$papyrus-ts-semi',
-    css: '--papyrus-ts-semi',
-    input: {
-      type: 'color',
-      format: 'hex',
-      default: '#fafafa',
-      value: '#fafafa'
-    }
-  },
-  {
-    label: 'Flow',
-    sass: '$papyrus-ts-flow',
-    css: '--papyrus-ts-flow',
     input: {
       type: 'color',
       format: 'hex',
@@ -167,25 +167,58 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Boolean',
-    sass: '$papyrus-ts-boolean',
-    css: '--papyrus-ts-boolean',
+    label: 'Object',
+    sass: '$papyrus-ts-object',
+    css: '--papyrus-ts-object',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#FF80F4',
-      value: '#FF80F4'
+      default: '#8BD3FD',
+      value: '#8BD3FD'
     }
   },
   {
-    label: 'String',
-    sass: '$papyrus-ts-string',
-    css: '--papyrus-ts-string',
+    label: 'Operation',
+    sass: '$papyrus-ts-operation',
+    css: '--papyrus-ts-operation',
     input: {
       type: 'color',
       format: 'hex',
-      default: '#F5EC70',
-      value: '#F5EC70'
+      default: '#E91E63',
+      value: '#E91E63'
+    }
+  },
+  {
+    label: 'Operator',
+    sass: '$papyrus-ts-operator',
+    css: '--papyrus-ts-operator',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#E91E63',
+      value: '#E91E63'
+    }
+  },
+  {
+    label: 'Parameter',
+    sass: '$papyrus-ts-parameter',
+    css: '--papyrus-ts-parameter',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FFAB40',
+      value: '#FFAB40'
+    }
+  },
+  {
+    label: 'Punctuation',
+    sass: '$papyrus-ts-punctuation',
+    css: '--papyrus-ts-punctuation',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FAFAFA',
+      value: '#FAFAFA'
     }
   },
   {
@@ -195,8 +228,8 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     input: {
       type: 'color',
       format: 'hex',
-      default: '#F5EC70',
-      value: '#F5EC70'
+      default: '#FFF9A6',
+      value: '#FFF9A6'
     }
   },
   {
@@ -211,9 +244,9 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Literal Property',
-    sass: '$papyrus-ts-literal-property',
-    css: '--papyrus-ts-literal-property',
+    label: 'Semi',
+    sass: '$papyrus-ts-semi',
+    css: '--papyrus-ts-semi',
     input: {
       type: 'color',
       format: 'hex',
@@ -222,9 +255,64 @@ export default <IToken<IColor>[]><IToken<IColor>[]>[
     }
   },
   {
-    label: 'Browser Objects',
-    sass: '$papyrus-ts-browser-objects',
-    css: '--papyrus-ts-browser-objects',
+    label: 'Special Characters',
+    sass: '$papyrus-ts-special-chars',
+    css: '--papyrus-ts-special-chars',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#E91E63',
+      value: '#E91E63'
+    }
+  },
+  {
+    label: 'String',
+    sass: '$papyrus-ts-string',
+    css: '--papyrus-ts-string',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FFF9A6',
+      value: '#FFF9A6'
+    }
+  },
+  {
+    label: 'This',
+    sass: '$papyrus-ts-this',
+    css: '--papyrus-ts-this',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#FFAB40',
+      value: '#FFAB40'
+    }
+  },
+  {
+    label: 'Type Constructor',
+    sass: '$papyrus-ts-type-constructor',
+    css: '--papyrus-ts-type-constructor',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#81D4FA',
+      value: '#81D4FA'
+    }
+  },
+  {
+    label: 'Types',
+    sass: '$papyrus-ts-types',
+    css: '--papyrus-ts-types',
+    input: {
+      type: 'color',
+      format: 'hex',
+      default: '#8BD3FD',
+      value: '#8BD3FD'
+    }
+  },
+  {
+    label: 'Variable',
+    sass: '$papyrus-ts-variable',
+    css: '--papyrus-ts-variable',
     input: {
       type: 'color',
       format: 'hex',

@@ -1,8 +1,6 @@
 import { liquid } from 'language-literals';
 
 export default liquid`
-
-
   {%
     liquid
     if condition == assertion
@@ -11,33 +9,20 @@ export default liquid`
   %}
 
   {%- if condition == assert -%}
-    <div
-      class="xxx"
-      id="some-id">
+    <div class="xxx" id="some-id">
        {% # comment %}
       <ul>
-        <li
-          class="some-class"
-          data-attr="xxx"
+        <li class="some-class" data-attr="{{ i.xxx }}"
           {% if xxx %}
             id="{{ object.prop }}"
           {% endif %}>
           {% for i in list %}
-            <ul>
-              <li data-attr="{{ i.xxx }}">
-                {{
-                  i.something
-                  | filter: 'some-filter'
-                  | append: 'some-append'
-                  | prepend: 'some-prepend'
-                  | example:
-                    one: 1,
-                    two: 2,
-                    three: 3,
-                    four: 4
-                }}
-              </li>
-          </ul>
+            <div>
+              {{ object.something
+                | filter: 'some-filter'
+                | example: one: 1, two: 2, three: 3,
+              }}
+            </div>
         {% endfor %}
         </li>
       </ul>
@@ -50,15 +35,6 @@ export default liquid`
     }
   {% endschema %}
 
-  {% comment %}
-    lorem ipsum
-  {% endcomment %}
+  {% comment %} lorem ipsum {% endcomment %}
 
-  <aside>
-    Hello World!
-  </aside>
-
-  {% comment %}
-    lorem ipsum
-  {% endcomment %}
 `;

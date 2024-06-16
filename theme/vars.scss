@@ -98,6 +98,23 @@ $papyrus-html-attr-value:                 #FFF9A6 !default;
 $papyrus-html-comment:                    #888888 !default;
 
 /* -------------------------------------------- */
+/* SINGLE PAGE XHR                              */
+/* -------------------------------------------- */
+
+$papyrus-spx-attr-name:                    #81D4FA !default;
+$papyrus-spx-window:                       #81D4FA !default;
+$papyrus-spx-symbol:                       #E91E63 !default;
+$papyrus-spx-method:                       #9EE34F !default;
+$papyrus-spx-suffix:                       #f2f2f3 !default;
+$papyrus-spx-event-key:                    #FFAB40 !default;
+$papyrus-spx-punctuation:                  #E91E63 !default;
+$papyrus-spx-props:                        #f2f2f3 !default;
+$papyrus-spx-delims:                       #979797 !default;
+$papyrus-spx-number:                       #7b60ff !default;
+$papyrus-spx-boolean:                      #ba6ffe !default;
+
+
+/* -------------------------------------------- */
 /* CSS LANGUAGE                                 */
 /* -------------------------------------------- */
 
@@ -127,6 +144,7 @@ $papyrus-css-pseudo-element:              #e18d27 !default;
 /* CSS LANGUAGE                                 */
 /* -------------------------------------------- */
 
+$papyrus-scss-comment:                     #888888 !default;
 $papyrus-scss-selector:                    #a5d447 !default;
 $papyrus-scss-tag-selector:                #FF93BC !default;
 $papyrus-scss-colon:                       #91EBC2 !default;
@@ -185,6 +203,7 @@ $papyrus-yaml-comment:                    #888888 !default;
 
 $papyrus-json-punctuation:                #fafafa !default;
 $papyrus-json-property:                   #81D4FA !default;
+$papyrus-json-quotes:                     #888888 !default;
 $papyrus-json-string:                     #FFF9A6 !default;
 $papyrus-json-boolean:                    #FF80F4 !default;
 $papyrus-json-number:                     #9753fd !default;
