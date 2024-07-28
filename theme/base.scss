@@ -1,13 +1,11 @@
 /* stylelint-disable color-function-notation */
 
 
-code {
-  &.papyrus-inline {
+code.papyrus-inline {
     padding: 0.1em;
     white-space: normal;
     background: var(--papyrus-code-inline-bg);
     border-radius: 0.3em;
-  }
 }
 
 
@@ -18,21 +16,25 @@ code {
   }
 }
 
+
 /* -------------------------------------------- */
 /* EDITOR                                       */
 /* -------------------------------------------- */
 
 
 pre.papyrus {
+  all: unset;
   position: relative !important;
+  display: block;
   width: var(--papyrus-width);
-  height: auto;
+  height: max-content;
   padding: 0;
   overflow: hidden;
   font-size: var(--papyrus-font-size-root);
   background-color: var(--papyrus-code-bg);
   border: 1px solid var(--papyrus-code-bg);
   border-radius: var(--papyrus-code-border-radius);
+  isolation: isolate;
 
 
   *::selection {
@@ -43,19 +45,16 @@ pre.papyrus {
   /* STATIC MODE -------------------------------- */
 
 
-  &[data-papyrus="static"] > code[class*="language-"] {
-    position: relative;
-
-    > div.line-numbers {
-      top: 0;
-      bottom: 0;
-      width: var(--papyrus-line-number-width);
-      height: fit-content;
-      margin-bottom: calc(0.1em + var(--papyrus-code-padding-y));
-      padding-top: calc(0.1em + var(--papyrus-code-padding-y));
-      border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);;
-    }
+  &[data-papyrus="static"] > code[class*="language-"] > div.line-numbers {
+    top: 0;
+    bottom: 0;
+    width: var(--papyrus-line-number-width);
+    height: 100%;
+    margin-bottom: calc(0.1em + var(--papyrus-code-padding-y));
+    padding-top: calc(0.1em + var(--papyrus-code-padding-y));
+    border-right: var(--papyrus-line-fence-width) solid var(--papyrus-line-fence-color);
   }
+
 
 
   /* EDITOR MODE -------------------------------- */
@@ -68,7 +67,8 @@ pre.papyrus {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: calc(-1 * var(--papyrus-fence-offset, 0));
+      left: 0;
+      z-index: 201;
       display: block;
       width: var(--papyrus-line-number-width);
       height: 100%;
@@ -80,6 +80,18 @@ pre.papyrus {
       overflow: hidden;
     }
 
+
+
+    &.editor {
+      height: auto;
+
+      > textarea.papyrus-editor,
+      > code[class*="language-"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
 
   }
 
@@ -106,7 +118,7 @@ pre.papyrus {
     &-message,
     &-stack {
       display: block;
-      color: #ffffff;
+      color: #fff;
     }
 
     &-title {
@@ -132,7 +144,7 @@ pre.papyrus {
       width: 100%;
       margin-bottom: 0;
       padding: 5px;
-      color: #ffffff;
+      color: #fff;
       font-weight: 600;
       font-size: x-small;
       text-align: center;
@@ -156,6 +168,8 @@ pre.papyrus {
   code[class*="language-"] {
     color: var(--papyrus-code-color);
     line-height: var(--papyrus-line-height);
+    background-color: inherit;
+    all: unset;
 
     &::after {
       position: sticky;
@@ -200,15 +214,19 @@ pre.papyrus {
       user-select: none;
       pointer-events: none;
 
-
       span.ln {
         z-index: 100;
         display: flex;
-        padding-left: calc(var(--papyrus-line-number-width) / 5);
+        overflow: hidden;
+
+        // padding-left: calc(var(--papyrus-line-number-width) / 5);
         line-height: var(--papyrus-line-height);
         counter-increment: linenumber;
 
+
+
         &.active {
+          z-index: 102;
           background-color: rgba(
             var(--papyrus-line-highlight-bg),
             var(--papyrus-line-highlight-alpha)
@@ -220,10 +238,13 @@ pre.papyrus {
         }
 
         &::before {
+          z-index: 101;
           display: block;
-          width: calc(var(--papyrus-line-number-width) / 2);
+          width: var(--papyrus-line-number-width);
+          overflow: hidden;
           color: var(--papyrus-line-number-color);
-          text-align: right;
+          text-align: center;
+          background-color: var(--papyrus-code-bg);
           content: counter(linenumber);
         }
       }
@@ -231,15 +252,10 @@ pre.papyrus {
 
   }
 
-
   textarea.papyrus-editor,
   code[class*="language-"] {
-    position: absolute;
     z-index: 100;
     display: block;
-    width: 100%;
-    height: 100%;
-    max-height: var(--papyrus-height);
     margin: 0;
     padding: var(--papyrus-code-padding-y) calc(var(--papyrus-code-padding-x));
     overflow: auto;
@@ -256,6 +272,7 @@ pre.papyrus {
     hyphens: none;
     inset: 0;
     caret-color: var(--papyrus-code-caret-color);
+
 
     &::-webkit-scrollbar {
       width: var(--papyrus-scrollbar-width);
@@ -295,80 +312,6 @@ pre.papyrus {
 }
 
 
-.textcomplete {
-
-  &-dropdown {
-    width: var(--papyrus-complete-dropdown-width);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background-color: var(--papyrus-code-bg);
-    border: var(--papyrus-complete-border-width) solid var(--papyrus-complete-border-color);
-    border-radius: var(--papyrus-complete-border-radius);
-
-
-    li {
-      margin: 0;
-    }
-  }
-
-  &-item + &-footer,
-  &-item.active + &-footer,
-  &-item.active:hover + &-footer {
-    border-bottom: 0;
-    border-bottom-right-radius: var(--papyrus-complete-border-radius);
-    border-bottom-left-radius: var(--papyrus-complete-border-radius);
-  }
-
-  &-header + &-item.active,
-  &-header + &-item.active:hover {
-    border-top-left-radius: var(--papyrus-complete-border-radius);
-    border-top-right-radius: var(--papyrus-complete-border-radius);
-  }
-
-  &-item {
-    position: relative;
-    padding: 2px 5px 2px 25px;
-    color: var(--papyrus-complete-color);
-    font-size: var(--papyrus-complete-font-size);
-    font-family: var(--papyrus-font-family);
-    border-bottom: var(--papyrus-complete-border-width) solid var(--papyrus-complete-border-color);
-    cursor: pointer;
-
-    &:last-child {
-      border-bottom: none !important;
-    }
-
-    &::before {
-      position: absolute;
-      top: 0;
-      left: 5px;
-      color: var(--papyrus-complete-icon-color);
-      font-weight: 600;
-      font-size: 1.5em;
-      line-height: 1;
-      content: "⥂";
-    }
-  }
-
-  &-footer {
-    border: none;
-  }
-
-
-  &-item:hover,
-  &-item.active {
-    color: var(--papyrus-complete-highlight-color);
-    background-color: var(--papyrus-complete-highlight-bg);
-
-    &::before {
-      color: var(--papyrus-complete-icon-active-color);
-    }
-  }
-
-}
-
-
 /* -------------------------------------------- */
 /* BLOCKS                                       */
 /* -------------------------------------------- */
@@ -376,9 +319,8 @@ pre.papyrus {
 
 :not(pre) > code[class*="language-"] {
   width: 100%;
-  padding: 0.1em;
   white-space: normal;
-  background: var(--papyrus-code-bg);
+  background: inherit;
   border-radius: 0.3em;
 }
 
@@ -387,11 +329,8 @@ pre.papyrus {
 /* -------------------------------------------- */
 
 
-.token {
+/* .token {
 
-  /* -------------------------------------------- */
-  /* INVISIBLES                                   */
-  /* -------------------------------------------- */
 
 
   &.tab:not(:empty),
@@ -435,4 +374,4 @@ pre.papyrus {
   }
 
 
-}
+} */

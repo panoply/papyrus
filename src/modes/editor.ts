@@ -1,824 +1,438 @@
-import { getLineCount, trimInput, safeTextInsert, findLineEnd, mergeEditorOptions, has } from '../utils';
-import { EditorOptions, Languages, Options } from '../../types/options';
-import { Editor } from '../../types/editor';
-import { highlight } from './highlight';
-import { Model } from '../../types/model';
-import { invisibles } from '../prism/invisibles';
-import merge from 'mergerino';
-import { Textcomplete, StrategyProps } from '@textcomplete/core';
-import { TextareaEditor } from '@textcomplete/textarea';
+import { Papyrus } from '../..';
+import { editorFromPlaceholder, EditorOptions, EditorExtension } from 'prism-code-editor';
+import { insertText } from 'prism-code-editor/utils';
+import { searchWidget, highlightSelectionMatches } from 'prism-code-editor/search';
+import { defaultCommands, editHistory } from 'prism-code-editor/commands';
+import { cursorPosition } from 'prism-code-editor/cursor';
+import { copyButton } from 'prism-code-editor/copy-button';
+import { matchTags } from 'prism-code-editor/match-tags';
+import { indentGuides } from 'prism-code-editor/guides';
+import { highlightBracketPairs } from 'prism-code-editor/highlight-brackets';
+import { assign, has } from '../utils/helpers';
+import { Merge } from 'type-fest';
+import { setOptions } from '../utils/options';
 
-export function texteditor (prism: ReturnType<typeof highlight>, config: Options): Model {
+function editorOptions (
+  config: Merge<Papyrus.Options, { value?:string }>,
+  value?: string
+): Partial<EditorOptions> {
 
-  const { code, pre } = prism;
+  const create: Partial<EditorOptions> = {
+    insertSpaces: config.useTabs === false,
+    language: config.language,
+    lineNumbers: config.lineNumbers,
+    wordWrap: config.wordWrap,
+    tabSize: config.tabSize,
+    rtl: config.rtl,
+    readOnly: config.readOnly
+  };
 
-  /* -------------------------------------------- */
-  /* LEXICAL SCOPES                               */
-  /* -------------------------------------------- */
+  if (value) {
+    create.value = value;
+  } else if (has('value', config)) {
+    create.value = config.value;
+  }
 
-  /** Editor Options */
-  let editorOpts: EditorOptions;
+  return create;
 
-  /** Completions */
-  let complete: Textcomplete;
+}
 
-  /** Indentation Pairs */
-  let indentPairs: string[];
+export function setEditor (element: HTMLElement, value: string, config: Papyrus.Options) {
 
-  /** Autoclose Pairs  */
-  let autoClosePairs: string[];
+  const events: {
+    onupdate: [ Function, any][];
+    onresize: [ Function, any][];
+    onscroll: [ Function, any][];
+    onselect: [ Function, any][];
+    onsave: [Function, any][];
+  } = Object.create(null);
 
-  /** The <textarea> Element */
-  let textarea: HTMLTextAreaElement;
+  events.onupdate = [];
+  events.onresize = [];
+  events.onscroll = [];
+  events.onselect = [];
+  events.onsave = [];
 
-  /** The indentation characted */
-  let indentChar: string;
+  // eslint-disable-next-line no-var
+  const instance: Partial<Papyrus.Model> = {
+    onselect: (cb: Function, scope = {}) => events.onselect.push([ cb, scope ]),
+    onscroll: (cb: Function, scope = {}) => events.onscroll.push([ cb, scope ]),
+    onupdate: (cb: Function, scope = {}) => events.onupdate.push([ cb, scope ]),
+    onresize: (cb: Function, scope = {}) => events.onresize.push([ cb, scope ]),
+    onsave: (cb: Function, scope = {}) => events.onsave.push([ cb, scope ]),
+    error: Object.create(null)
+  };
 
-  /** The current Language ID */
-  let language: Languages = prism.languageId;
+  const editor = editorFromPlaceholder(element, editorOptions(config, value), ...setExtensions(config));
+  const MetaKey = editor.keyCommandMap.Meta;
 
-  /** The active line number <span> */
-  let lineActive: HTMLSpanElement = null;
+  /** Initial input value */
+  let initial = value;
+  /** Container offsetHeight */
+  let heightY: number;
+  /** Container offsetHeight */
+  let errShow: boolean = false;
+  /** Whether or not command or control key was pressed */
+  let metaKey: boolean = false;
+  /** The current scroll X position */
+  let scrollX: number;
+  /** The current scroll Y position */
+  let scrollY: number;
+  /** The current selection (if any) */
+  let iselect: any;
+  /** The current selection (if any) */
+  let noupdate: boolean = false;
 
-  /** The line number integer */
-  let lineNo: number = -1;
+  // First, we apply DOM specific references
+  editor.scrollContainer.id = config.id;
+  editor.textarea.name = config.id;
 
-  /** The current scroll position */
-  let scroll: number = 0;
+  if (config.lineFence) {
+    editor.scrollContainer.style.setProperty('--line-fence', 'block');
+  }
 
-  /** The code input text */
-  let input: string = trimInput(code.textContent, config);
+  /* DEFINE GETTERS ----------------------------- */
 
-  /** The dropdown element */
-  let dropdown: HTMLElement;
+  Object.defineProperties(instance, {
+    activeLine: { get () { return editor.activeLine; } },
+    focused: { get () { return editor.focused; } },
+    overlays: { get () { return editor.overlays; } },
+    lineNumber: { get () { return editor.activeLineNumber; } },
+    tokens: { get () { return editor.tokens; } },
+    container: { get () { return editor.scrollContainer; } },
+    textarea: { get () { return editor.textarea; } },
+    wrapper: { get () { return editor.wrapper; } },
+    removed: { get () { return editor.removed; } },
+    language: { get () { return editor.options.language; } },
+    id: { get () { return config.id; } },
+    keyCommandMap: { get () { return editor.keyCommandMap; } },
+    inputCommandMap: { get () { return editor.inputCommandMap; } },
+    initial: { get () { return initial; } },
+    input: { get () { return editor.value; } },
+    extensions: { get () { return editor.extensions; } },
+    addExtensions: { get () { return editor.addExtensions; } },
+    remove: { get () { return editor.remove; } }
+  });
 
-  /** The onupdate function callback */
-  let onUpdate: (code: string, language: Languages) => string | void | false;
+  /* UPDATE LISTENER ---------------------------- */
 
-  /** The onsave function callback */
-  let onSave: (code: string, language: Languages) => string | void | false;
+  editor.addListener('update', (e) => {
 
-  /* -------------------------------------------- */
-  /* CONSTANTS                                    */
-  /* -------------------------------------------- */
+    if (errShow) {
+      instance.error.hide();
+      editor.update();
+      return;
+    }
 
-  /** Cache reference of {@link input} */
-  const initial = input;
+    if (noupdate === false) {
+      for (const [ cb, scope ] of events.onupdate) {
+        cb.call(assign(scope, { get editor () { return instance; } }), e);
+      }
+    } else {
+      noupdate = false;
+    }
 
-  /* -------------------------------------------- */
-  /* EDITOR                                       */
-  /* -------------------------------------------- */
+    heightY = editor.scrollContainer.offsetHeight;
 
-  const editor: Editor = function editor (opts?: EditorOptions) {
+    for (const [ cb, scope ] of events.onresize) {
+      cb.call(assign(scope, { get editor () { return instance; } }), {
+        height: heightY,
+        width: editor.scrollContainer.offsetWidth,
+        scrollX,
+        scrollY
+      });
+    }
+  });
 
-    editorOpts = opts;
-    indentChar = editorOpts.indentChar.repeat(editorOpts.indentSize + 1);
-    autoClosePairs = editorOpts.autoClosingPairs.map(char => char[0]);
-    indentPairs = editorOpts.autoIndentPairs.map(char => char[0]);
+  /* SELECTION LISTENER ------------------------- */
+  editor.addListener('selectionChange', (inputSelection) => {
 
-    updateInvisibles();
-
-    if (editorOpts.lineHighlight && lineActive === null) {
-      lineActive = prism.lineNumbers.children[editorOpts.lineNumber - 1] as HTMLSpanElement;
-      if (!lineActive.classList.contains('active')) {
-        lineActive.classList.add('active');
+    if (iselect !== inputSelection) {
+      iselect = inputSelection;
+      for (const [ cb, scope ] of events.onselect) {
+        cb.call(assign(scope, { get editor () { return instance; } }), inputSelection);
       }
     }
 
-    if (!textarea) {
-      textarea = document.createElement('textarea');
+  });
+
+  /* ONSAVE KEY COMMANDS ------------------------ */
+
+  editor.keyCommandMap.Meta = (e, selection, value) => {
+    metaKey = true;
+    return MetaKey?.(e, selection, value);
+  };
+
+  editor.keyCommandMap.s = (_event, _selection, value) => {
+
+    if (!metaKey) return;
+
+    metaKey = false;
+
+    for (const [ cb, scope ] of events.onsave) {
+      cb.call(assign(scope, { get editor () { return instance; } }), value);
     }
 
-    if (!textarea.classList.contains('papyrus-editor')) {
-      textarea.classList.add('papyrus-editor');
+    return true;
+  };
+
+  /* SCROLL LISTENERS --------------------------- */
+
+  editor.scrollContainer.onscroll = (e) => {
+
+    scrollY = editor.scrollContainer.scrollTop;
+    scrollX = editor.scrollContainer.scrollLeft;
+
+    for (const [ cb, scope ] of events.onscroll) {
+      cb.call(assign(scope, { get editor () { return instance; } }), { x: scrollX, y: scrollY });
+    }
+  };
+
+  instance.scroll = (position: { y?: number, x?:number } = {}) => {
+
+    if (typeof position.y === 'number') {
+      scrollY = editor.scrollContainer.scrollTop = position.y;
     }
 
-    textarea.spellcheck = editorOpts.spellcheck;
+    if (typeof position.x === 'number') {
+      scrollX = editor.scrollContainer.scrollLeft = position.x;
+    }
+  };
 
-    if (textarea) {
-      if (config?.input && config.input !== null && config.input.length > 0) {
-        if (input.trim() === '') {
-          input = textarea.value = trimInput(config.input, config);
-        } else {
-          textarea.value = input;
-        }
+  instance.height = (y?:number, reset = false) => {
+
+    if (editor.value.length > config.locLimit) {
+
+      if (!editor.scrollContainer.style.getPropertyValue('max-height')) {
+
+        editor.scrollContainer.style.height = 'auto';
+
+        heightY = editor.scrollContainer.offsetHeight;
+
+        editor.scrollContainer.style.height = `${heightY}px`;
+        editor.scrollContainer.style.maxHeight = `${heightY}px`;
+
+      }
+
+      return heightY;
+
+    }
+
+    editor.scrollContainer.style.height = 'auto';
+
+    if (y === undefined) {
+
+      heightY = editor.scrollContainer.offsetHeight;
+
+      if (config.autoHeight || reset === true) {
+        editor.scrollContainer.style.height = 'auto';
       } else {
-        textarea.value = input;
-      }
-    }
-
-    if (complete) complete.destroy();
-
-    if (language in editorOpts.completions) {
-      autoCompletions(editorOpts.completions[language]);
-    }
-
-    if (!pre.contains(textarea)) {
-      pre.appendChild(textarea);
-    }
-
-    if (config.lineNumbers) {
-      if (!code.classList.contains('line-numbers')) code.classList.add('line-numbers');
-      prism.lines = getLineCount(input);
-    } else {
-      if (code.classList.contains('line-numbers')) code.classList.remove('line-numbers');
-    }
-
-    scroll = textarea.scrollTop;
-
-    textarea.onclick = onclick;
-    textarea.onscroll = onscroll;
-    textarea.oninput = oninput;
-    textarea.onkeydown = onkeydown;
-
-    prism.mode = 'editor';
-
-    if (pre.getAttribute('data-papyrus') !== 'editor') {
-      pre.setAttribute('data-papyrus', 'editor');
-    }
-
-    loc();
-
-  };
-
-  function enable () {
-    if (typeof config.editor === 'object') {
-      editor(config.editor);
-    } else {
-      pre.setAttribute('data-papyrus', 'static');
-    }
-  };
-
-  function disable () {
-
-    if (textarea) textarea.remove();
-
-    if (config.lineNumbers) {
-      lineActive.classList.remove('active');
-    }
-
-    if (editorOpts.renderSpace !== config.showSpace || editorOpts.renderTab !== config.showTab) {
-      invisibles(language, config);
-    }
-
-    prism.mode = 'static';
-    prism.pre.setAttribute('data-papyrus', 'static');
-
-  };
-
-  if (typeof config.editor === 'object') {
-    editor.enable = enable;
-    editor.disable = disable;
-    editor(config.editor);
-  }
-
-  /* -------------------------------------------- */
-  /* EVENTS                                       */
-  /* -------------------------------------------- */
-
-  function onscroll () {
-
-    scroll = textarea.scrollTop;
-
-    textarea.scrollTop = scroll;
-    code.scrollTop = scroll;
-
-    if (textarea.scrollTop !== code.scrollTop) {
-      textarea.scrollTop = code.scrollTop;
-    }
-
-    if (complete && complete.isShown()) complete.hide();
-
-    const left = code.scrollLeft = textarea.scrollLeft;
-
-    if (left > 0) {
-
-      if (left > prism.lineNumbers.offsetLeft) {
-        lineActive.style.setProperty('width', `${textarea.offsetWidth + left}px`);
-        pre.style.setProperty('--papyrus-fence-offset', `${left}px`);
+        editor.scrollContainer.style.height = `${heightY}px`;
+        editor.scrollContainer.style.maxHeight = `${heightY}px`;
       }
 
     } else {
 
-      if (has('--papyrus-fence-offset', pre.style)) {
-        pre.style.removeProperty('--papyrus-fence-offset');
+      if (heightY !== y) {
+        heightY = y;
+        editor.scrollContainer.style.height = `${heightY}px`;
       }
-
-      if (lineActive.hasAttribute('style')) {
-        lineActive.removeAttribute('style');
-      }
-
     }
+
+    return heightY;
+
   };
 
-  function onclick ({ target }) {
+  instance.reset = (clearHistory = false) => {
 
-    if (complete && complete.isShown()) {
-      if (target !== dropdown) {
-        complete.hide();
+    if (clearHistory) editor.extensions.history.clear();
+
+    insertText(editor, initial);
+  };
+
+  instance.select = (
+    start?: number | [number, number, 'backward' | 'forward' | 'none'],
+    end: number = null,
+    direction: 'backward' | 'forward' | 'none' = 'none'
+  ) => {
+
+    if (start === undefined) return editor.getSelection();
+
+    if (typeof start === 'number') {
+
+      editor.setSelection(start, end, direction);
+
+    } else if (Array.isArray(start)) {
+
+      if (iselect !== start) {
+        iselect = start;
+        editor.setSelection(start[0], start[1] || null, start[2] || 'none');
       }
+
     }
 
-    onactive(1);
-  }
+    return editor.getSelection();
 
-  function oninput (this: HTMLTextAreaElement) {
+  };
 
-    if (input !== textarea.value) input = textarea.value;
+  instance.update = (codeInput: string, language?: Papyrus.Languages, clearHistory: boolean = false) => {
 
-    const newlines = getLineCount(input);
+    if (language) {
 
-    if (editorOpts.lineIndent && prism.lines < newlines) {
-      textarea.scrollTop = scroll;
-      code.scrollTop = scroll;
-    }
-
-    prism.lines = newlines;
-
-    loc();
-
-    prism.highlight(input);
-
-    if (code.scrollTop !== textarea.scrollTop) {
-      code.scrollTop = textarea.scrollTop;
-    }
-
-    if (onUpdate) onUpdate(input, language);
-
-  }
-
-  function onkeydown (event: KeyboardEvent) {
-
-    const key = event.key;
-
-    if (key.startsWith('Arrow')) {
-      switch (key) {
-        case 'ArrowDown':
-          onactive(0);
-          break;
-        case 'ArrowUp':
-          onactive(2);
-          break;
-        case 'ArrowLeft':
-        case 'ArrowRight':
-          onactive();
-          break;
-      }
-
-    } else if (key === 'Enter') {
-
-      if (event.altKey || event.ctrlKey) return;
-
-      if (complete && complete.isShown()) return;
-
-      event.preventDefault();
-      input = textarea.value;
-
-      const start = textarea.selectionStart;
-      const char = indentPairs.indexOf(input[start - 1]);
-
-      if (char > -1) {
-        indent(start, char);
-      } else {
-        insert('\n' + padding());
-      }
-
-      onactive();
-      onscroll();
-
-    } else if (key === 'Backspace') {
-
-      input = textarea.value;
-
-      const start = textarea.selectionStart - 1;
-
-      if (/\S/.test(input[start])) {
-
-        const pair = autoClosePairs.indexOf(input[start]);
-
-        if (pair > -1) {
-          const [ open, close ] = editorOpts.autoClosingPairs[pair];
-          if (input[start] === open && input[start + 1] === close) {
-            event.preventDefault();
-            textarea.setSelectionRange(start, textarea.selectionEnd + 1, 'backward');
-            document.execCommand('delete', false);
-          }
-        }
-
-        return;
-      }
-
-      const from = input.lastIndexOf('\n', start);
-      const empty = input.slice(from, start);
-
-      if (empty.trim() === '' && /[ \t]/.test(input[start])) {
-        event.preventDefault();
-        const selection = textarea.selectionStart - editorOpts.indentSize;
-        textarea.setSelectionRange(selection, textarea.selectionEnd, 'backward');
-        document.execCommand('delete', false);
-        onactive();
-        onscroll();
-      }
-
-      // Line highlight, when empty is '' backspace incurred
-      if (empty === '') onactive(2);
-
-    } else if (key === 'Tab') {
-
-      if (event.defaultPrevented || event.metaKey || event.altKey || event.ctrlKey) return;
-
-      event.preventDefault();
-
-      if (editorOpts.tabIndent) {
-        if (event.shiftKey) {
-          dedentSelection();
-        } else {
-          indentSelection();
-        }
-      }
-
-      const start = textarea.selectionStart;
-      const from = input.lastIndexOf('\n', start - 1);
-      const empty = input.slice(from, start);
-      const clear = input.slice(start, input.indexOf('\n', start)).trimEnd();
-
-      if (empty.length === 1 && empty.charCodeAt(0) === 10 && clear === '') insert(padding());
-
-      onscroll();
-
-    } else if (key === 'Escape' && !event.shiftKey) {
-
-      if (complete) complete.hide();
-
-      textarea.blur();
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-    } else if (event.metaKey && key === 's') {
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      if (complete) complete.hide();
-
-      input = textarea.value;
-
-      if (onSave) {
-
-        const saved = onSave(input, language);
-
-        if (typeof saved === 'string') {
-
-          const s = textarea.selectionStart;
-          const e = textarea.selectionEnd;
-
-          textarea.select();
-          insert(saved);
-
-          textarea.selectionStart = s;
-          textarea.selectionEnd = e;
-        }
-
-      }
-    } else {
-
-      const char = autoClosePairs.indexOf(key);
-
-      if (char > -1) {
-        if (textarea.value[textarea.selectionStart] !== key) {
-          event.preventDefault();
-          insert(editorOpts.autoClosingPairs[char].join(''), 1);
-        }
-      }
-    }
-  }
-
-  function onactive (offset = 1) {
-
-    // Prevent highlight if completion is shown
-    if (complete && complete.isShown()) return;
-
-    const count = getLineCount(input.slice(0, textarea.selectionStart));
-    const number = count - offset;
-
-    if (lineNo !== number) lineNo = number;
-
-    if (editorOpts.lineHighlight === true) {
-
-      if (lineActive && lineActive.classList.contains('active')) {
-        lineActive.classList.remove('active');
-        if (lineActive.hasAttribute('style')) lineActive.removeAttribute('style');
-      }
-
-      lineActive = prism.lineNumbers.children[lineNo] as HTMLSpanElement;
-
-      if (lineActive && lineActive.classList.contains('active') === false) {
-        lineActive.classList.add('active');
-
-        // ensure line highlight is flush when width exceeds
-        const left = code.scrollLeft = textarea.scrollLeft;
-        if (left > prism.lineNumbers.offsetLeft) {
-          lineActive.style.setProperty('width', `${textarea.offsetWidth + left}px`);
-        }
-      }
-    }
-
-    loc();
-
-  }
-
-  function onupdate (cb: (code: string, language: Languages) => void, scope: any = {}) {
-
-    scope.textarea = textarea;
-    scope.lineNumber = lineNo;
-
-    onUpdate = cb.bind(scope);
-
-  }
-
-  function onsave (cb: (code: string, language: Languages) => void, scope: any = {}) {
-
-    const binding = Object.assign(scope, {
-      textarea,
-      lineNumber: lineNo
-    });
-
-    onSave = cb.bind(binding);
-
-  }
-
-  function update (newInput: string, newLanguage?: Languages, clearHistory?: boolean) {
-
-    if (prism.mode === 'error') hideError();
-
-    if (newLanguage) {
-      if (newLanguage !== language && newLanguage !== prism.languageId) {
-        updateInvisibles(true);
-        language = prism.language(newLanguage);
-        updateInvisibles(false);
-
-        if (complete) {
-          complete.removeAllListeners();
-          complete.destroy(true);
-        }
-
-        if (language in editorOpts.completions) {
-          autoCompletions(editorOpts.completions[language]);
-          console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
-        }
-
-        console.info(`𓁁 Papyprus: Changed Language: ${language}`);
-      }
-    }
-
-    input = newInput;
-
-    if (prism.mode !== 'static') {
       if (clearHistory) {
-        textarea.value = input;
+        editor.extensions.history.clear();
+        initial = codeInput;
+      }
+
+      config.language = language;
+      editor.setOptions({ language, value: codeInput });
+
+    } else {
+
+      if (config.readOnly) {
+        editor.setOptions({ value: codeInput });
       } else {
-        textarea.select();
-        insert(input);
+
+        if (codeInput !== editor.value) {
+          const [ start ] = editor.getSelection();
+          const selection = editor.value.length;
+          noupdate = true;
+          insertText(editor, codeInput, 0, selection, start);
+        }
       }
     }
+  };
 
-    if (config.lineNumbers) {
+  instance.options = (opts?: Partial<Papyrus.Options>) => {
 
-      if (!code.classList.contains('line-numbers')) {
-        code.classList.add('line-numbers');
+    if (typeof opts === 'object') {
+
+      assign(config, setOptions('mount', opts as Papyrus.Options));
+
+      if (config.lineFence === false) {
+        editor.wrapper.style.removeProperty('--line-fence');
       }
 
-      prism.lines = getLineCount(input);
+      editor.setOptions(editorOptions(opts as Papyrus.Options));
 
-    } else if (code.classList.contains('line-numbers')) {
-
-      code.classList.remove('line-numbers');
     }
 
-    prism.highlight(input);
+    return config;
 
-  }
+  };
 
-  function options (newOptions?: EditorOptions): EditorOptions {
-
-    if (typeof newOptions !== 'object') {
-      return config as unknown as EditorOptions;
+  instance.enable = () => {
+    if (editor.options.readOnly === true) {
+      // @ts-ignore
+      instance.options({ readOnly: false });
     }
+  };
 
-    if (newOptions?.lineNumber) {
-      lineNo = newOptions.lineNumber - 1;
-      lineActive = prism.lineNumbers.children[lineNo] as HTMLSpanElement;
+  instance.disable = () => {
+    if (editor.options.readOnly === false) {
+      // @ts-ignore
+      instance.options({ readOnly: true });
     }
+  };
 
-    editorOpts = mergeEditorOptions(newOptions, editorOpts);
-    indentChar = editorOpts.indentChar.repeat(editorOpts.indentSize + 1);
-    autoClosePairs = editorOpts.autoClosingPairs.map(char => char[0]);
-    indentPairs = editorOpts.autoIndentPairs.map(char => char[0]);
+  instance.error.show = (input: string, context = {}) => {
 
-    textarea.spellcheck = editorOpts.spellcheck;
+    instance.error.hide();
 
-    if (editorOpts.lineHighlight === false) {
-      const activeLine = prism.lineNumbers.querySelector('.active');
-      if (activeLine) activeLine.classList.remove('active');
-    }
-
-    if (complete) complete.destroy();
-    if (language in editorOpts.completions) {
-      autoCompletions(editorOpts.completions[language]);
-      console.info(`𓁁 Papyprus: Completions enabled for: ${language}`);
-    }
-
-    return editorOpts;
-
-  }
-
-  /* -------------------------------------------- */
-  /* ERRORS                                       */
-  /* -------------------------------------------- */
-
-  function showError (newInput:string, opts: any) {
-
-    hideError();
-
-    pre.classList.add('error');
-
+    const error = document.createElement('div');
+    error.className = 'error';
+    error.setAttribute('id', 'error');
     const message = document.createElement('div');
     message.className = 'error-message error-ref';
-    message.innerText = newInput;
+    message.innerText = input;
 
-    if (opts) {
+    if (context) {
 
-      if (opts?.title) {
+      if (context?.title) {
         const title = document.createElement('div');
         title.className = 'error-title error-ref';
-        title.innerText = opts.title;
-        pre.appendChild(title);
-        pre.appendChild(message);
+        title.innerText = context.title;
+        error.appendChild(title);
+        error.appendChild(message);
       } else {
-        pre.appendChild(message);
+        error.appendChild(message);
       }
 
-      if (opts?.stack) {
+      if (context?.stack) {
         const stack = document.createElement('div');
         stack.className = 'error-stack error-ref';
-        stack.innerText = opts.stack;
-        pre.appendChild(stack);
+        stack.innerText = context.stack;
+        error.appendChild(stack);
       }
 
-      if (opts?.heading) {
+      if (context?.heading) {
         const heading = document.createElement('div');
         heading.className = 'error-heading error-ref';
-        heading.innerText = opts.heading;
-        pre.appendChild(heading);
+        heading.innerText = context.heading;
+        error.appendChild(heading);
       }
     } else {
-      pre.appendChild(message);
+      error.appendChild(message);
     }
 
-    prism.mode = 'error';
+    editor.overlays.appendChild(error);
+    errShow = true;
 
   };
 
-  function hideError () {
+  instance.error.hide = () => {
 
-    pre.querySelectorAll('.error-ref').forEach(node => node.remove());
-    pre.classList.remove('error');
-
-    prism.mode = textarea ? 'editor' : 'static';
-
+    if (errShow) {
+      editor.overlays.querySelector('#error').remove();
+      editor.scrollContainer.classList.remove('error');
+      errShow = false;
+    }
   };
 
-  return {
-    get initial () {
-      return initial;
-    },
-    get textarea () {
-      return textarea;
-    },
-    get code () {
-      return code;
-    },
-    get pre () {
-      return pre;
-    },
-    get raw () {
-      return input;
-    },
-    get language () {
-      return language;
-    },
-    get mode () {
-      return prism.mode;
-    },
-    get lines () {
-      return prism.lines;
-    },
-    get complete () {
-      return complete;
-    },
-    showError,
-    hideError,
-    onupdate,
-    onsave,
-    options,
-    editor,
-    update
-  };
+  if (config.autoHeight === false) setTimeout(() => instance.height(), 100);
 
-  /* -------------------------------------------- */
-  /* UTILITIES                                    */
-  /* -------------------------------------------- */
+  return instance as Papyrus.Model;
+}
 
-  /**
-   * Lines and Columns reference which will be updated and
-   * various points in the editing cylce.
-   */
-  function loc () {
+function setExtensions (config: Papyrus.Options) {
 
-    const value = textarea.value;
-    const col = value.slice(
-      value.lastIndexOf('\n', textarea.selectionStart - 1) + 1,
-      value.indexOf('\n', textarea.selectionStart)
-    );
+  const plugins: EditorExtension[] = [
+    cursorPosition(),
+    defaultCommands(
+      config.selfClosePairs,
+      config.selfCloseRegex
+    )
+  ];
 
-    code.ariaLabel = `Ln ${lineNo + 1}, Col ${col.length}`;
+  ;
 
+  if (config.copyButton) {
+    plugins.push(copyButton());
   }
 
-  /**
-   * Auto indentation pairs logic
-   */
-  function indent (start: number, match: number) {
-
-    const closeChar = editorOpts.autoIndentPairs[match][1];
-
-    // Lets check no newlines already exist
-    const nextSpace = input.slice(start - 1, input.indexOf(closeChar, start - 1));
-
-    const amount = padding();
-
-    if (nextSpace.indexOf('\n') > -1) {
-      insert('\n' + indentChar + amount);
-    } else {
-      if (input.slice(start).trim().charCodeAt(0) === closeChar.charCodeAt(0)) {
-        insert(`\n${indentChar + amount}\n${amount}`, amount.length + 1);
-      } else {
-        insert('\n' + amount);
-      }
-    }
-
+  if (config.indentGuides) {
+    plugins.push(indentGuides());
   }
 
-  /**
-   * Returns the current indentation padding from left side.
-   * Optionally accepts an `indent` boolean parameter which
-   * defaults to `false`. When `true` will return padding + `indentChar`
-   */
-  function padding (indent = false) {
-
-    const line = input.slice(input.lastIndexOf('\n', textarea.selectionStart + 1) + 1);
-    const amount = line.slice(0, line.search(/[\S\n]/));
-
-    return amount === '' ? '' : indent
-      ? amount + indentChar
-      : amount;
-
+  if (config.searchWidget) {
+    plugins.push(searchWidget());
+  }
+  if (config.matchSelected) {
+    plugins.push(highlightSelectionMatches());
   }
 
-  /**
-   * Insert text in the textarea and respects history.
-   * Also safe guards firefox usage. The `input` letting
-   * will be updated.
-   */
-  function insert (text: string, backward: number = NaN): void {
-
-    const document = textarea.ownerDocument!;
-    const initialFocus = document.activeElement;
-
-    if (initialFocus !== textarea) textarea.focus();
-
-    const add = safeTextInsert(text);
-
-    if (!add) {
-      textarea.setRangeText(text, textarea.selectionStart || 0, textarea.selectionEnd || 0, 'end');
-      textarea.dispatchEvent(new InputEvent('input', {
-        data: text,
-        inputType: 'insertText'
-      }));
-    }
-
-    if (initialFocus === document.body) {
-      textarea.blur();
-    } else if (initialFocus instanceof HTMLElement && initialFocus !== textarea) {
-      initialFocus.focus();
-    }
-
-    if (!isNaN(backward)) {
-      if (initialFocus !== textarea) textarea.focus();
-      textarea.selectionEnd = textarea.selectionEnd - backward;
-    }
-
-    if (input !== textarea.value) input = textarea.value;
-
-    loc();
+  if (config.bracketPairs) {
+    plugins.push(highlightBracketPairs());
   }
 
-  function updateInvisibles (revert = false) {
-
-    if (editorOpts) {
-      if (editorOpts?.renderSpace !== config.showSpace || editorOpts?.renderTab !== config.showTab) {
-        invisibles(language, revert ? config : merge<Options>(config, {
-          showSpace: editorOpts.renderSpace,
-          showTab: editorOpts.renderTab
-        }));
-      }
-    }
-
+  if (config.matchTags) {
+    plugins.push(matchTags());
   }
 
-  /* -------------------------------------------- */
-  /* TAB SELECTION                                */
-  /* -------------------------------------------- */
-
-  /**
-   * Indent selection of code
-   */
-  function indentSelection (): void {
-
-    const { selectionStart, selectionEnd, value } = textarea;
-    const selectedText = value.slice(selectionStart, selectionEnd);
-    const lineBreakCount = /\n/g.exec(selectedText)?.length;
-
-    if (lineBreakCount! > 0) {
-
-      // Select full first line to replace everything at once
-      const firstLineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
-      const newSelection = textarea.value.slice(firstLineStart, selectionEnd - 1);
-      const indentedText = newSelection.replace(/^|\n/g, `$&${editorOpts.tabConvert ? indentChar : '\t'}`);
-      const replacementsCount = indentedText.length - newSelection.length;
-
-      textarea.setSelectionRange(firstLineStart, selectionEnd - 1);
-      insert(indentedText);
-      textarea.setSelectionRange(selectionStart + 1, selectionEnd + replacementsCount);
-
-    } else {
-
-      insert(editorOpts.tabConvert ? indentChar : '\t');
-
-    }
+  if (config.readOnly === false) {
+    plugins.push(editHistory(config.editHistory));
   }
 
-  /**
-   * Dedent selection of code
-   */
-  function dedentSelection (): void {
-
-    const { selectionStart, selectionEnd, value } = textarea;
-
-    // Select the whole first line because it might contain \t
-    const firstLineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
-    const minimumSelectionEnd = findLineEnd(value, selectionEnd);
-    const newSelection = textarea.value.slice(firstLineStart, minimumSelectionEnd);
-    const indentedText = newSelection.replace(/(^|\n)(\t| {1,2})/g, '$1');
-    const replacementsCount = newSelection.length - indentedText.length;
-
-    textarea.setSelectionRange(firstLineStart, minimumSelectionEnd);
-
-    insert(indentedText);
-
-    // Restore selection position, including the indentation
-    const firstLineIndentation = /\t| {1,2}/.exec(value.slice(firstLineStart, selectionStart));
-    const difference = firstLineIndentation ? firstLineIndentation[0]!.length : 0;
-    const newSelectionStart = selectionStart - difference;
-
-    textarea.setSelectionRange(
-      selectionStart - difference,
-      Math.max(newSelectionStart, selectionEnd - replacementsCount)
-    );
-  }
-
-  /**
-   * Autocompletion strategies
-   */
-  function autoCompletions (strategies: StrategyProps[]) {
-
-    complete = new Textcomplete(new TextareaEditor(textarea), strategies, {
-      dropdown: {
-        maxCount: 12,
-        rotate: true
-      }
-    });
-
-    dropdown = document.querySelector('.textcomplete-dropdown');
-
-    complete.on('selected', () => {
-
-      // push outside when quote completions
-      if (textarea.value[textarea.selectionEnd] === '"') {
-        textarea.selectionStart += 1;
-      }
-    });
-
-  }
+  return plugins;
 
 }

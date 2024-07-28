@@ -1,8 +1,78 @@
-import Prism from 'prismjs';
+// import Prism from 'prismjs';
+import { Grammar, GrammarToken, languages } from 'prism-code-editor/prism';
+import { extend, insertBefore } from 'prism-code-editor/prism/utils';
+import { Merge } from 'type-fest';
 
-export default function () {
+export function TypeScript () {
 
-  Prism.languages.typescript = Prism.languages.extend('javascript', {
+  const className: GrammarToken = {
+    pattern: /(\b(?:extends|implements|instanceof|new|type)\s+)(?!keyof\b)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?:\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)?/,
+    lookbehind: true,
+    greedy: true
+  };
+
+  const typescript = languages.ts = languages.typescript = extend('js', {
+    'class-name': className
+  }) as Merge<Grammar, { keyword: RegExp[] }>;
+
+  insertBefore(typescript, 'operator', {
+    builtin: {
+      pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|number|string|symbol|unknown)\b\s+)/,
+      global: true
+    },
+    'literal-property': {
+      pattern: /(\s+=\s+(?:^|[,{])[ \t]*)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*:)/m,
+      lookbehind: true,
+      alias: 'property'
+    }
+  });
+
+  // The keywords TypeScript adds to JavaScript
+  typescript.keyword.push(
+    /\b(?:abstract|declare|is|keyof|readonly|require|static)\b/,
+    // keywords that have to be followed by an identifier
+    /\b(?:asserts|infer|module|namespace|type)\b(?=\s*(?:[{_$a-zA-Z\xA0-\uFFFF]|$))/,
+    // This is for `import type *, {}`
+    /\btype\b(?=\s*(?:[{*]|$))/
+  );
+
+  // doesn't work with TS because TS is too complex
+  delete typescript.parameter;
+  delete typescript['literal-property'];
+
+  // a version of typescript specifically for highlighting types
+  const typeInside = className.inside = Object.assign({}, typescript);
+
+  delete typeInside['class-name'];
+  delete typeInside['maybe-class-name'];
+
+  insertBefore(typescript, 'function', {
+    decorator: {
+      pattern: /@[$\w\xa0-\uffff]+/,
+      inside: {
+        at: {
+          pattern: /^@/,
+          alias: 'operator'
+        },
+        function: /.+/
+      }
+    },
+    'generic-function': {
+    // e.g. foo<T extends "bar" | "baz">( ...
+      pattern: /#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+\s*<(?:[^<>=]|=[^<]|=?<(?:[^<>]|<[^<>]*>)*>)*>(?=\s*\()/g,
+      greedy: true,
+      inside: {
+        generic: {
+          pattern: /<[\s\S]+/, // everything after the first <
+          alias: 'class-name',
+          inside: typeInside
+        },
+        function: /\S+/
+      }
+    }
+  });
+
+  languages.typescript = extend('javascript', {
     'class-name': {
       pattern: /(\b(?:extends|implements|instanceof|new|type)\s+)(?!keyof\b)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?:\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)?/,
       lookbehind: true,
@@ -12,55 +82,6 @@ export default function () {
     builtin: {
       pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|number|string|symbol|unknown)\b\s+)/,
       global: true
-    }
-  });
-
-  // The keywords TypeScript adds to JavaScript
-  // @ts-ignore
-  Prism.languages.typescript.keyword.push(
-    /\b(?:abstract|declare|is|keyof|readonly|require|static)\b/,
-    // keywords that have to be followed by an identifier
-    /\b(?:asserts|infer|module|namespace|type)\b(?=\s*(?:[{_$a-zA-Z\xA0-\uFFFF]|$))/,
-    // This is for `import type *, {}`
-    /\btype\b(?=\s*(?:[{*]|$))/
-  );
-
-  // doesn't work with TS because TS is too complex
-  // @ts-ignore
-  delete Prism.languages.typescript.parameter;
-  delete Prism.languages.typescript['literal-property'];
-
-  // a version of typescript specifically for highlighting types
-  const typeInside = Prism.languages.extend('typescript', {});
-
-  delete typeInside['class-name'];
-
-  // @ts-ignore
-  Prism.languages.typescript['class-name'].inside = typeInside;
-
-  Prism.languages.insertBefore('typescript', 'function', {
-    decorator: {
-      pattern: /@[$\w\xA0-\uFFFF]+/,
-      inside: {
-        at: {
-          pattern: /^@/,
-          alias: 'operator'
-        },
-        function: /^[\s\S]+/
-      }
-    },
-    'generic-function': {
-      // e.g. foo<T extends "bar" | "baz">( ...
-      pattern: /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>(?=\s*\()/,
-      greedy: true,
-      inside: {
-        function: /^#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*/,
-        generic: {
-          pattern: /<[\s\S]+/, // everything after the first <
-          alias: 'types',
-          inside: typeInside
-        }
-      }
     },
     parameter: [
       {
@@ -86,18 +107,7 @@ export default function () {
         lookbehind: true,
         greedy: true
       }
-    ]
-  });
-
-  Prism.languages.insertBefore('typescript', 'operator', {
-    'literal-property': {
-      pattern: /(\s+=\s+(?:^|[,{])[ \t]*)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*:)/m,
-      lookbehind: true,
-      alias: 'property'
-    }
-  });
-
-  Prism.languages.typescript = Prism.languages.extend('typescript', <Prism.Grammar>{
+    ],
     'punctuation-chars': {
       pattern: /[.,]/,
       global: true
@@ -155,8 +165,5 @@ export default function () {
       lookbehind: true
     }
   });
-
-  Prism.languages.ts = Prism.languages.typescript;
-  return Prism.languages.typescript;
 
 };

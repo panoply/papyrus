@@ -1,6 +1,4 @@
-.language-bash {
-
-  .token {
+.language-bash .token {
 
     &.punctuation {
       color: var(--papyrus-bash-punctuation);
@@ -13,6 +11,5 @@
     &.argument {
       color: var(--papyrus-bash-argument);
     }
-  }
 
 }

@@ -3,6 +3,7 @@
 
 .language-liquid {
 
+
   .liquid,
   .special-attr {
 
@@ -73,6 +74,10 @@
 
   .token {
 
+
+    &.special-attr {
+      color: var(--papyrus-liquid-string);
+    }
 
     &.liquid-string {
 

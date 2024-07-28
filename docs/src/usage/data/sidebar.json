@@ -13,8 +13,12 @@
       "url": "/examples/html"
     },
     {
-      "title": "HTML SPX",
-      "url": "/examples/html-spx"
+      "title": "SPX",
+      "url": "/examples/spx"
+    },
+    {
+      "title": "CSS",
+      "url": "/examples/css"
     },
     {
       "title": "XML",
@@ -27,6 +31,10 @@
     {
       "title": "TypeScript",
       "url": "/examples/typescript"
+    },
+    {
+      "title": "SIN",
+      "url": "/examples/sin"
     },
     {
       "title": "JavaScript",

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import papyrus, { Languages } from 'papyrus';
+import papyrus, { Papyrus } from 'papyrus';
 import { IAttrs, IEditor, IModel } from './attrs';
 import { Layout } from './components/layout';
 import { Landing } from './components/landing';
@@ -213,7 +213,7 @@ function render () {
   /**
    * Cache Reset
    */
-  function reset (language?: Languages | 'editor') {
+  function reset (language?: Papyrus.Languages | 'editor') {
 
     const store = language ? language === 'editor' ? 'editor' : 'tokens' : 'all';
 

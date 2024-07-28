@@ -187,9 +187,7 @@
           color: var(--papyrus-spx-boolean);
         }
 
-        &.script {
-
-          > .token {
+        &.script > .token {
 
             &.keyword {
               color: var(--papyrus-js-keyword);
@@ -239,7 +237,6 @@
             &.boolean {
               color: var(--papyrus-spx-boolean);
             }
-          }
         }
       }
     }

@@ -1,14 +1,11 @@
 @import "theme/vars";
 @import "theme/root";
-@import "theme/base";
-@import "theme/languages/bash";
-@import "theme/languages/html";
-@import "theme/languages/liquid";
-@import "theme/languages/javascript";
-@import "theme/languages/typescript";
-@import "theme/languages/xml";
-@import "theme/languages/css";
-@import "theme/languages/scss";
-@import "theme/languages/json";
-@import "theme/languages/yaml";
-@import "theme/languages/treeview";
+
+/// editor
+@import "theme/potion/layout";
+@import "theme/potion/scollbar";
+@import "theme/potion/rtl";
+@import "theme/potion/copy-button";
+@import "theme/potion/search";
+@import "theme/potion/folding";
+@import "theme/potion/theme";

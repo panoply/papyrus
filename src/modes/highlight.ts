@@ -1,183 +1,67 @@
-import type { Languages, Options } from '../../types/options';
-import Prism, { Grammar } from 'prismjs';
-import { model } from '../model';
-import { grammars } from '../prism/grammars';
-import { invisibles } from '../prism/invisibles';
-import { getLanguageName, getLineCount, getLineNumbers, uuid } from '../utils';
-import morphdom from 'morphdom';
-import { EditorOptions } from '../..';
+import { Options, Papyrus } from '../../';
+import { trimInput, glue, getFlems, getCopy } from '../utils/helpers';
+import { setHighlightOptions } from '../utils/options';
+import { languages, tokenizeText, highlightTokens } from 'prism-code-editor/prism';
 
-export function highlight (config: Options) {
+function raw (codeInput: string, config: Papyrus.Options) {
 
-  let mode: 'error' | 'static' | 'editor' = 'static';
-  let languageId: Languages = config.language;
-  let grammar: Grammar;
-  let preEl: HTMLPreElement;
-  let codeEl: HTMLElement;
-  let lineCount: number = NaN;
+  const input = trimInput(codeInput, config.trimStart, config.trimEnd);
+  const tokenize = tokenizeText(input, languages[config.language]);
+  const rawCode = highlightTokens(tokenize);
+  const markup = config.lineNumbers === false
+    ? rawCode
+    : rawCode
+      .split('\n')
+      .map((token, i) => `<div class="line-no" aria-hidden="true" data-line="${i + 1}">${token}</div>`)
+      .join('');
 
-  grammars();
-
-  for (const language in Prism.languages) {
-
-    invisibles(language, config);
-
-  }
-
-  function language (languageName: Languages) {
-
-    if (languageId === null || languageId !== languageName) {
-      languageId = getLanguageName(languageName);
-    }
-
-    if (codeEl && codeEl.hasAttribute('class')) {
-
-      const className = codeEl.className.indexOf('language-');
-
-      if (className > 0) {
-
-        const langName = codeEl.className.slice(className + 9).split(' ')[0].trimEnd();
-
-        if (langName !== languageId) {
-          codeEl.classList.remove(`language-${langName}`);
-          codeEl.classList.add(`language-${languageId}`);
-        }
-
-      } else {
-        codeEl.classList.add(`language-${languageId}`);
-      }
-
-    }
-
-    grammar = Prism.languages[languageId] || Prism.languages.plaintext;
-
-    return languageId;
-
-  }
-
-  function nodes (element: HTMLElement) {
-
-    if (element.tagName === 'PRE') {
-      if (element.firstElementChild !== null && element.firstElementChild.tagName !== 'CODE') {
-        throw new Error('𓁁 Papyprus: Missing "<code>" element');
-      } else {
-        preEl = element as HTMLPreElement;
-        codeEl = element.firstElementChild as HTMLElement;
-      }
-    } else if (element.tagName === 'CODE') {
-
-      if (element.parentElement !== null && element.parentElement.tagName !== 'PRE') {
-        throw new Error('𓁁 Papyprus: The "<pre>" element must be a parent of "<code>"');
-      } else {
-        preEl = element.parentElement as HTMLPreElement;
-        codeEl = element;
-      }
-    } else {
-
-      preEl = document.createElement('pre');
-      codeEl = document.createElement('code');
-      preEl.appendChild(codeEl);
-      element.append(preEl);
-
-    }
-
-    if (!preEl.classList.contains('papyrus')) {
-      preEl.classList.add('papyrus');
-    }
-
-    if (preEl.hasAttribute('data-papyrus') === false) {
-      if (config.startMode === 'editor') {
-        preEl.setAttribute('data-papyrus', 'editor');
-      } else {
-        preEl.setAttribute('data-papyrus', 'static');
-      }
-    }
-
-    if (!preEl.hasAttribute('id')) {
-      if (config.id) {
-        preEl.id = config.id;
-      } else {
-        preEl.id = uuid();
-      }
-    }
-
-  }
-
-  function raw (input: string) {
-
-    grammars();
-
-    for (const lang in Prism.languages) invisibles(lang as Languages, config);
-
-    const output = Prism.highlight(input, grammar, languageId);
-
-    if (config.lineNumbers) {
-
-      const editorOpts = (config.editor as EditorOptions);
-
-      lineCount = getLineCount(input);
-
-      if (editorOpts.lineHighlight) {
-        return `${output}${getLineNumbers(lineCount, (config.editor as EditorOptions).lineNumber)}`;
-      } else {
-        return `${output}${getLineNumbers(lineCount, 0)}`;
-      }
-    } else {
-      return `${output}`;
-    }
-  }
-
-  function highlight (input: string) {
-
-    const output = Prism.highlight(input, grammar, languageId);
-
-    morphdom(codeEl, `<code>${output}${getLineNumbers(lineCount)}</code>`, {
-      childrenOnly: true,
-      onBeforeElUpdated: (from, to) => {
-        // Skip line numbers
-        if (from.classList.contains('active')) return false;
-        if (from.isEqualNode(to)) return false;
-        return true;
-      }
-    });
-
-  }
-
-  return {
-    get id () {
-      return preEl.id;
-    },
-    get languageId () {
-      return languageId;
-    },
-    get lines () {
-      return lineCount;
-    },
-    set lines (lines) {
-      lineCount = lines;
-    },
-    get model () {
-      return model;
-    },
-    get code () {
-      return codeEl;
-    },
-    get lineNumbers () {
-      return codeEl.lastElementChild as HTMLElement;
-    },
-    get pre () {
-      return preEl;
-    },
-    get mode () {
-      return mode;
-    },
-    set mode (modeName) {
-      mode = modeName;
-    },
-    raw,
-    highlight,
-    nodes,
-    language
-  };
+  return markup;
 
 }
+
+function extend (config: Options.Highlight) {
+
+  if (config.language === 'treeview') return '';
+
+  let markup: string = '<div class="overlays">';
+
+  if (config.flems !== null) {
+    markup += getFlems(config.flems);
+  }
+
+  if (config.copyButton === true) {
+    markup += getCopy();
+  }
+
+  return markup + '</div>';
+
+}
+
+export function createHighlight (codeInput: string, options: Papyrus.Options) {
+
+  const config = setHighlightOptions(options);
+  const markup = raw(codeInput, config);
+  const preClass = [ 'papyrus', ...config.preClass ];
+  const preAttrs = [ ...config.preAttrs ];
+  const codeAttrs = glue(config.codeAttrs);
+  const codeClass = [ `language-${config.language}`, ...config.codeClass ];
+
+  if (config.lineNumbers) {
+    preClass.push('line-numbers');
+  }
+
+  if (config.lineFence) {
+    preClass.push('line-fence');
+  }
+
+  let output: string = `<pre class="${glue(preClass)}" ${glue(preAttrs)}>`;
+
+  if (config.codeAttrs.length > 0) {
+    output += `<code class="${glue(codeClass)}" ${codeAttrs}>`;
+  } else {
+    output += `<code class="${glue(codeClass)}">`;
+  }
+
+  return `${output}${extend(config)}${markup}</code></pre>`;
+
+};

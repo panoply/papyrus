@@ -8,13 +8,11 @@ description: ''
 # Liquid
 
 ```liquid
-
-    <script>
-
-      spx.connect({
-        foo: bar;
-      })
-    </script>
+<script>
+  spx.connect({
+    foo: bar;
+  })
+</script>
 
 {%- if condition == assert -%}
   <div class="xxx" id="some-id">

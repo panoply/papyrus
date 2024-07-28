@@ -102,6 +102,9 @@
       color: var(--papyrus-js-string);
     }
 
+    &.interpolation-punctuation {
+      color: #26F9E7;
+    }
 
     &.bracket > .punctuation {
       color: var(--papyrus-js-bracket);
@@ -109,6 +112,48 @@
 
     &.bracket > .keyword {
       color: var(--papyrus-js-this);
+    }
+
+    // GRAMMAR FOR SIN
+
+    &.sin {
+      color: #B4769D;
+      background: linear-gradient(to bottom, #D3EAFF 0%, #65B4FF 35%, #B4769D 50%, #F32933 65% , #FF9901 85%);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    &.template-sin {
+      color: var(--papyrus-js-string);
+
+      .template-punctuation {
+        color: var(--papyrus-js-operator);
+        font-weight: bolder;
+      }
+
+      .sin-tag {
+        color: var(--papyrus-js-function);
+      }
+
+      .sin-css {
+
+        .property {
+          color: var(--papyrus-html-attr-name);
+        }
+        .number {
+          color: var(--papyrus-css-number);
+        }
+
+        .hexcode{
+          color: var(--papyrus-css-hexcode);
+        }
+
+        .unit{
+          color: var(--papyrus-css-unit);
+        }
+      }
+
+
     }
   }
 }

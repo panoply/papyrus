@@ -7,35 +7,52 @@ description: ''
 
 # Usage
 
-Papyrus exposes 3 methods from it's default export. The `papyrus.render()` method is for usage within Node and will render a Papyrus code block, whereas the `papyrus.mount()` method is for usage within the web browser.
+Papyrus exposes 3 methods from it's default export. The `papyrus.static()` method is for usage within Node and will render a Papyrus code block, whereas the `papyrus.mount()` method is for usage within the web browser.
 
-### Methods
-
-```js
+```ts
 import papyrus from 'papyrus';
 
 // DEFAULT
 
 // Invokes on all <pre class="papyrus"> elements
-papyrus(options?: {}): Papyrus[];
+papyrus({
+  id: null,
+  language: null,
+  autoHeight: true,
+  lineFence: true,
+  lineNumbers: true,
+  locLimit: 1500,
+  maxLines: Infinity,
+  readOnly: false,
+  tabSize: 2,
+  rtl: false,
+  trimEnd: true,
+  trimStart: true,
+  useTabs: false,
+  wordWrap: false,
+  copyButton: true,
+  extensions: {},
+  addAttrs: {},
+  addClass: {}
+});
+```
 
+### Methods
+
+```ts
 // METHODS
 
 // Mounts a specific <pre> element
-papyrus.mount('.selector', /* options */);
+papyrus.mount('.selector' /* options */);
 
-// Render papyrus to a specific element
-papyrus.render('const x = 1', '.selector', /* options */);
-
-// Returns generated papyrus markup
-papyrus.static('<ul><li> xxx </li></ul>', /* options */);
+// Returns generated papyrus markup - usage in node
+papyrus.static('<ul><li> xxx </li></ul>' /* options */);
 
 // Return a specific papyrus instance
-papyrus.get('some-id')
+papyrus.get('some-id');
 
 // Return an array list of all papyrus instances
-papyrus.list()
-
+papyrus.list();
 
 // GLOBAL SCOPE
 
@@ -45,7 +62,7 @@ window.papyrus;
 
 ### Instance
 
-Papyrus execution will return an instance. Instances will give you control over the element papyrus has been rendered and will allow you to hooks into editor logic to perform additional enhancements.
+Papyrus execution will return an instance. Instances will give you control over the element papyrus has been rendered on and will allow you to hook into editor logic to perform additional enhancements.
 
 ```ts
 import papyrus from 'papyrus';
@@ -107,7 +124,7 @@ p.onupdate(function(code: string, language: Language) {
 
 # Options
 
-Papyrus exposes a large set of configuration options. Depending on the available methods, different options will be available. Below is the complete schema for initializing a Papyrus instance.
+Papyrus exposes a large set of configuration options. Depending on invocation methods, different options will be available. Below is the complete schema for initializing a Papyrus instance.
 
 ```js
 import papyrus from 'papyrus';
@@ -143,6 +160,7 @@ papyrus({
       ['{', '}']
       ['[', ']']
     ]
+    autoHeight: true,
     indentChar: ' ',
     indentSize: 2,
     lineNumber: 1,

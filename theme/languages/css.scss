@@ -1,8 +1,6 @@
 /* stylelint-disable color-hex-length */
 
-.language-css {
-
-  .token {
+.language-css .token {
 
     &.comment {
       color: var(--papyrus-css-comment);
@@ -12,10 +10,8 @@
       color: var(--papyrus-css-selector);
     }
 
-    &.attribute {
-      .punctuation {
+    &.attribute .punctuation {
         color: var(--papyrus-css-attr-punctuation);
-      }
     }
 
     &.css-tag {
@@ -97,5 +93,4 @@
     &.pseudo-element {
       color: var(--papyrus-css-pseudo-element);
     }
-  }
 }

@@ -1,8 +1,9 @@
-import Prism from 'prismjs';
+// import Prism from 'prismjs';
+import { languages } from 'prism-code-editor/prism';
 
-export default function () {
+export function Bash () {
 
-  Prism.languages.bash = {
+  languages.bash = {
     argument: {
       pattern: /<(.*?)>/
     },
@@ -13,7 +14,5 @@ export default function () {
       pattern: /#.*?(?=\n)/
     }
   };
-
-  return Prism.languages.bash;
 
 }

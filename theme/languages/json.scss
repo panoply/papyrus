@@ -1,6 +1,4 @@
-.language-json {
-
-  .token {
+.language-json .token {
 
     &.comment {
       color: var(--papyrus-json-comment);
@@ -33,6 +31,4 @@
     &.punctuation {
       color: var(--papyrus-json-punctuation);
     }
-
-  }
 }

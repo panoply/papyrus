@@ -10,20 +10,16 @@ export const SCSSVars: m.Component<IAttrs, { editor: Model }> = {
     state
   }) => m(
     'pre.papyrus.mt-0.rd-t-0'
-    , { style: { height: '80vh', 'border-width': '0.01rem', 'border-color': 'rgb(60 64 73)' } }
-    , m(
-      'code'
-      , {
-        class: 'language-scss',
-        oncreate: ({ dom }) => {
-          state.editor = papyrus.mount(dom as HTMLPreElement, {
-            id: 'sass-vars',
-            language: 'scss',
-            input: attrs.style.sass
-          });
-        }
+    , {
+      style: { height: '80vh', 'border-width': '0.01rem', 'border-color': 'rgb(60 64 73)' },
+      oncreate: ({ dom }) => {
+        state.editor = papyrus.mount(dom as HTMLPreElement, {
+          id: 'sass-vars',
+          language: 'scss',
+          input: attrs.style.sass
+        });
       }
-    )
+    }
   )
 };
 
@@ -183,49 +179,42 @@ export const Preview: m.Component<IAttrs, {
       'div.d-flex.flex-col.ai-center.jc-center.mb-4.px-5.w-100.rel',
       attrs.preview.opened === 1 ? m(CSSVars, attrs) : null,
       attrs.preview.opened === 2 ? m(SCSSVars, attrs) : null,
-      attrs.preview.opened === 0 ? m(
-        'pre.papyrus.mt-0.rd-t-0'
-        , { style: { height: '80vh', 'border-width': '0.01rem', 'border-color': 'rgb(60 64 73)' } }
-        , m('code'
-          , {
-            class: `language-${attrs.state.alias || attrs.language}`,
-            onupdate: () => {
+      attrs.preview.opened === 0 ? m('', {
+        class: `language-${attrs.state.alias || attrs.language}`,
+        onupdate: () => {
 
-              if (!state.editor || state.editor.mode === 'error') return;
+          if (!state.editor || state.editor.mode === 'error') return;
 
-              if (state.language !== attrs.state.alias || attrs.language) {
+          if (state.language !== attrs.state.alias || attrs.language) {
 
-                state.language = attrs.state.alias || attrs.language;
-                state.editor.update(attrs.state.sample, attrs.state.alias || attrs.language);
-                state.loading = false;
-                state.tab = attrs.preview.opened;
+            state.language = attrs.state.alias || attrs.language;
+            state.editor.update(attrs.state.sample, attrs.state.alias || attrs.language);
+            state.loading = false;
+            state.tab = attrs.preview.opened;
 
-              }
-            },
-            oncreate: ({ dom }) => {
+          }
+        },
+        oncreate: ({ dom }) => {
 
-              attrs.papyrus.input = attrs.state.sample;
-              attrs.papyrus.language = attrs.state.alias || attrs.language;
-              state.language = attrs.language;
-              state.loading = false;
-              state.editor = papyrus.mount(dom as HTMLPreElement, {
-                id: 'editor',
-                language: attrs.state.alias || attrs.language,
-                input: attrs.state.sample,
-                editor: {
-                  tabConvert: true,
-                  completions: {
-                    json: JsonCompletions
-                  }
-                },
-                showSpace: false,
-                showTab: false
-              });
+          attrs.papyrus.input = attrs.state.sample;
+          attrs.papyrus.language = attrs.state.alias || attrs.language;
+          state.language = attrs.language;
+          state.loading = false;
+          state.editor = papyrus.mount(dom as HTMLPreElement, {
+            id: 'editor',
+            language: attrs.state.alias || attrs.language,
+            input: attrs.state.sample,
+            autoHeight: false,
+            preClass: [ 'rt-0' ]
+          });
 
-              m.redraw();
-            }
-          })
-      ) : null
+          state.editor.container.style.borderTopLeftRadius = '0';
+          state.editor.container.style.borderTopRightRadius = '0';
+          state.editor.container.style.width = '100%';
+
+          m.redraw();
+        }
+      }) : null
 
       , m('.mt-4', {
         style: {

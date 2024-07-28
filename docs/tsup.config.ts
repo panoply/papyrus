@@ -17,12 +17,14 @@ export default defineConfig({
   outDir: './public/',
   clean: false,
   bundle: true,
-  treeshake: true,
+  treeshake: false,
   splitting: false,
-  minify: 'terser',
   platform: 'browser',
   target: 'es6',
+  outExtension: () => ({
+    js: '.js'
+  }),
   format: [
-    'esm'
+    'iife'
   ]
 });

@@ -1,51 +1,47 @@
 import { defineConfig } from 'tsup';
 import { utimes } from 'node:fs/promises';
 
-const prism = `
-/**
- * 𓁁 PAPYRUS ~ https://papyrus.js.org
- *
- * MIT LICENSE
- *
- * © 2024 Νίκος Σαβίδης
- *
- * ---
- *
- * ⟁ PRISM ~ https://prismjs.com
- *
- * MIT LICENSE
- *
- * © 2012 Lea Verou
- */
-if(typeof window!=='undefined')window.Prism=window.Prism||{};window.Prism.manual=true;`;
-
 export default defineConfig([
   {
-    entry: {
-      papyrus: './src/index.ts'
-    },
+    entry: [ './src/node.ts' ],
     noExternal: [
-      'prismjs',
-      'morphdom',
-      'mergerino',
-      '@textcomplete/core',
-      '@textcomplete/textarea'
+      'prism-code-editor',
+      'lz-string'
     ],
     clean: false,
     name: 'papyrus',
-    banner (context) {
-      if (context.format === 'esm') {
-        return {
-          js: prism
-        };
-      }
-    },
     treeshake: 'smallest',
-    platform: 'neutral',
+    platform: 'node',
+    async onSuccess () {
+      const time = new Date();
+      await utimes('./docs/src/usage/layout/landing.liquid', time, time);
+      return undefined;
+    },
+    outExtension ({ format }) {
+      return {
+        js: `.${format}.js`
+      };
+    },
+    splitting: false,
+    format: [
+      'cjs',
+      'esm'
+    ]
+  },
+  {
+    entry: [ './src/browser.ts' ],
+    noExternal: [
+      'prism-code-editor',
+      'lz-string'
+    ],
+    clean: false,
+    name: 'papyrus',
+    treeshake: 'smallest',
+    platform: 'browser',
+    splitting: false,
     async onSuccess () {
       const time = new Date();
       await utimes('./docs/src/theme/index.ts', time, time);
-      await utimes('./docs/src/usage/layout/landing.liquid', time, time);
       return undefined;
     },
     esbuildOptions: options => {
@@ -53,21 +49,12 @@ export default defineConfig([
       options.legalComments = 'none';
     },
     outExtension ({ format }) {
-
-      if (format === 'cjs') {
-        return { js: '.cjs' };
-      } else if (format === 'esm') {
-        return { js: '.mjs' };
-      } else {
-        return { js: '.js' };
-      }
+      return {
+        js: `.${format}.js`
+      };
     },
     format: [
-      'iife',
-      'cjs',
       'esm'
-    ],
-    splitting: false
-
+    ]
   }
 ]);

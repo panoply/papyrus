@@ -1,18 +1,17 @@
+// import Prism from 'prismjs';
+import { languages, rest } from 'prism-code-editor/prism';
+import { extend, insertBefore } from 'prism-code-editor/prism/utils';
+import { boolean, comment } from '../helpers';
 
-import Prism from 'prismjs';
+export function SCSS () {
 
-export default function () {
-
-  Prism.languages.scss = Prism.languages.extend('css', {
-    comment: {
-      pattern: /(^|[^\\])(?:\/\*[\s\S]*?\*\/|\/\/.*)/,
-      lookbehind: true
-    },
+  const scss = languages.scss = extend('css', {
+    comment: comment(),
     atrule: {
       pattern: /@[\w-](?:\([^()]+\)|[^()\s]|\s+(?!\s))*?(?=\s+[{;])/,
       inside: {
-        rule: /@[\w-]+/
-      // See rest below
+        rule: /@[\w-]+/,
+        [rest]: 'scss'
       }
     },
     // url, compassified
@@ -25,8 +24,8 @@ export default function () {
     // can "pass" as a selector- e.g: proper#{$erty})
     // this one was hard to do, so please be careful if you edit this one :)
     selector: {
-    // Initial look-ahead is used to prevent matching of blank selectors
-      pattern: /(?=\S)[^@;{}()]?(?:[^@;{}()\s]|\s+(?!\s)|#\{\$[-\w]+\})+(?=\s*\{(?:\}|\s|[^}][^:{}]*[:{][^}]))/,
+      // Initial look-ahead is used to prevent matching of blank selectors
+      pattern: /(?!\s)[^@;(){}]?(?:[^@;(){}\s]|\s+(?!\s)|#\{\$[-\w]+\})+(?=\s*\{(?:\}|\s|[^}][^:{}]*[:{][^}]))/,
       inside: {
         parent: {
           pattern: /&/,
@@ -44,7 +43,7 @@ export default function () {
     }
   });
 
-  Prism.languages.insertBefore('scss', 'atrule', {
+  insertBefore(scss, 'atrule', {
     keyword: [
       /@(?:content|debug|each|else(?: if)?|extend|for|forward|function|if|import|include|mixin|return|use|warn|while)\b/i,
       {
@@ -54,12 +53,12 @@ export default function () {
     ]
   });
 
-  Prism.languages.insertBefore('scss', 'important', {
-  // var and interpolated vars
+  insertBefore(scss, 'important', {
+    // var and interpolated vars
     variable: /\$[-\w]+|#\{\$[-\w]+\}/
   });
 
-  Prism.languages.insertBefore('scss', 'function', {
+  insertBefore(scss, 'function', {
     'module-modifier': {
       pattern: /\b(?:as|hide|show|with)\b/i,
       alias: 'keyword'
@@ -72,20 +71,15 @@ export default function () {
       pattern: /\B!(?:default|optional)\b/i,
       alias: 'keyword'
     },
-    boolean: /\b(?:false|true)\b/,
+    boolean: boolean(),
     null: {
       pattern: /\bnull\b/,
       alias: 'keyword'
     },
     operator: {
-      pattern: /(\s)(?:[-+*/%]|[=!]=|<=?|>=?|and|not|or)(?=\s)/,
+      pattern: /(\s)(?:[%/*+-]|[!=]=|[<>]=?|and|not|or)(?!\S)/,
       lookbehind: true
     }
   });
-
-  // @ts-expect-error
-  Prism.languages.scss.atrule.inside.rest = Prism.languages.scss;
-
-  return Prism.languages.scss;
 
 }

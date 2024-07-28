@@ -1,0 +1,116 @@
+/* stylelint-disable custom-property-pattern */
+/* Implementation of the Dracula theme for VS Code
+Original: https://github.com/dracula/visual-studio-code */
+
+.prism-code-editor {
+	color-scheme: dark;
+
+	--editor__bg: #282a36;
+	--widget__border: #454545;
+	--widget__bg: #21222c;
+	--widget__color: #f8f8f2;
+	--widget__color-active: #fff;
+	--widget__color-options: #b2b2a8;
+	--widget__bg-input: #282a36;
+	--widget__bg-hover: #5a5d5e80;
+	--widget__bg-active: #6272a466;
+	--widget__focus-ring: #bd93f9;
+	--search__bg-find: #ffffff40;
+	--widget__bg-error: #5a1d1d;
+	--widget__error-ring: #f55;
+	--editor__border-highlight: 2px solid #44475a;
+	--editor__bg-selection-match: #424450;
+	--editor__line-number: #6272a4;
+	--editor__bg-scrollbar: 0, 0%, 50%;
+	--editor__bg-fold: #c5c5c5;
+	--bg-guide-indent: #ffffff1a;
+}
+
+.match-highlight {
+	--editor__bg-highlight: #44475a;
+}
+
+/* Selection */
+.prism-code-editor textarea::selection {
+	color: #0000;
+	background: #44475a;
+}
+
+.pce-matches .match {
+	--search__bg-find: #ffb86c80;
+}
+
+.active-line {
+	--editor__line-number: #c6c6c6;
+}
+
+.guide-indents .active {
+	--bg-guide-indent: #ffffff45;
+}
+
+@import "../languages/bash";
+@import "../languages/html";
+@import "../languages/liquid";
+@import "../languages/javascript";
+@import "../languages/typescript";
+@import "../languages/xml";
+@import "../languages/css";
+@import "../languages/scss";
+@import "../languages/json";
+@import "../languages/yaml";
+@import "../languages/treeview";
+
+
+
+/* Brackets */
+
+.token.bracket-level-0,
+.token.bracket-level-6 {
+	color: #f8f8f2;
+}
+
+.token.bracket-level-1,
+.token.bracket-level-7 {
+	color: #ff79c6;
+}
+
+.token.bracket-level-2,
+.token.bracket-level-8 {
+	color: #8be9fd;
+}
+
+.token.bracket-level-3,
+.token.bracket-level-9 {
+	color: #50fa7b;
+}
+
+.token.bracket-level-4,
+.token.bracket-level-10 {
+	color: #bd93f9;
+}
+
+.token.bracket-level-5,
+.token.bracket-level-11 {
+	color: #ffb86c;
+}
+
+.token.interpolation-punctuation {
+	color: #ff79c6;
+}
+
+.token.bracket-error {
+	color: #f55;
+}
+
+.token.markup-bracket {
+	color: inherit;
+}
+
+.active-bracket {
+	box-shadow: inset 0 0 0 1px #b9b9b9, inset 0 0 0 9in #0064001a;
+}
+
+.active-tagname,
+.word-matches span {
+	background: #8be9fd4f;
+}

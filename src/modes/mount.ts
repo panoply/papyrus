@@ -1,68 +1,90 @@
-import { Options } from '../../types/options';
-import { Model } from '../../types/model';
-import { highlight } from './highlight';
-import { getLineCount, mergeEditorOptions, mergeOptions, trimInput } from '../utils';
-import { texteditor } from './editor';
+import { model } from '../utils/shared';
+import { Options, Papyrus } from '../..';
+import { getLanguageFromCode, has, decompress } from '../utils/helpers';
+import { setEditor } from './editor';
+import { setOptions } from '../utils/options';
 
-export function mount (element: HTMLElement, options: Options): Model {
+export function select (selector: string | HTMLElement | Element, options: Options.Default) {
 
-  const config = mergeOptions(options);
-  const attr = element.getAttribute('data-papyrus');
-
-  if (attr !== null) {
-    if (attr === 'editor' && config.editor === false) {
-      config.editor = mergeEditorOptions(true);
-      config.startMode = 'editor';
-    } else if (attr === 'static' && config.editor !== false) {
-      config.startMode = 'static';
-    }
+  // ensure dom is ready
+  if (document.readyState === 'loading') {
+    addEventListener('DOMContentLoaded', () => select(selector, options));
+    return;
   }
 
-  const prism = highlight(config as Options);
+  const single = typeof selector === 'object' && 'tagName' in selector;
 
-  prism.nodes(element);
-  prism.language(config.language);
+  // Ensure the selector is not a NodeList
+  if (single && selector instanceof NodeList) {
+    throw TypeError('Papyprus: Invalid NodeList selector. Provide string or HTMLElement');
+  }
 
-  let input = '';
+  if (single) {
 
-  if (config.input !== undefined && config.input.length > 0) {
-    input = trimInput(config.input, config as Options);
+    const el = typeof selector === 'string'
+      ? document.body.querySelector<HTMLElement>(selector)
+      : selector as HTMLElement;
+
+    if (el !== null) mount(el, options);
+
   } else {
-    input = trimInput(prism.code.textContent || '', config as Options);
+
+    document.body
+      .querySelectorAll<HTMLElement>(selector)
+      .forEach(element => mount(element, options));
+
   }
 
-  if (config.lineNumbers) {
-    if (!prism.code.classList.contains('line-numbers')) {
-      prism.code.classList.add('line-numbers');
-      prism.lines = getLineCount(input);
+  const instances = Array.from(model.values());
+
+  return single ? instances[instances.length - 1] : instances;
+
+}
+
+export function mount (element: HTMLElement, options: Options.Default) {
+
+  let config: Options.Default;
+  let input: string = '';
+
+  // data-papyrus attribute means we generated using papyrus.static
+  // when this applies, we need to perform some analysis on the element to
+  // determine whether or not we will create an editor instance
+  if (element.hasAttribute('data-papyrus')) {
+
+    const attr = decompress(element.getAttribute('data-papyrus').trim());
+    config = setOptions('mount', attr);
+
+    if (config.readOnly === false) {
+      input = element.querySelector('textarea').value;
     } else {
-      prism.lines = getLineCount(input);
+      input = Array
+        .from(element.querySelector('code').children)
+        .slice(1)
+        .map((child) => child.textContent)
+        .join('\n');
     }
-  }
 
-  prism.highlight(input);
+    if (has('input', config) && config.input !== null) {
+      input = config.input;
+    }
 
-  if (config.editor) {
-    prism.pre.setAttribute('data-papyrus', 'editor');
+    element.removeAttribute('data-papyrus');
+
   } else {
-    prism.pre.setAttribute('data-papyrus', 'static');
-  }
 
-  if (prism.code.style.position === 'initial') {
-    prism.code.style.setProperty('position', 'absolute');
-    prism.pre.style.setProperty('height', `${prism.code.offsetHeight}px`);
-  }
-
-  const model = texteditor(prism, config as Options);
-
-  if (config.editor && config.startMode === 'editor') {
-    if (model.textarea.style.position === 'relative') {
-      model.textarea.style.setProperty('position', 'relative');
+    if (!has('language', options)) {
+      options.language = getLanguageFromCode(element);
     }
+
+    config = setOptions('mount', options);
+
   }
 
-  prism.model.set(prism.pre.id, model);
+  if (config.language === 'treeview') return;
 
-  return model;
+  const editor: Papyrus.Model = setEditor(element, input, config);
 
+  model.set(editor.id, editor);
+
+  return editor;
 }
