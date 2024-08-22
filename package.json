@@ -1,6 +1,6 @@
 {
   "name": "papyrus",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης",
@@ -53,12 +53,12 @@
     "@sissel/prettier-config": "^1.2.5",
     "@sissel/stylelint-config": "^1.2.4",
     "ava": "^6.1.3",
-    "eslint": "~8.56.0",
+    "eslint": "~9.9.0",
     "lz-string": "^1.5.0",
-    "prism-code-editor": "^3.3.3",
+    "prism-code-editor": "^3.4.0",
     "sass": "^1.77.8",
-    "terser": "^5.31.2",
-    "type-fest": "^4.21.0"
+    "terser": "^5.31.6",
+    "type-fest": "^4.25.0"
   },
   "dependencies": {
     "calculate-size": "^1.1.1"

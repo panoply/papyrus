@@ -61,7 +61,12 @@ export function Markup () {
           lookbehind: true,
           global: true,
           inside: {
-            'component-name': /[a-zA-Z0-9-]+/,
+            'component-name': {
+              pattern :/[a-zA-Z0-9-]+/,
+              inside: {
+                alias: /\b(as)\b/,
+              }
+            },
             separator: /[|,]/,
             punctuation
           }
@@ -92,17 +97,15 @@ export function Markup () {
               inside: {
                 'event-key': /[a-zA-Z0-9]+(?=\.)/,
                 dot: /\./,
-                val: /^[^.][a-zA-Z0-9]+/
+                'event-method': /^[^.][a-zA-Z0-9]+/
               }
             },
             'event-struct': {
-              pattern: /(\s)\{[\s\S]*?\}\s*/,
-              greedy: true,
-              lookbehind: true,
+              pattern: /\{[\s\S]*?\}\s*/,
               inside: {
                 delim: /[{}]/,
                 comma: /,/,
-                prop: /[a-z]+/
+                option: /[a-z]+/
               }
             },
             punctuation

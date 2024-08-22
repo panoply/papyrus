@@ -94,24 +94,24 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
   /* DEFINE GETTERS ----------------------------- */
 
   Object.defineProperties(instance, {
-    activeLine: { get () { return editor.activeLine; } },
-    focused: { get () { return editor.focused; } },
-    overlays: { get () { return editor.overlays; } },
-    lineNumber: { get () { return editor.activeLineNumber; } },
-    tokens: { get () { return editor.tokens; } },
-    container: { get () { return editor.scrollContainer; } },
-    textarea: { get () { return editor.textarea; } },
-    wrapper: { get () { return editor.wrapper; } },
-    removed: { get () { return editor.removed; } },
-    language: { get () { return editor.options.language; } },
-    id: { get () { return config.id; } },
-    keyCommandMap: { get () { return editor.keyCommandMap; } },
-    inputCommandMap: { get () { return editor.inputCommandMap; } },
-    initial: { get () { return initial; } },
-    input: { get () { return editor.value; } },
-    extensions: { get () { return editor.extensions; } },
-    addExtensions: { get () { return editor.addExtensions; } },
-    remove: { get () { return editor.remove; } }
+    activeLine: { get: () => editor.activeLine },
+    focused: { get: () => editor.focused },
+    overlays: { get: () => editor.overlays },
+    lineNumber: { get: () => editor.activeLineNumber },
+    tokens: { get: () => editor.tokens },
+    container: { get: () => editor.scrollContainer },
+    textarea: { get: () => editor.textarea },
+    wrapper: { get: () => editor.wrapper },
+    removed: { get: () => editor.removed },
+    language: { get: () => editor.options.language },
+    id: { get: () => config.id },
+    keyCommandMap: { get: () => editor.keyCommandMap },
+    inputCommandMap: { get: () => editor.inputCommandMap },
+    initial: { get: () => initial },
+    input: { get: () => editor.value },
+    extensions: { get: () => editor.extensions },
+    addExtensions: { get: () => editor.addExtensions },
+    remove: { get: () => editor.remove }
   });
 
   /* UPDATE LISTENER ---------------------------- */

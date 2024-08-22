@@ -12,6 +12,8 @@ Syntax highlighting support for the [SPX](https://spx.js.org) (Single Page XHR) 
 <!--prettier-ignore-->
 ```html
 <section
+  spx-component="foo"
+  spx-component="foo as bar"
   spx@click="key.prop { once }"
   spx-node="ref.name"
   spx-ref:number="100"

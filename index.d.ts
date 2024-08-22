@@ -868,8 +868,13 @@ interface API<T extends Cache | Instance> {
   /**
    * #### Inline 𓁁
    *
-   * This method can be used to apply inline syntax highlighting. Inline
-   * highlights take code input and return a `<code class="language-{name}"></code>`
+   * This method can be used to apply inline syntax highlighting.
+   *
+   * ```md
+   * `{js} some.method()`
+   * ```
+   *
+   * Inline highlights take code input and return a `<code class="language-{name}"></code>`
    * HTML string (where `{name}` represents a language id.).
    *
    * > **NOTE**

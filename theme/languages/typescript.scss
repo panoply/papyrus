@@ -103,10 +103,10 @@
       color: var(--papyrus-ts-regex-flags);
     }
 
-    &.literal-property,
-    &.property {
-      color: var(--papyrus-ts-literal-property);
-    }
+    // &.literal-property,
+    // &.property {
+    //   color: var(--papyrus-ts-literal-property);
+    // }
 
     &.string,
     &.string-property {

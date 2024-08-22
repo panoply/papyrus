@@ -108,12 +108,17 @@
   /* -------------------------------------------- */
 
   --papyrus-spx-attr-name                   : #{$papyrus-spx-attr-name};
+  --papyrus-spx-component-name              : #{$papyrus-spx-component-name};
+  --papyrus-spx-component-alias             : #{$papyrus-spx-component-alias};
   --papyrus-spx-window                      : #{$papyrus-spx-window};
   --papyrus-spx-symbol                      : #{$papyrus-spx-symbol};
   --papyrus-spx-method                      : #{$papyrus-spx-method};
   --papyrus-spx-suffix                      : #{$papyrus-spx-suffix};
   --papyrus-spx-event-key                   : #{$papyrus-spx-event-key};
+  --papyrus-spx-event-method                : #{$papyrus-spx-event-method};
+  --papyrus-spx-event-option                : #{$papyrus-spx-event-option};
   --papyrus-spx-punctuation                 : #{$papyrus-spx-punctuation};
+  --papyrus-spx-identifier                  : #{$papyrus-spx-identifier};
   --papyrus-spx-props                       : #{$papyrus-spx-props};
   --papyrus-spx-delims                      : #{$papyrus-spx-delims};
   --papyrus-spx-number                      : #{$papyrus-spx-number};

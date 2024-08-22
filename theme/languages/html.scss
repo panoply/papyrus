@@ -104,7 +104,11 @@
       }
 
       .component-name {
-        color: var(--papyrus-html-attr-value);
+        color: var(--papyrus-spx-component-name);
+
+        > .alias {
+          color: var(--papyrus-spx-component-alias);
+        }
       }
 
       .separtor {
@@ -114,6 +118,10 @@
 
       .event-key {
         color: var(--papyrus-spx-event-key);
+      }
+
+      .event-method {
+        color: var(--papyrus-spx-event-method);
       }
 
       > .bind-notation > .token {
@@ -127,7 +135,7 @@
         }
 
         &.val {
-          color: var(--papyrus-spx-props);
+          color: var(--papyrus-spx-identifier);
         }
 
       }
@@ -142,7 +150,7 @@
         }
 
         &.val {
-          color: var(--papyrus-html-attr-value);
+          color: var(--papyrus-spx-identifier);
         }
 
       }
@@ -153,8 +161,8 @@
       > .event-struct-on > .token,
       > .event-struct > .token {
 
-        &.prop {
-          color: var(--papyrus-spx-props);
+        &.option {
+          color: var(--papyrus-spx-event-option);
         }
 
         &.comma {
