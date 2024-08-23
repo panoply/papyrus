@@ -8,7 +8,7 @@ function raw (codeInput: string, config: Papyrus.Options) {
   const input = trimInput(codeInput, config.trimStart, config.trimEnd);
   const tokenize = tokenizeText(input, languages[config.language]);
   const rawCode = highlightTokens(tokenize);
-  const markup = config.lineNumbers === false
+  const markup = config.lineNumbers === false || config.language === 'treeview'
     ? rawCode
     : rawCode
       .split('\n')
@@ -46,12 +46,14 @@ export function createHighlight (codeInput: string, options: Papyrus.Options) {
   const codeAttrs = glue(config.codeAttrs);
   const codeClass = [ `language-${config.language}`, ...config.codeClass ];
 
-  if (config.lineNumbers) {
-    preClass.push('line-numbers');
-  }
+  if(config.language !== 'treeview') {
+    if (config.lineNumbers) {
+      preClass.push('line-numbers');
+    }
 
-  if (config.lineFence) {
-    preClass.push('line-fence');
+    if (config.lineFence) {
+      preClass.push('line-fence');
+    }
   }
 
   let output: string = `<pre class="${glue(preClass)}" ${glue(preAttrs)}>`;

@@ -72,9 +72,7 @@ export function getFlems (url: string) {
 
 export function getCopy () {
 
-  const js = "const btn=this;const container=btn.parentElement;const clipboard=navigator.clipboard;btn.setAttribute('aria-label','Copied!');if(clipboard){clipboard.writeText(container.getAttribute('data-full-code')||container.getAttribute('data-value')||'')}else{const textarea=document.createElement('textarea');textarea.value=container.lastElementChild.innerText;textarea.select();document.execCommand('copy');textarea.setSelectionRange(0,0)}btn.setAttribute('aria-label','Copy');";
-
-  return `<div style="display:flex;align-items:flex-start;justify-content:flex-end" onclick="${js}"><button type="button" dir="ltr" style="display:none" class="pce-copy" aria-label="Copy"><svg width="1.2em" viewBox="0 0 48 48" overflow="visible" stroke-width="4" stroke-linecap="round" fill="none" stroke="currentColor"><rect x="16" y="16" width="30" height="30" rx="3"></rect><path d="M32 9V5a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v24a3 3 0 0 0 3 3h4"></path></svg></button></div>`;
+  return `<div style="display:flex;align-items:flex-start;justify-content:flex-end"><button onclick="this.setAttribute('aria-label','Copied!');C=document.createElement('textarea');document.body.appendChild(C);C.value=this.parentElement.parentElement.parentElement.innerText;C.select();document.execCommand('copy');document.body.removeChild(C);" onpointerenter="this.setAttribute('aria-label','Copy')" type="button" dir="ltr" style="display:none" class="pce-copy"><svg width="1.2em" viewBox="0 0 48 48" overflow="visible" stroke-width="4" stroke-linecap="round" fill="none" stroke="currentColor"><rect x="16" y="16" width="30" height="30" rx="3"></rect><path d="M32 9V5a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v24a3 3 0 0 0 3 3h4"></path></svg></button></div>`;
 
 }
 

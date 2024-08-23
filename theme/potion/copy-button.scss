@@ -9,11 +9,11 @@
 	align-items: center;
 	margin: -9in 0 0;
 	padding: 0.5em;
-	color: var(--widget__color-options);
+	color: var(--widget__color-options, #f8f8f2);
 	font: 400 1em/1.5 Arial, Helvetica, sans-serif;
-	background: var(--widget__bg);
+	background: var(--widget__bg, #21222c);
   border: none;
-	box-shadow: inset 0 0 0 1px var(--widget__border);
+	box-shadow: inset 0 0 0 1px var(--widget__border, #454545);
 	cursor: pointer;
 	pointer-events: auto;
 }
@@ -48,6 +48,7 @@
 	content: "";
 }
 
+.papyrus:hover .pce-copy,
 .prism-code-editor:hover .pce-copy,
 .pce-copy:hover::before,
 .pce-copy:hover::after {

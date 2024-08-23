@@ -26,7 +26,7 @@ function highlighter (md, raw, language) {
     } else {
 
       code = papyrus.highlight(raw.trim(), {
-        language: language
+        language: language,
       })
     }
 

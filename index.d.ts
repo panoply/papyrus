@@ -859,6 +859,7 @@ interface API<T extends Cache | Instance> {
    * // in NodeJS
    * const output = papyrus.static(`<h1>Hello World</h1>`, {
    *   language: 'html', // REQUIRED
+   *   readOnly: false,  // ENABLE IF HYDRATING
    * })
    *
    * // In Browser
