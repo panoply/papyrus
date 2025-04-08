@@ -1,0 +1,41 @@
+.language-toml {
+
+  .token {
+
+    &.punctuation {
+      color: var(--papyrus-toml-punctuation);
+    }
+
+    &.comment {
+      color: var(--papyrus-toml-comment);
+    }
+
+    &.table {
+      color: var(--papyrus-toml-argument);
+    }
+
+    &.target {
+      color: var(--papyrus-toml-target);
+    }
+
+    &.string {
+      color: var(--papyrus-toml-title);
+    }
+
+    &.date {
+      color: var(--papyrus-toml-title);
+    }
+
+    &.key {
+      color: var(--papyrus-toml-title);
+    }
+
+    &.number {
+      color: var(--papyrus-toml-title);
+    }
+
+    &.boolean {
+      color: var(--papyrus-toml-title);
+    }
+  }
+}

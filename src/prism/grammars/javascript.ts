@@ -245,7 +245,7 @@ export function JavaScript () {
       }
     },
     'template-string': {
-      pattern: /(?!s)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
+      pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
       greedy: true,
       inside: {
         'template-punctuation': {
@@ -263,7 +263,49 @@ export function JavaScript () {
             [rest]: javascript
           }
         },
-        string: /[\s\S]+/
+        string: {
+         pattern: /[\s\S]+/
+        }
+      }
+    },
+    'template-spx': {
+      pattern: /(spx\.dom)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
+      greedy: true,
+      inside: {
+        'spx-object': {
+          pattern: /\bspx\b\.\bdom\b/,
+          inside: {
+            'dot': {
+              pattern: /\./,
+              alias: 'punctuation-chars'
+            },
+            'dom': {
+              pattern:/\bdom\b/,
+              alias: 'punctuation'
+            }
+          }
+        },
+        'template-punctuation': {
+          pattern: /^`|`$/,
+          alias: 'string'
+        },
+        interpolation: {
+          pattern: /((?:^|[^\\])(?:\\\\)*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}/,
+          lookbehind: true,
+          inside: {
+            'interpolation-punctuation': {
+              pattern: /^\$\{|\}$/,
+              alias: 'punctuation'
+            },
+            [rest]: javascript
+          }
+        },
+        string: {
+         pattern: /[\s\S]+/,
+         inside: {
+          [rest]: languages.html,
+         }
+        }
       }
     },
     'string-property': {
@@ -335,7 +377,7 @@ export function JavaScript () {
         alias: 'control-flow'
       },
       {
-        pattern: /(^|[^.]|\.\.\.\s*)\b(?:await|break|case|continue|default|do|else|finally(?=\s*(?:\{|$))|for|if|return|switch|throw|try|while|yield|import|as|export|from|default)\b/,
+        pattern: /(^|[^.]|\.\.\.\s*)\b(?:await|break|case|continue|default|do|else|finally(?=\s*(?:\{|$))|for|if|return|switch|throw|try|while|yield|import|as|export|from|default|static\s+)\b/,
         lookbehind: true,
         alias: 'control-flow'
       },
@@ -425,7 +467,7 @@ export function JavaScript () {
       pattern: /\b(?:null|undefined)\b/
     },
     'browser-objects': {
-      pattern: /\b(?:window|document|console)\b/
+      pattern: /\b(?:window|document|console|spx)\b/
     },
     flow: {
       pattern: /(\b(?:return|await|new)\b\s+)/
@@ -447,6 +489,27 @@ export function JavaScript () {
         punctuation: {
           pattern: /\[|\]/
         }
+      }
+    },
+    'import-type': {
+      pattern: /(\bimport)\b \b(?:type)\b(?= )/,
+      lookbehind: true
+    },
+    'spx-object': {
+      pattern: /(spx)\./,
+      global: true
+    },
+    'paren-brace-open': {
+      pattern:/(\()(\{)/,
+      lookbehind: true,
+      inside: {
+        brace: /\{/
+      }
+    },
+    'paren-brace-close': {
+      pattern:/(\})(?=\))/,
+      inside: {
+        brace: /\}/
       }
     }
   });

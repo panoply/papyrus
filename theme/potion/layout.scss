@@ -105,7 +105,7 @@ pre.papyrus,
   }
 
   &.line-fence .overlays::before {
-      position: sticky;
+      position: absolute;
       top: 0;
       left: 0;
       z-index: 3;
@@ -115,7 +115,7 @@ pre.papyrus,
       border-right: 0.01em solid var(--papyrus-line-fence-color);
       content: "";
 
-      @extend %blur;
+      // @extend %blur;
   }
 
   /* -------------------------------------------- */
@@ -268,7 +268,7 @@ pre.papyrus,
   &.line-numbers .line-no::before,
   &.show-line-numbers::before,
   &.show-line-numbers .pce-line::before  {
-    position: sticky;
+    position: relative;
     left: 0;
     width: calc(var(--padding-left) );
     height: 100%;

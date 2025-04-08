@@ -102,6 +102,12 @@ export const model: IModel = {
     get tokens () { return yamlTokens; }
   }
   ,
+  toml: {
+    language: 'TOML',
+    get sample () { return yamlSample; },
+    get tokens () { return yamlTokens; }
+  }
+  ,
   bash: {
     language: 'Bash',
     get sample () { return bashSample; },

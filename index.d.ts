@@ -26,6 +26,7 @@ type Language = LiteralUnion<(
   | 'jsx'
   | 'tsx'
   | 'yaml'
+  | 'toml'
   | 'plaintext'
   | 'treeview'
 ), string>
@@ -397,7 +398,9 @@ export declare namespace Options {
    * papyrus.highlight('<h1>Hello</h1>', {})
    * ```
    */
-  export type Highlight = Omit<ISharedOptions, 'id'>;
+  export type Highlight = Merge<Omit<ISharedOptions, 'id'>, {
+    tokens?: (callback: (token: string, element: string) => string | void) => void
+  }>;
 
   /**
    * Inline Options. Editor mounting is not possible with inline

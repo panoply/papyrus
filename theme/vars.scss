@@ -205,6 +205,19 @@ $papyrus-yaml-boolean:                    #FF80F4 !default;
 $papyrus-yaml-number:                     #9753fd !default;
 $papyrus-yaml-comment:                    #888 !default;
 
+
+/* -------------------------------------------- */
+/* TOML LANGUAGE                                */
+/* -------------------------------------------- */
+
+$papyrus-toml-punctuation:                #E91E63 !default;
+$papyrus-toml-key:                        #FF93BC !default;
+$papyrus-toml-string:                     #FFF9A6 !default;
+$papyrus-toml-boolean:                    #FF80F4 !default;
+$papyrus-toml-number:                     #9753fd !default;
+$papyrus-toml-comment:                    #888 !default;
+$papyrus-toml-table:                      #888 !default;
+
 /* -------------------------------------------- */
 /* JSON LANGUAGE                                */
 /* -------------------------------------------- */
@@ -291,7 +304,9 @@ $papyrus-ts-type-constructor:             #81D4FA !default;
 
 $papyrus-bash-punctuation:                #888 !default;
 $papyrus-bash-comment:                    #888 !default;
+$papyrus-bash-target:                     #FFF9A6 !default;
 $papyrus-bash-argument:                   #F48FB1 !default;
+$papyrus-bash-title:                      #338ec8 !default;
 
 /* -------------------------------------------- */
 /* TREEVIEW                                     */

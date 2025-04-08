@@ -55,6 +55,7 @@
       color: var(--papyrus-ts-class-name);
     }
 
+    &.spx-object,
     &.builtin {
       color: var(--papyrus-ts-function-name);
     }
@@ -75,6 +76,7 @@
       color: var(--papyrus-ts-semi);
     }
 
+    &.import-type,
     &.module {
       color: var(--papyrus-ts-module);
     }
@@ -117,12 +119,22 @@
       color: var(--papyrus-ts-type-constructor);
     }
 
+
+    &.nil {
+      color: #912bff;
+    }
+
     &.bracket > .punctuation {
       color: var(--papyrus-ts-bracket);
     }
 
     &.bracket > .keyword {
       color: var(--papyrus-ts-this);
+    }
+
+    &.paren-brace-open,
+    &.paren-brace-close {
+      color: var(--papyrus-ts-bracket);
     }
   }
 

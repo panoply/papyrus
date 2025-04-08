@@ -8,9 +8,22 @@ description: ''
 # Bash / CLI
 
 ```bash
+$ pnpm add spx --save # comment
+```
+
+# Multiline
+
+```bash
 # Various characters or structures applying highlights
 $ cmd
-$ cmd && cmd
-$ cmd --flag, -f
+Demo:
+  $ cmd && cmd
+$ cmd something ./foo/
+$ cmd node ./file.js -another
+$ cmd --flag, -f       # some comment goes here
+
+Demo:
+  $ cmd && cmd
+
 $ cmd <paths>
 ```

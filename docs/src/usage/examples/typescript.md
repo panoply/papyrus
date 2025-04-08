@@ -7,9 +7,34 @@ description: ''
 
 # TypeScript
 
+```ts
+interface IExample {
+  /** Lorem Ipsum */
+  text: string;
+}
+
+spx.Component({
+  name: '', // Component identifier, use in value of spx-component="" (optional)
+  merge: false, // Component snapshot control, when true DOM will merge with cache
+  sugar: false, // Component sugars enable node enhancement utilities
+  nodes: [], // Component node elements, use in value of spx-node=""
+  state: {} // Component state interface, where we define types.
+});
+```
+
 <!--prettier-ignore-->
 ```ts
+import type { SPX } from 'spx';
 import spx, { SPX } from 'spx';
+
+const foo: string[]
+
+interface Example {
+  prop: object
+  num: number
+  bool: boolean
+  arr: string[] | Array
+}
 
 function (param) {
 

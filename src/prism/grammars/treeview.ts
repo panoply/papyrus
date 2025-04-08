@@ -3,7 +3,7 @@ import { languages, Token, tokenize, withoutTokenizer } from 'prism-code-editor/
 
 export function Treeview () {
 
-  const folders = /(^|[^\\])\/\s*$/;
+  const folders = /(^|[^\\])(?:\/|\^)\s*$/;
 
   languages.treeview = languages.tree = {
     comment: {
@@ -61,25 +61,84 @@ export function Treeview () {
                 const classes: string[] = [ token.type ];
 
                 if (folders.test(content)) {
+
+                  let dirClass = 'dir-open'
+
+                  if(/\^\s*$/.test(content)) {
+                    dirClass = 'dir'
+                  }
+
                   // folder
                   // remove trailing /
                   content = content.replace(folders, '$1');
-                  classes.push('dir');
+                  classes.push(dirClass);
 
                 } else {
 
                   // file
                   // remove trailing file marker
                   content = content.replace(/(^|[^\\])[=*|]\s*$/, '$1');
-                  const parts = content.toLowerCase().replace(/\s+/g, '').split('.');
+                  const name = content.toLowerCase().replace(/\s+/g, '')
+                  const files = [
+                    ['syncify.config', 'icon-syncify'],
+                    ['package.json', 'icon-npm'],
+                    ['eslint.config', 'icon-eslint'],
+                    ['jsconfig', 'icon-jsconfig'],
+                    ['tsconfig', 'icon-tsconfig'],
+                    ['svgo.config', 'icon-svgo'],
+                    ['postcss', 'icon-postcss'],
+                    ['tailwind.config', 'icon-tailwind'],
+                  ]
 
-                  while (parts.length > 1) {
-                    parts.shift();
-                    classes.push('ext-' + parts.join('-'));
+                  let known: boolean = false
+
+                  for (const [file, id] of files) {
+                    if (content.startsWith(file)) {
+                      classes.push(id);
+                      known = true
+                      break
+                    }
+                  }
+
+                  if(!known) {
+
+                    if(name.endsWith('.schema.json')) {
+                      classes.push('icon-schema');
+                    } else {
+                      const parts = name.split('.');
+                      while (parts.length > 1) {
+                        parts.shift();
+                        classes.push('icon-file icon-' + parts.join('-'));
+                      }
+                    }
                   }
                 }
 
-                if (content[0] === '.') classes.push('dotfile');
+                if (content[0] === '.') {
+
+                  const dots = [
+                    ['.gitignore', 'icon-git'],
+                    ['.prettier', 'icon-prettier'],
+                    ['.env', 'icon-env'],
+                    ['.npmignore', 'icon-npm'],
+                    ['.liquidrc.json', 'icon-liquid'],
+                    ['.liquidrc', 'icon-liquid'],
+                  ]
+
+                  let found = false
+                  for (const [file, id] of dots) {
+                    if (content.startsWith(file)) {
+                      classes.push(id);
+                      found = true
+                      break
+                    }
+                  }
+
+                  if(!found) {
+                    classes.push('dotfile');
+                  }
+
+                }
 
                 token.type = classes.join(' ');
                 token.content = content;

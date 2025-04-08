@@ -100,6 +100,7 @@ export function getLanguageName (language: string): Papyrus.Languages | null {
     jsx: 'jsx',
     tsx: 'tsx',
     yaml: 'yaml',
+    toml: 'toml',
     yml: 'yaml',
     plaintext: 'plaintext',
     treeview: 'treeview',
@@ -113,124 +114,6 @@ export function getLanguageName (language: string): Papyrus.Languages | null {
   return null;
 
 }
-
-// export function mergeOptions <T = Papyrus.Options> (options: Papyrus.Options, { withAttr = false } = {}): T {
-
-//   const attr: Partial<Papyrus.Options> = {
-//     id: null,
-//     language: null,
-//     autoHeight: true,
-//     lineFence: true,
-//     lineNumbers: true,
-//     locLimit: 1500,
-//     maxLines: Infinity,
-//     readOnly: false,
-//     tabSize: 2,
-//     rtl: false,
-//     useTabs: false,
-//     wordWrap: false,
-//     copyButton: true,
-//     extensions: {}
-//   };
-
-//   const config: Papyrus.Options = {
-//     id: null,
-//     language: null,
-//     autoHeight: true,
-//     lineFence: true,
-//     lineNumbers: true,
-//     locLimit: 1500,
-//     maxLines: Infinity,
-//     readOnly: false,
-//     tabSize: 2,
-//     rtl: false,
-//     trimEnd: true,
-//     trimStart: true,
-//     useTabs: false,
-//     wordWrap: false,
-//     copyButton: true,
-//     extensions: {
-//       matchTags: true,
-//       indentGuides: true,
-//       highlightBracketPairs: true,
-//       searchWidget: true,
-//       defaultCommands: {
-//         selfClosePairs: [ '""', "''", '``', '()', '[]', '{}' ],
-//         selfCloseRegex: /([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s
-//       },
-//       editHistory: {
-//         historyLimit: 999
-//       },
-//       highlightSelectionMatches: {
-//         caseSensitive: false,
-//         maxLength: 200,
-//         minLength: 1
-//       }
-//     },
-//     addAttrs: {
-//       pre: [],
-//       code: []
-//     },
-//     addClass: {
-//       pre: [],
-//       code: []
-//     }
-//   };
-
-//   if (typeof options === 'object') {
-
-//     if (!has('language', options)) {
-//       console.warn('𓁁 Papyprus: No "language", provided, will fallback to "plaintext"');
-//     } else {
-//       config.language = getLanguageName(options.language);
-//     }
-
-//     for (const k in config) {
-//       if (has(k, options)) {
-//         if (k === 'addAttrs' || k === 'addClass') {
-//           if (has('pre', options[k])) config[k].pre = options[k].pre;
-//           if (has('code', options[k])) config[k].code = options[k].code;
-//         } else if (k === 'extensions') {
-//           for (const e in config[k]) {
-//             if (has(e, options[k])) {
-//               if (typeof options[k][e] === 'object') {
-//                 config[k][e] = attr[k][e] = Object.assign({}, config[k][e], options[k][e]);
-//               } else if (options[k][e] === false) {
-//                 config[k][e] = attr[k][e] = options[k][e];
-//               }
-//             }
-//           }
-//         } else {
-//           if (has(k, attr)) {
-//             config[k] = attr[k] = options[k];
-//           } else {
-//             config[k] = options[k];
-//           }
-//         }
-//       }
-//     }
-//   }
-
-//   if (config.id === null) {
-//     config.id = attr.id = uuid();
-//   }
-
-//   if (config.lineNumbers === false) {
-//     config.lineFence = attr.lineFence = false;
-//     attr.lineFence = false;
-//   }
-
-//   if (config.language === 'treeview') {
-//     config.lineNumbers = attr.lineNumbers = false;
-//     config.lineFence = attr.lineFence = false;
-//     config.readOnly = attr.readOnly = true;
-//   }
-
-//   if (config.maxLines === null) config.maxLines = Infinity;
-
-//   return <T>(withAttr ? { config, attr: compressToEncodedURIComponent(JSON.stringify(attr)) } : config);
-
-// }
 
 export function glue (string: string[], char = ' ') {
 

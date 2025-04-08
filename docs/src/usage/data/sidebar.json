@@ -45,6 +45,10 @@
       "url": "/examples/json"
     },
     {
+      "title": "TOML",
+      "url": "/examples/toml"
+    },
+    {
       "title": "YAML",
       "url": "/examples/yaml"
     },

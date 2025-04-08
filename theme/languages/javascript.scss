@@ -68,6 +68,7 @@
       color: var(--papyrus-js-this);
     }
 
+    &.import-type,
     &.module {
       color: var(--papyrus-js-module);
     }
@@ -88,6 +89,7 @@
       color: var(--papyrus-js-regex-flags);
     }
 
+    &.spx-object,
     &.browser-objects {
       color: var(--papyrus-js-browser-objects);
     }
@@ -95,6 +97,10 @@
     &.literal-property,
     &.property {
       color: var(--papyrus-js-literal-property);
+    }
+
+    &.nil {
+      color: #912bff;
     }
 
     &.string,
@@ -112,6 +118,11 @@
 
     &.bracket > .keyword {
       color: var(--papyrus-js-this);
+    }
+
+    &.paren-brace-open,
+    &.paren-brace-close {
+      color: var(--papyrus-ts-bracket);
     }
 
     // GRAMMAR FOR SIN

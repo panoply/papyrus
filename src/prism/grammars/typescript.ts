@@ -12,12 +12,12 @@ export function TypeScript () {
   };
 
   const typescript = languages.ts = languages.typescript = extend('js', {
-    'class-name': className
+    'class-name': className,
   }) as Merge<Grammar, { keyword: RegExp[] }>;
 
   insertBefore(typescript, 'operator', {
     builtin: {
-      pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|number|string|symbol|unknown)\b\s+)/,
+      pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|number|object|string|symbol|unknown)\b\s+)/,
       global: true
     },
     'literal-property': {
@@ -33,7 +33,7 @@ export function TypeScript () {
     // keywords that have to be followed by an identifier
     /\b(?:asserts|infer|module|namespace|type)\b(?=\s*(?:[{_$a-zA-Z\xA0-\uFFFF]|$))/,
     // This is for `import type *, {}`
-    /\btype\b(?=\s*(?:[{*]|$))/
+    /\btype\b(?=\s*(?:[{*]|$))/,
   );
 
   // doesn't work with TS because TS is too complex
@@ -80,7 +80,7 @@ export function TypeScript () {
       inside: null
     },
     builtin: {
-      pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|number|string|symbol|unknown)\b\s+)/,
+      pattern: /(\b(?:Array|Function|Promise|any|boolean|console|never|object|number|string|symbol|unknown)\b\s+)/,
       global: true
     },
     parameter: [
@@ -96,7 +96,7 @@ export function TypeScript () {
         global: true
       },
       {
-        pattern: /([a-z_$]*?\??:\s+)\b(?:any|boolean|never|number|string|symbol|unknown)\b\s*(?=[),|])/i,
+        pattern: /([a-z_$]*?\??:\s+)\b(?:any|object|boolean|never|number|string|symbol|unknown)\b\s*(?=[),|])/i,
         lookbehind: true,
         global: true,
         greedy: true,
@@ -124,7 +124,11 @@ export function TypeScript () {
     },
     types: [
       {
-        pattern: /\s+\b(?:any|boolean|console|never|number|string|symbol|unknown|Promise|interface)\b\s*(?![:.])/,
+        pattern: /\s*\b(?:any|boolean|console|object|never|number|string|symbol|unknown|Promise|interface)\b\s*(?![:.])/,
+        global: true
+      },
+      {
+        pattern: /\s+\b(?:any|boolean|object|console|never|number|string)(?=\[\])/,
         global: true
       }
     ],
@@ -162,6 +166,10 @@ export function TypeScript () {
     },
     method: {
       pattern: /(\.\s*)[a-z_$][\w$]*(?=(\())/i,
+      lookbehind: true
+    },
+    'import-type': {
+      pattern: /(\bimport)\b \b(?:type)\b(?= )/,
       lookbehind: true
     }
   });

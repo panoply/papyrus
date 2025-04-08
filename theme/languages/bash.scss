@@ -12,4 +12,13 @@
       color: var(--papyrus-bash-argument);
     }
 
+    &.target {
+      color: var(--papyrus-bash-target);
+    }
+
+
+    &.title {
+      color: var(--papyrus-bash-title);
+    }
+
 }

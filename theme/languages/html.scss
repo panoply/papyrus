@@ -2,7 +2,9 @@
 
 
 .language-markup,
-.language-html {
+.language-html,
+.language-javascript .template-spx .token.string,
+.language-typescript .template-spx .token.string {
 
   .token {
 

@@ -4,6 +4,7 @@ import { Liquid } from './grammars/liquid';
 import { TypeScript } from './grammars/typescript';
 import { JavaScript } from './grammars/javascript';
 import { YAML } from './grammars/yaml';
+import { Toml } from './grammars/toml';
 import { CSS } from './grammars/css';
 import { SCSS } from './grammars/scss';
 import { Json } from './grammars/json';
@@ -15,13 +16,14 @@ const grammars: { (): Record<string, Grammar>; defined: boolean; } = function gr
   if (!grammars.defined) {
 
     for (const call of [
+      Markup,
       JavaScript,
       TypeScript,
-      Markup,
       Liquid,
       CSS,
       SCSS,
       YAML,
+      Toml,
       Json,
       Bash,
       Treeview

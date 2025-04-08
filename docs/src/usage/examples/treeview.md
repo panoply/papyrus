@@ -10,9 +10,23 @@ description: ''
 <!--prettier-ignore-->
 ```treeview
 root_folder/
-|-- a first folder/    # some comment
-|   |-- holidays.mov
+|-- a first folder/            # some comment
+|   |-- typescript-file.ts
 |   |-- javascript-file.js
+|   |-- package.json
+|   |-- .gitignore
+|   |-- syncify.config.js
+|   |-- sass-file.scss
+|   |-- foo.liquid
+|   |-- store.yaml
+|   |-- bar.liquid
+|   |-- file.json
+|   |-- file.schema.json
+|   |-- tailwind.config.js
+|   |-- postcss.config.js
+|   |-- .env
+|   |-- tsconfig.json
+|   |-- jsconfig.json
 |   └── some_picture.jpg  # another comment
 |-- documents/
 |   |-- spreadsheet.xls
@@ -20,7 +34,8 @@ root_folder/
 |   |-- document.docx
 |   └── presentation.ppt
 |       └── test
-|-- empty_folder/
+|-- empty_folder^
+|-- empty_folder^
 |-- going deeper/
 |   |-- going deeper/
 |   |   └── going deeper/
@@ -30,6 +45,7 @@ root_folder/
 |   └── index.html
 |-- music and movies/
 |   |-- great-song.mp3
+|   |-- holidays.mov
 |   |-- S01E02.new.episode.avi
 |   |-- S01E02.new.episode.nfo
 |   └── track 1.cda

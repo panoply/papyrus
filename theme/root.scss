@@ -213,13 +213,24 @@
   /* YAML LANGUAGE                                */
   /* -------------------------------------------- */
 
-
   --papyrus-yaml-punctuation                 : #{$papyrus-yaml-punctuation};
   --papyrus-yaml-key                         : #{$papyrus-yaml-key};
   --papyrus-yaml-string                      : #{$papyrus-yaml-string};
   --papyrus-yaml-boolean                     : #{$papyrus-yaml-boolean};
   --papyrus-yaml-number                      : #{$papyrus-yaml-number};
   --papyrus-yaml-comment                     : #{$papyrus-yaml-comment};
+
+  /* -------------------------------------------- */
+  /* TOML LANGUAGE                                */
+  /* -------------------------------------------- */
+
+  --papyrus-toml-punctuation                 : #{$papyrus-toml-punctuation};
+  --papyrus-toml-key                         : #{$papyrus-toml-key};
+  --papyrus-toml-string                      : #{$papyrus-toml-string};
+  --papyrus-toml-boolean                     : #{$papyrus-toml-boolean};
+  --papyrus-toml-number                      : #{$papyrus-toml-number};
+  --papyrus-toml-comment                     : #{$papyrus-toml-comment};
+  --papyrus-toml-table                       : #{$papyrus-toml-table};
 
   /* -------------------------------------------- */
   /* JAVASCRIPT LANGUAGE                          */
@@ -288,12 +299,14 @@
   --papyrus-ts-type-constructor              : #{$papyrus-ts-type-constructor};
 
   /* -------------------------------------------- */
-  /* TREEVIEW                                     */
+  /* BASH                                         */
   /* -------------------------------------------- */
 
   --papyrus-bash-comment                     : #{$papyrus-bash-comment};
   --papyrus-bash-punctuation                 : #{$papyrus-bash-punctuation};
   --papyrus-bash-argument                    : #{$papyrus-bash-argument};
+  --papyrus-bash-target                      : #{$papyrus-bash-target};
+  --papyrus-bash-title                       : #{$papyrus-bash-title};
 
   /* -------------------------------------------- */
   /* TREEVIEW                                     */

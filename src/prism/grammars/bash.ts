@@ -3,15 +3,29 @@ import { languages } from 'prism-code-editor/prism';
 
 export function Bash () {
 
+
   languages.bash = {
     argument: {
-      pattern: /<(.*?)>/
+      pattern: /(<)(.*?)(>)/,
+      inside: {
+        punctuation: /[<>]/
+      }
     },
     punctuation: {
       pattern: /\$|&{2}|[<>]|--?(?=[a-z])/
     },
+    target: {
+      pattern: /([a-z] )(\..*)(?=[\s]|$)/,
+      lookbehind: true
+    },
     comment: {
-      pattern: /#.*?(?=\n)/
+      pattern: /#.*/
+    },
+    title: {
+      pattern: /[a-zA-Z]+:(?=\n +)/,
+      inside: {
+        punctuation: /:/
+      }
     }
   };
 
