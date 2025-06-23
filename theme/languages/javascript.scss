@@ -89,7 +89,6 @@
       color: var(--papyrus-js-regex-flags);
     }
 
-    &.spx-object,
     &.browser-objects {
       color: var(--papyrus-js-browser-objects);
     }
@@ -148,17 +147,21 @@
 
       .sin-css {
 
+        .variable {
+          color: var(--papyrus-css-sinvar)
+        }
+        .mixin {
+          color: var(--papyrus-css-atrule)
+        }
         .property {
           color: var(--papyrus-html-attr-name);
         }
         .number {
           color: var(--papyrus-css-number);
         }
-
         .hexcode{
           color: var(--papyrus-css-hexcode);
         }
-
         .unit{
           color: var(--papyrus-css-unit);
         }

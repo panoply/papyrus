@@ -1,6 +1,6 @@
 {
   "name": "papyrus",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Embedded code editor leveraging PrismJS",
   "author": {
     "name": "Νίκος Σαβίδης",
@@ -58,6 +58,7 @@
     "prism-code-editor": "^3.4.0",
     "sass": "^1.77.8",
     "terser": "^5.31.6",
+    "tsup": "8.3.0",
     "type-fest": "^4.25.0"
   },
   "dependencies": {

@@ -3,11 +3,18 @@
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/CVS": true,
+    "**/.ruby-lsp": true,
+    "**/.vscode": false,
+    "**/coverage": true,
+    "**/.idea": true,
+    "**/.bundle": true,
     "**/LICENSE": true,
-    //"**/node_modules": true
+    "**/.pnpm-debug.log": true,
+    "**/tests": true,
+    "**/.netlify": true
   },
   "stylelint.validate": [
     "scss",

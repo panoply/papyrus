@@ -14,9 +14,7 @@ function raw (codeInput: string, config: Papyrus.Options) {
     : rawCode
       .split('\n')
       .map((token, i) => {
-
        const r = `<div class="line-no" aria-hidden="true" data-line="${i + 1}">${token}</div>`
-
        return r
       })
       .join('');

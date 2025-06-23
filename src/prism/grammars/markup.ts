@@ -39,79 +39,6 @@ export function Markup () {
         }
       },
       'special-attr': [],
-      'spx-attr': [
-        {
-          pattern: /(spx-node)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-          lookbehind: true,
-          global: true,
-          inside: {
-            'dot-notation': {
-              pattern: /[a-zA-Z0-9]+\.[a-zA-Z0-9]+/,
-              inside: {
-                key: /[a-zA-Z0-9]+(?=\.)/,
-                dot: /\./,
-                val: /^[^.][a-zA-Z0-9]+/
-              }
-            },
-            punctuation
-          }
-        },
-        {
-          pattern: /(spx-component)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-          lookbehind: true,
-          global: true,
-          inside: {
-            'component-name': {
-              pattern :/[a-zA-Z0-9-]+/,
-              inside: {
-                alias: /\b(as)\b/,
-              }
-            },
-            separator: /[|,]/,
-            punctuation
-          }
-        },
-        {
-          pattern: /(spx-bind)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-          lookbehind: true,
-          global: true,
-          inside: {
-            'bind-notation': {
-              pattern: /[a-zA-Z0-9]+\.[a-zA-Z0-9]+/,
-              inside: {
-                'event-key': /[a-zA-Z0-9]+(?=\.)/,
-                dot: /\./,
-                val: /^[^.][a-zA-Z0-9]+/
-              }
-            },
-            punctuation
-          }
-        },
-        {
-          pattern: /(spx@[a-z:]+)=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-          lookbehind: true,
-          global: true,
-          inside: {
-            'dot-notation': {
-              pattern: /[a-zA-Z0-9]+\.[a-zA-Z0-9]+\s*/,
-              inside: {
-                'event-key': /[a-zA-Z0-9]+(?=\.)/,
-                dot: /\./,
-                'event-method': /^[^.][a-zA-Z0-9]+/
-              }
-            },
-            'event-struct': {
-              pattern: /\{[\s\S]*?\}\s*/,
-              inside: {
-                delim: /[{}]/,
-                comma: /,/,
-                option: /[a-z]+/
-              }
-            },
-            punctuation
-          }
-        }
-      ],
       'attr-value': {
         pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
         inside: {
@@ -130,35 +57,6 @@ export function Markup () {
       'attr-name': {
         pattern: /[^\s>/]+/,
         inside: {
-          'spx-name': {
-            pattern: /(spx-target|spx-morph|spx-replace|spx-hover|spx-eval|spx-data|spx-component|spx-node|spx-bind|spx-watch|spx-hydrate|spx-intersect|spx-prepend|spx-append|spx-threshold|spx-proximity|spx-position|spx-progress|spx-scroll|spx-cache|spx-disable|spx-history)\b/
-          },
-          'at-notation': {
-            pattern: /[a-zA-Z0-9]+@[a-zA-Z0-9]+$/,
-            inside: {
-              prefix: /^[\w-]+?(?=@)/,
-              symbol: /[@]/,
-              suffix: /[a-zA-Z0-9]+/
-            }
-          },
-          'at-window-notation': {
-            pattern: /[a-zA-Z0-9]+@window:[a-zA-Z0-9]+$/,
-            inside: {
-              prefix: /^[\w-]+?(?=@)/,
-              window: /\bwindow\b(?=:)/,
-              symbol: /[:@]/,
-              suffix: /[a-zA-Z0-9]+$/
-            }
-          },
-          'ns-notation': {
-            pattern: /[a-zA-Z0-9-]+:[a-zA-Z0-9-]+$/,
-            inside: {
-              prefix: /^[\w-]+?(?=:)/,
-              symbol: /:/,
-              suffix: /[a-zA-Z0-9-]+?$/
-            }
-          },
-          namespace: /^[^\s>/:]+:/,
           punctuation: [
             {
               pattern: /=(?=["'])/,

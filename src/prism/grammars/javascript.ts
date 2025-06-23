@@ -182,6 +182,8 @@ export function JavaScript () {
 
   const { color, unit, number } = colors();
 
+
+
   languages.javascript = languages.js = Object.assign(javascript, {
     'doc-comment': {
       pattern: /\/\*\*(?!\/)[\s\S]*?(?:\*\/|$)/g,
@@ -200,10 +202,13 @@ export function JavaScript () {
       lookbehind: true
     },
     'template-sin': {
-      pattern: new RegExp(`(s)\`(?:${markuptags})\\b(?:\\[\\s\\S]|\\$\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\`])*\``, 'g'),
+      pattern: new RegExp(`(?:(?:(s)\`(?:${markuptags}| +)\\b)|([A-Z][a-zA-Z]+)\\b\`\\n\\s*)(?:\\[\\s\\S]|\\$\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\`])*\``, 'g'),
       greedy: true,
       lookbehind: true,
       inside: {
+        'function': {
+          pattern: /[a-zA-Z]+(?=\`\n\s*)/,
+        },
         'template-punctuation': {
           pattern: /^`|`$/,
           alias: 'string'
@@ -227,6 +232,12 @@ export function JavaScript () {
               pattern: /(^[ \t]*|\n[ \t]*)[a-zA-Z-]+(?=[ \t])/g,
               lookbehind: true
             },
+            variable: {
+              pattern: /\$[a-zA-Z-]+/g
+            },
+            mixin: {
+              pattern: /\@[a-zA-Z]+/g
+            },
             value: {
               pattern: /(^[ \t]*|\n[ \t]*[a-zA-Z]*[ \t]*)(\S+)/g,
               lookbehind: true,
@@ -244,6 +255,7 @@ export function JavaScript () {
         }
       }
     },
+
     'template-string': {
       pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
       greedy: true,
@@ -265,46 +277,6 @@ export function JavaScript () {
         },
         string: {
          pattern: /[\s\S]+/
-        }
-      }
-    },
-    'template-spx': {
-      pattern: /(spx\.dom)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
-      greedy: true,
-      inside: {
-        'spx-object': {
-          pattern: /\bspx\b\.\bdom\b/,
-          inside: {
-            'dot': {
-              pattern: /\./,
-              alias: 'punctuation-chars'
-            },
-            'dom': {
-              pattern:/\bdom\b/,
-              alias: 'punctuation'
-            }
-          }
-        },
-        'template-punctuation': {
-          pattern: /^`|`$/,
-          alias: 'string'
-        },
-        interpolation: {
-          pattern: /((?:^|[^\\])(?:\\\\)*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}/,
-          lookbehind: true,
-          inside: {
-            'interpolation-punctuation': {
-              pattern: /^\$\{|\}$/,
-              alias: 'punctuation'
-            },
-            [rest]: javascript
-          }
-        },
-        string: {
-         pattern: /[\s\S]+/,
-         inside: {
-          [rest]: languages.html,
-         }
         }
       }
     },
@@ -440,7 +412,7 @@ export function JavaScript () {
     },
     property: {
       lookbehind: true,
-      pattern: /(?:import|as|export|from|default)(?=[:])/
+      pattern: /\b(?:import|as|export|from|default)(?=[:])/
     },
     operation: {
       pattern: /(\b(?:typeof|new|of|delete|void|readonly)\b\s+)/,
@@ -494,10 +466,6 @@ export function JavaScript () {
     'import-type': {
       pattern: /(\bimport)\b \b(?:type)\b(?= )/,
       lookbehind: true
-    },
-    'spx-object': {
-      pattern: /(spx)\./,
-      global: true
     },
     'paren-brace-open': {
       pattern:/(\()(\{)/,

@@ -103,26 +103,6 @@
   --papyrus-html-attr-value                 : #{$papyrus-html-attr-value};
   --papyrus-html-comment                    : #{$papyrus-html-comment};
 
-  /* -------------------------------------------- */
-  /* SPX                                          */
-  /* -------------------------------------------- */
-
-  --papyrus-spx-attr-name                   : #{$papyrus-spx-attr-name};
-  --papyrus-spx-component-name              : #{$papyrus-spx-component-name};
-  --papyrus-spx-component-alias             : #{$papyrus-spx-component-alias};
-  --papyrus-spx-window                      : #{$papyrus-spx-window};
-  --papyrus-spx-symbol                      : #{$papyrus-spx-symbol};
-  --papyrus-spx-method                      : #{$papyrus-spx-method};
-  --papyrus-spx-suffix                      : #{$papyrus-spx-suffix};
-  --papyrus-spx-event-key                   : #{$papyrus-spx-event-key};
-  --papyrus-spx-event-method                : #{$papyrus-spx-event-method};
-  --papyrus-spx-event-option                : #{$papyrus-spx-event-option};
-  --papyrus-spx-punctuation                 : #{$papyrus-spx-punctuation};
-  --papyrus-spx-identifier                  : #{$papyrus-spx-identifier};
-  --papyrus-spx-props                       : #{$papyrus-spx-props};
-  --papyrus-spx-delims                      : #{$papyrus-spx-delims};
-  --papyrus-spx-number                      : #{$papyrus-spx-number};
-  --papyrus-spx-boolean                     : #{$papyrus-spx-boolean};
 
   /* -------------------------------------------- */
   /* LIQUID LANGUAGE                              */
@@ -152,6 +132,7 @@
   --papyrus-css-selector                     : #{$papyrus-css-selector};
   --papyrus-css-comment                      : #{$papyrus-css-comment};
   --papyrus-css-tag-selector                 : #{$papyrus-css-tag-selector};
+  --papyrus-css-sinvar                       : #{$papyrus-css-sinvar};
   --papyrus-css-colon                        : #{$papyrus-css-colon};
   --papyrus-css-function                     : #{$papyrus-css-function};
   --papyrus-css-variable                     : #{$papyrus-css-variable};

@@ -126,7 +126,11 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
 
     if (noupdate === false) {
       for (const [ cb, scope ] of events.onupdate) {
-        cb.call(assign(scope, { get editor () { return instance; } }), e);
+        cb.call(assign(scope, {
+          get editor () {
+            return instance;
+          }
+        }), e);
       }
     } else {
       noupdate = false;
@@ -275,7 +279,11 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
 
   };
 
-  instance.update = (codeInput: string, language?: Papyrus.Languages, clearHistory: boolean = false) => {
+  instance.update = (
+    codeInput: string,
+    language?: Papyrus.Languages,
+    clearHistory: boolean = false
+  ) => {
 
     if (language) {
 
@@ -292,7 +300,6 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
       if (config.readOnly) {
         editor.setOptions({ value: codeInput });
       } else {
-
         if (codeInput !== editor.value) {
           const [ start ] = editor.getSelection();
           const selection = editor.value.length;

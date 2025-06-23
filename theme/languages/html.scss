@@ -3,13 +3,12 @@
 
 .language-markup,
 .language-html,
-.language-javascript .template-spx .token.string,
-.language-typescript .template-spx .token.string {
+.language-javascript .token.string,
+.language-typescript .token.string {
 
   .token {
 
     &.doctype {
-
 
       &-tag {
         color: var(--papyrus-html-doctype);
@@ -40,55 +39,8 @@
       color: var(--papyrus-html-equals);
     }
 
-    &.spx-attr-name {
-      color: var(--papyrus-spx-attr-name);
-    }
-
     &.attr-name {
       color: var(--papyrus-html-attr-name);
-
-      > .spx-name {
-        color: var(--papyrus-spx-attr-name);
-      }
-
-      > .at-window-notation,
-      > .at-notation {
-
-        > .prefix,
-        > .window,
-        > .spx-name {
-          color: var(--papyrus-spx-attr-name);
-        }
-
-        > .window {
-          color: var(--papyrus-spx-window);
-        }
-
-        > .symbol {
-          color:var(--papyrus-spx-symbol);
-        }
-
-        > .suffix {
-          color: var(--papyrus-spx-method);
-        }
-      }
-
-
-      > .ns-notation {
-
-        > .prefix,
-        &.spx-name {
-          color: var(--papyrus-spx-attr-name);
-        }
-
-        > .symbol {
-          color: var(--papyrus-spx-symbol);
-        }
-
-        > .suffix {
-          color: var(--papyrus-spx-suffix);
-        }
-      }
     }
 
     &.spx-attr {
@@ -105,78 +57,6 @@
         }
       }
 
-      .component-name {
-        color: var(--papyrus-spx-component-name);
-
-        > .alias {
-          color: var(--papyrus-spx-component-alias);
-        }
-      }
-
-      .separtor {
-        color: var(--papyrus-spx-punctuation);
-      }
-
-
-      .event-key {
-        color: var(--papyrus-spx-event-key);
-      }
-
-      .event-method {
-        color: var(--papyrus-spx-event-method);
-      }
-
-      > .bind-notation > .token {
-
-        &.key {
-          color:  var(--papyrus-spx-event-key);
-        }
-
-        &.dot {
-          color: var(--papyrus-spx-punctuation);
-        }
-
-        &.val {
-          color: var(--papyrus-spx-identifier);
-        }
-
-      }
-      > .dot-notation > .token {
-
-        &.key {
-          color: var(--papyrus-spx-event-key);
-        }
-
-        &.dot {
-          color: var(--papyrus-spx-punctuation);
-        }
-
-        &.val {
-          color: var(--papyrus-spx-identifier);
-        }
-
-      }
-
-
-
-
-      > .event-struct-on > .token,
-      > .event-struct > .token {
-
-        &.option {
-          color: var(--papyrus-spx-event-option);
-        }
-
-        &.comma {
-          color: var(--papyrus-spx-punctuation);
-        }
-
-        &.delim {
-          color: var(--papyrus-spx-delims);
-        }
-
-      }
-
     }
 
     &.attr-value {
@@ -187,66 +67,43 @@
       }
 
       > .token {
-
-        &.number,
-        &.integer {
-          color: var(--papyrus-spx-number);
-        }
-
-        &.boolean {
-          color: var(--papyrus-spx-boolean);
-        }
-
+        // script
         &.script > .token {
+          &.keyword {
+            color: var(--papyrus-js-keyword);
+          }
+          &.punctuation-chars {
+            color: var(--papyrus-js-special-chars);
+          }
 
-            &.keyword {
-              color: var(--papyrus-js-keyword);
-            }
+          &.variable {
+            color: var(--papyrus-js-variable);
+          }
 
-            &.punctuation {
-              color: var(--papyrus-spx-delims);
-            }
+          &.object {
+            color: var(--papyrus-js-object);
+          }
 
-            &.punctuation-chars {
-              color: var(--papyrus-js-special-chars);
-            }
+          &.operator {
+            color: var(--papyrus-js-operator);
+          }
 
-            &.variable {
-              color: var(--papyrus-js-variable);
-            }
+          &.operation {
+            color: var(--papyrus-js-operation);
+          }
 
-            &.object {
-              color: var(--papyrus-js-object);
-            }
+          &.function-name {
+            color: var(--papyrus-js-function-name);
+          }
 
-            &.operator {
-              color: var(--papyrus-js-operator);
-            }
+          &.literal-property,
+          &.property {
+            color: var(--papyrus-js-literal-property);
+          }
 
-            &.operation {
-              color: var(--papyrus-js-operation);
-            }
-
-            &.function-name {
-              color: var(--papyrus-js-function-name);
-            }
-
-            &.number {
-              color: var(--papyrus-spx-number);
-            }
-
-            &.literal-property,
-            &.property {
-              color: var(--papyrus-js-literal-property);
-            }
-
-            &.semi {
-              color: var(--papyrus-js-semi);
-            }
-
-            &.boolean {
-              color: var(--papyrus-spx-boolean);
-            }
+          &.semi {
+            color: var(--papyrus-js-semi);
+          }
         }
       }
     }
