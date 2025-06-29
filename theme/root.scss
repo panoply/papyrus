@@ -103,28 +103,6 @@
   --papyrus-html-attr-value                 : #{$papyrus-html-attr-value};
   --papyrus-html-comment                    : #{$papyrus-html-comment};
 
-
-  /* -------------------------------------------- */
-  /* LIQUID LANGUAGE                              */
-  /* -------------------------------------------- */
-
-  --papyrus-liquid-fallback                 : #{$papyrus-liquid-fallback};
-  --papyrus-liquid-delimiters               : #{$papyrus-liquid-delimiters};
-  --papyrus-liquid-tag                      : #{$papyrus-liquid-tag};
-  --papyrus-liquid-output                   : #{$papyrus-liquid-output};
-  --papyrus-liquid-boolean                  : #{$papyrus-liquid-boolean};
-  --papyrus-liquid-number                   : #{$papyrus-liquid-number};
-  --papyrus-liquid-punctuation              : #{$papyrus-liquid-punctuation};
-  --papyrus-liquid-operator                 : #{$papyrus-liquid-operator};
-  --papyrus-liquid-parameter                : #{$papyrus-liquid-parameter};
-  --papyrus-liquid-object-name              : #{$papyrus-liquid-object-name};
-  --papyrus-liquid-object-prop              : #{$papyrus-liquid-object-prop};
-  --papyrus-liquid-filter-name              : #{$papyrus-liquid-filter-name};
-  --papyrus-liquid-string                   : #{$papyrus-liquid-string};
-  --papyrus-liquid-comment                  : #{$papyrus-liquid-comment};
-  --papyrus-liquid-string-delimiters        : #{$papyrus-liquid-string-delimiters};
-  --papyrus-liquid-string-object-name       : #{$papyrus-liquid-string-object-name};
-
   /* -------------------------------------------- */
   /* CSS LANGUAGE                                 */
   /* -------------------------------------------- */
@@ -151,31 +129,6 @@
   --papyrus-css-string                       : #{$papyrus-css-string};
   --papyrus-css-attr-punctuation             : #{$papyrus-css-attr-punctuation};
   --papyrus-css-pseudo-element               : #{$papyrus-css-pseudo-element};
-
-  /* -------------------------------------------- */
-  /* SCSS LANGUAGE                                */
-  /* -------------------------------------------- */
-
-  --papyrus-scss-comment                      : #{$papyrus-scss-comment};
-  --papyrus-scss-selector                     : #{$papyrus-scss-selector};
-  --papyrus-scss-tag-selector                 : #{$papyrus-scss-tag-selector};
-  --papyrus-scss-colon                        : #{$papyrus-scss-colon};
-  --papyrus-scss-function                     : #{$papyrus-scss-function};
-  --papyrus-scss-variable                     : #{$papyrus-scss-variable};
-  --papyrus-scss-operator                     : #{$papyrus-scss-operator};
-  --papyrus-scss-punctuation                  : #{$papyrus-scss-punctuation};
-  --papyrus-scss-important                    : #{$papyrus-scss-important};
-  --papyrus-scss-atrule                       : #{$papyrus-scss-atrule};
-  --papyrus-scss-property                     : #{$papyrus-scss-property};
-  --papyrus-scss-property-value               : #{$papyrus-scss-property-value};
-  --papyrus-scss-number                       : #{$papyrus-scss-number};
-  --papyrus-scss-hexcode                      : #{$papyrus-scss-hexcode};
-  --papyrus-scss-combinator                   : #{$papyrus-scss-combinator};
-  --papyrus-scss-unit                         : #{$papyrus-scss-unit};
-  --papyrus-scss-attr-name                    : #{$papyrus-scss-attr-name};
-  --papyrus-scss-attr-value                   : #{$papyrus-scss-attr-value};;
-  --papyrus-scss-attr-punctuation             : #{$papyrus-scss-attr-punctuation};
-  --papyrus-scss-pseudo-element               : #{$papyrus-scss-pseudo-element};
 
   /* -------------------------------------------- */
   /* JSON LANGUAGE                                */
@@ -240,6 +193,7 @@
   --papyrus-js-regex                         : #{$papyrus-js-regex};
   --papyrus-js-regex-flags                   : #{$papyrus-js-regex-flags};
   --papyrus-js-literal-property              : #{$papyrus-js-literal-property};
+  --papyrus-js-object-property               : #{$papyrus-js-object-property};
   --papyrus-js-comment                       : #{$papyrus-js-comment};
   --papyrus-js-bracket                       : #{$papyrus-js-bracket};
   --papyrus-js-browser-objects               : #{$papyrus-js-browser-objects};

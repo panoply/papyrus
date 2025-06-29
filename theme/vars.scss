@@ -129,52 +129,6 @@ $papyrus-css-attr-punctuation:            #FF93BC !default;
 $papyrus-css-pseudo-element:              #e18d27 !default;
 
 /* -------------------------------------------- */
-/* CSS LANGUAGE                                 */
-/* -------------------------------------------- */
-
-$papyrus-scss-comment:                     #888 !default;
-$papyrus-scss-selector:                    #a5d447 !default;
-$papyrus-scss-tag-selector:                #FF93BC !default;
-$papyrus-scss-colon:                       #91EBC2 !default;
-$papyrus-scss-function:                    #a5d447 !default;
-$papyrus-scss-variable:                    #b594d9 !default;
-$papyrus-scss-operator:                    #E91E63 !default;
-$papyrus-scss-punctuation:                 #fafafa !default;
-$papyrus-scss-important:                   #E91E63 !default;
-$papyrus-scss-atrule:                      #E91E63 !default;
-$papyrus-scss-property:                    #81D4FA !default;
-$papyrus-scss-property-value:              #FFF9A6 !default;
-$papyrus-scss-number:                      #F48FB1 !default;
-$papyrus-scss-hexcode:                     #F48FB1 !default;
-$papyrus-scss-combinator:                  #E91E63 !default;
-$papyrus-scss-unit:                        #E91E63 !default;
-$papyrus-scss-attr-name:                   #91EBC2 !default;
-$papyrus-scss-attr-value:                  #FFF9A6 !default;
-$papyrus-scss-attr-punctuation:            #FF93BC !default;
-$papyrus-scss-pseudo-element:              #e18d27 !default;
-
-/* -------------------------------------------- */
-/* LIQUID LANGUAGE                              */
-/* -------------------------------------------- */
-
-$papyrus-liquid-fallback:                 #fafafa !default;
-$papyrus-liquid-delimiters:               #fafafa !default;
-$papyrus-liquid-tag:                      #E91E63 !default;
-$papyrus-liquid-output:                   #81d4fa !default;
-$papyrus-liquid-boolean:                  #ff80f4 !default;
-$papyrus-liquid-number:                   #935eff !default;
-$papyrus-liquid-punctuation:              #E91E63 !default;
-$papyrus-liquid-operator:                 #E91E63 !default;
-$papyrus-liquid-parameter:                #ff953c !default;
-$papyrus-liquid-object-name:              #81d4fa !default;
-$papyrus-liquid-object-prop:              #fafafa !default;
-$papyrus-liquid-filter-name:              #3defb9 !default;
-$papyrus-liquid-string:                   #FFF9A6 !default;
-$papyrus-liquid-comment:                  #888 !default;
-$papyrus-liquid-string-delimiters:        #888 !default;
-$papyrus-liquid-string-object-name:       #81d4fa !default;
-
-/* -------------------------------------------- */
 /* YAML LANGUAGE                                */
 /* -------------------------------------------- */
 
@@ -238,6 +192,7 @@ $papyrus-js-string:                       #FFF9A6 !default;
 $papyrus-js-regex:                        #FFF9A6 !default;
 $papyrus-js-regex-flags:                  #E91E63 !default;
 $papyrus-js-literal-property:             #22c0cb !default;
+$papyrus-js-object-property:              #8BD3FD !default;
 $papyrus-js-comment:                      #888 !default;
 $papyrus-js-bracket:                      #8d6fb1 !default;
 $papyrus-js-browser-objects:              #81D4FA !default;

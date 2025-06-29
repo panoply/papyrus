@@ -30,6 +30,10 @@
 
     &.object {
       color: var(--papyrus-js-object);
+
+      + .punctuation-chars + .object {
+        color: var(--papyrus-js-punctuation);
+      }
     }
 
     &.operator {
@@ -40,7 +44,8 @@
       color: var(--papyrus-js-operation);
     }
 
-    &.function {
+    &.function,
+    &.literal-func {
       color: var(--papyrus-js-function);
     }
 
@@ -93,11 +98,13 @@
       color: var(--papyrus-js-browser-objects);
     }
 
-    &.literal-property,
-    &.property {
+    &.literal-property {
       color: var(--papyrus-js-literal-property);
     }
 
+    &.object-property {
+      color: var(--papyrus-js-object-property);
+    }
     &.nil {
       color: #912bff;
     }
@@ -119,12 +126,12 @@
       color: var(--papyrus-js-this);
     }
 
-    &.paren-brace-open,
-    &.paren-brace-close {
-      color: var(--papyrus-ts-bracket);
-    }
-
     // GRAMMAR FOR SIN
+
+    .sin-template-punctuation {
+      color: var(--papyrus-js-operator);
+      font-weight: bolder;
+    }
 
     &.sin {
       color: #B4769D;
@@ -142,7 +149,7 @@
       }
 
       .sin-tag {
-        color: var(--papyrus-js-function);
+        color: #FF93BC
       }
 
       .sin-css {

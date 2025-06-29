@@ -150,39 +150,8 @@ export function JavaScript () {
     'wbr'
   ].join('|');
 
-  // sin methods
-  const sinmethods = [
-    'redrawing',
-    'sleep',
-    'with',
-    'isAttrs',
-    'isServer',
-    'pathmode',
-    'redraw',
-    'redraw',
-    'mount',
-    'css',
-    'css',
-    'css',
-    'css',
-    'style',
-    'animate',
-    'http',
-    'live',
-    'event',
-    'on',
-    'trust',
-    'route',
-    'window',
-    'scroll',
-    'View',
-    'error',
-    'jsxFragment'
-  ].join('|');
 
   const { color, unit, number } = colors();
-
-
 
   languages.javascript = languages.js = Object.assign(javascript, {
     'doc-comment': {
@@ -198,7 +167,7 @@ export function JavaScript () {
       alias: 'comment'
     },
     sin: {
-      pattern: new RegExp(`([ \t]*)\\bs(?=(?:[\`(]|\\.(?:${sinmethods})))`, 'g'),
+      pattern: new RegExp(`([ \t]*)\\bs(?=(?:[\`(]|\\.(?:[a-z]+)))`, 'g'),
       lookbehind: true
     },
     'template-sin': {
@@ -255,7 +224,7 @@ export function JavaScript () {
         }
       }
     },
-
+    'literal-func': /[a-zA-Z]+(?=`)/,
     'template-string': {
       pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
       greedy: true,
@@ -380,7 +349,6 @@ export function JavaScript () {
     'literal-property': {
       pattern: /([\n,{][ \t]*|[ \t]*)(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?=\s*:)/,
       lookbehind: true,
-      alias: 'property'
     },
     operator: [
       {
@@ -419,13 +387,18 @@ export function JavaScript () {
       global: true
     },
     object: {
-      lookbehind: true,
-      pattern: /(\s+)\b([a-z_$][\w$]*)(?=[.])/i,
+      pattern: /([a-zA-Z_$][\w$]+)(?=[.])/i,
       global: true,
-      greedy: true,
       inside: {
-        this: /\b(this)\b/
+        this: /\b(this)\b/,
+        punctuation: /[({]/g
       }
+    },
+    'props': {
+      pattern: /(?:\w+)(?:\.)(\w+)(?=\.\w+[.])/i,
+      global: true,
+      lookbehind: true,
+      alias: 'object'
     },
     'punctuation-chars': {
       pattern: /[.,]/,
@@ -467,19 +440,7 @@ export function JavaScript () {
       pattern: /(\bimport)\b \b(?:type)\b(?= )/,
       lookbehind: true
     },
-    'paren-brace-open': {
-      pattern:/(\()(\{)/,
-      lookbehind: true,
-      inside: {
-        brace: /\{/
-      }
-    },
-    'paren-brace-close': {
-      pattern:/(\})(?=\))/,
-      inside: {
-        brace: /\}/
-      }
-    }
+
   });
 
 };
