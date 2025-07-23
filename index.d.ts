@@ -17,16 +17,12 @@ type Language = LiteralUnion<(
   | 'html'
   | 'bash'
   | 'css'
-  | 'scss'
-  | 'liquid'
   | 'xml'
   | 'json'
   | 'javascript'
   | 'typescript'
-  | 'jsx'
-  | 'tsx'
+  | 'markdown'
   | 'yaml'
-  | 'toml'
   | 'plaintext'
   | 'treeview'
 ), string>
@@ -411,7 +407,7 @@ export declare namespace Options {
    * papyrus.inline('<h1>Hello</h1>', {
    *  language: 'html', // Required
    *  trimStart: false, // Optional
-   *  trimeEnd: false,  // Optional
+   *  trimEnd: false,  // Optional
    *  addAttrs: [],     // Optional
    *  addClass: []      // Optional
    * })

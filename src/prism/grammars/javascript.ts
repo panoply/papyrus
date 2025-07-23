@@ -150,7 +150,6 @@ export function JavaScript () {
     'wbr'
   ].join('|');
 
-
   const { color, unit, number } = colors();
 
   languages.javascript = languages.js = Object.assign(javascript, {
@@ -412,7 +411,7 @@ export function JavaScript () {
       pattern: /\b(?:null|undefined)\b/
     },
     'browser-objects': {
-      pattern: /\b(?:window|document|console|spx)\b/
+      pattern: /\b(?:window|document|console)\b/
     },
     flow: {
       pattern: /(\b(?:return|await|new)\b\s+)/

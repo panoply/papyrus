@@ -9,7 +9,7 @@ description: ''
 
 Syntax highlighting support for the [Toml](https://toml.io/en/) language.
 
-```toml
+```
 # This is a TOML document
 
 title = "TOML Example"

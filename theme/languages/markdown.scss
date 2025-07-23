@@ -1,0 +1,82 @@
+.language-markdown .token {
+
+    &.comment {
+      color: var(--papyrus-md-comment);
+    }
+
+    &.title, &.title > .punctuation {
+      color: var(--papyrus-md-title);
+      font-weight: bold;
+      font-size: large;
+    }
+
+    &.blockquote {
+      color: var(--papyrus-md-blockquote);
+    }
+
+    &.url {
+      color: $papyrus-js-comment;
+    }
+
+    &.url  > .content {
+      color: var(--papyrus-md-number);
+    }
+
+    &.list {
+      color: $papyrus-js-parameter;
+    }
+
+    &.url  > .url {
+      color: var(--papyrus-md-number);
+    }
+
+    &.bold {
+      color: $papyrus-html-delimiter;
+      font-weight: 600;
+    }
+
+    &.italic {
+      color: $papyrus-html-delimiter;
+      font-style: italic;
+    }
+
+    &.strike {
+       text-decoration: none !important;
+    }
+    &.strike > .punctuation {
+      color: $papyrus-html-delimiter;
+      font-weight: 600;
+    }
+
+    &.strike > .content {
+      color: $papyrus-html-delimiter;
+      text-decoration:wavy !important;
+    }
+
+    &.container > .cols {
+      color: $papyrus-js-flow;
+    }
+
+    &.container > .cols + .call {
+      color: $papyrus-js-flow;
+
+      + .call {
+        color: $papyrus-bash-target
+      }
+    }
+
+    &.table-header-row > .punctuation,
+    &.table-line > .punctuation,
+    &.table-data-rows > .punctuation {
+      color: $papyrus-js-comment
+    }
+
+     &.table-header-row > .table-header {
+      color: $papyrus-js-comment;
+      font-weight: 600;
+     }
+
+     &.code-snippet {
+      color: #fff
+     }
+}

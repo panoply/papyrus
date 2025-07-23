@@ -80,14 +80,11 @@ export function Treeview () {
                   content = content.replace(/(^|[^\\])[=*|]\s*$/, '$1');
                   const name = content.toLowerCase().replace(/\s+/g, '')
                   const files = [
-                    ['syncify.config', 'icon-syncify'],
+                    ['sin.lock', 'icon-sin'],
                     ['package.json', 'icon-npm'],
                     ['eslint.config', 'icon-eslint'],
                     ['jsconfig', 'icon-jsconfig'],
-                    ['tsconfig', 'icon-tsconfig'],
-                    ['svgo.config', 'icon-svgo'],
-                    ['postcss', 'icon-postcss'],
-                    ['tailwind.config', 'icon-tailwind'],
+                    ['tsconfig', 'icon-tsconfig']
                   ]
 
                   let known: boolean = false

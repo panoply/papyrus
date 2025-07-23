@@ -60,8 +60,5 @@
     "terser": "^5.31.6",
     "tsup": "8.3.0",
     "type-fest": "^4.25.0"
-  },
-  "dependencies": {
-    "calculate-size": "^1.1.1"
   }
 }

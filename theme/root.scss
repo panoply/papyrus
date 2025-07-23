@@ -144,6 +144,19 @@
   --papyrus-json-comment                     : #{$papyrus-json-comment};
 
   /* -------------------------------------------- */
+  /* MARKDOWN LANGUAG                             */
+  /* -------------------------------------------- */
+
+  --papyrus-md-punctuation                 : #{$papyrus-md-punctuation};
+  --papyrus-md-blockquote                  : #{$papyrus-md-blockquote};
+  --papyrus-md-title                       : #{$papyrus-md-title};
+  --papyrus-md-string                      : #{$papyrus-md-string};
+  --papyrus-md-boolean                     : #{$papyrus-md-boolean};
+  --papyrus-md-number                      : #{$papyrus-md-number};
+  --papyrus-md-operator                    : #{$papyrus-md-operator};
+  --papyrus-md-comment                     : #{$papyrus-md-comment};
+
+  /* -------------------------------------------- */
   /* YAML LANGUAGE                                */
   /* -------------------------------------------- */
 

@@ -19,8 +19,6 @@ function raw (codeInput: string, config: Papyrus.Options) {
       })
       .join('');
 
-
-
   return markup;
 
 }
