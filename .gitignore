@@ -2,7 +2,16 @@
 node_modules/
 versions/
 .pnpm-debug.log
-docs/public
+docs
+src
+theme
+tsconfig.json
+tsup.config.ts
+index.css
+.prettierignore
+.npmignore
+readme.md
+.vscode
 
 
 # Local Netlify folder
