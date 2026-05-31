@@ -22,11 +22,11 @@
       color: var(--papyrus-css-colon);
     }
 
-    &.css-attr-name {
+    &.css-attr-name, &.attr-name {
       color: var(--papyrus-css-attr-name);
     }
 
-    &.css-attr-value {
+    &.css-attr-value, &.attr-value  {
       color: var(--papyrus-css-attr-value);
     }
 

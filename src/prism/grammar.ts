@@ -7,9 +7,10 @@ import { Markdown } from './grammars/markdown';
 import { CSS } from './grammars/css';
 import { Json } from './grammars/json';
 import { Bash } from './grammars/bash';
+// import { Sql } from './grammars/sql';
 import { Treeview } from './grammars/treeview';
 
-const grammars: { (): Record<string, Grammar>; defined: boolean; } = function grammar () {
+const grammars: { (): Record<string, Grammar>; defined: boolean; } = function grammar() {
 
   if (!grammars.defined) {
 

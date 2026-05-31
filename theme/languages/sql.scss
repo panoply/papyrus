@@ -1,0 +1,42 @@
+.language-sql .token {
+
+  &.cast {
+    color: var(--papyrus-sql-cast);
+  }
+
+  &.comment {
+    color: var(--papyrus-sql-comment);
+  }
+
+  &.quotes {
+    color: var(--papyrus-sql-quotes);
+  }
+
+  &.alias {
+    color: var(--papyrus-sql-qualified-column);
+  }
+
+  &.function {
+    color: var(--papyrus-sql-function);
+  }
+
+  &.keyword {
+    color: var(--papyrus-sql-keyword);
+  }
+
+  &.string {
+    color: var(--papyrus-sql-string);
+  }
+
+  &.number {
+    color: var(--papyrus-sql-number);
+  }
+
+  &.boolean, &.keyword-true {
+    color: var(--papyrus-sql-boolean);
+  }
+
+  &.punctuation {
+    color: var(--papyrus-sql-punctuation);
+  }
+}

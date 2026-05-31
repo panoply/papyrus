@@ -5,7 +5,7 @@ import { languages, rest } from 'prism-code-editor/prism';
 import { insertBefore } from 'prism-code-editor/prism/utils';
 import { comment, boolean, string } from '../helpers';
 
-export function JavaScript () {
+export function JavaScript() {
 
   const javascript = {};
 
@@ -196,9 +196,19 @@ export function JavaScript () {
         'sin-css': {
           pattern: /[\s\S]+/,
           inside: {
+            'element-name': {
+              pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=[ \\t]*\\{)`, 'g'),
+              lookbehind: true
+            },
             property: {
               pattern: /(^[ \t]*|\n[ \t]*)[a-zA-Z-]+(?=[ \t])/g,
-              lookbehind: true
+              lookbehind: true,
+              inside: {
+                'element-name': {
+                  pattern: new RegExp(`(?:${markuptags})\\b\\s+(?=\\{)`, 'g'),
+                  lookbehind: true
+                },
+              }
             },
             variable: {
               pattern: /\$[a-zA-Z-]+/g
@@ -206,6 +216,12 @@ export function JavaScript () {
             mixin: {
               pattern: /\@[a-zA-Z]+/g
             },
+            'class-name': {
+              pattern: /(^[ \t]*|\n[ \t]*)\.[a-zA-Z-]+(?=[ \t]*\{)/g,
+              lookbehind: true
+            },
+            comment: /\/\*[\s\S]*?\*\//,
+            punctuation: /[(){},:;]/,
             value: {
               pattern: /(^[ \t]*|\n[ \t]*[a-zA-Z]*[ \t]*)(\S+)/g,
               lookbehind: true,
@@ -244,7 +260,7 @@ export function JavaScript () {
           }
         },
         string: {
-         pattern: /[\s\S]+/
+          pattern: /[\s\S]+/
         }
       }
     },

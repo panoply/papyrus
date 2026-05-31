@@ -18,6 +18,20 @@ const Div = s`div
   ff system-ui
 `;
 
+s`div
+  bc hotpink
+  p 10
+  br 4
+  ta center
+  ff system-ui
+
+  input {}
+  p {}      /* some comment */
+
+  .class {}
+  .something {}
+`;
+
 const List = s`ul
  pl 10
  pb 5

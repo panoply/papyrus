@@ -148,12 +148,19 @@
         font-weight: bolder;
       }
 
-      .sin-tag {
+      .sin-tag,
+      .element-name {
         color: #FF93BC
       }
 
       .sin-css {
 
+        .class-name {
+          color: #7c9dcd
+        }
+        .punctuation {
+          color: #e5e5e5;
+        }
         .variable {
           color: var(--papyrus-css-sinvar)
         }
