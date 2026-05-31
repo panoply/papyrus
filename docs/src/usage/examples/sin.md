@@ -10,6 +10,24 @@ description: ''
 Syntax highlighting support for the [SIN](https://sinjs.com) full stack JavaScript framework.
 
 ```js
+Checkbox({
+  label: 'Checkbox Label', // -> Text rendered beside the checkbox, use children for multiline labels
+  id: 'checkbox_id', // -> Optional id, defaults to name when omitted
+  name: 'checkbox_name', // -> Name associated with the checkbox value
+  value: 'checkbox_value', // -> Value returned through onsave
+  checked: false, // -> Whether the checkbox is checked
+  indeterminate: false, // -> Whether the checkbox renders in an indeterminate state
+  required: false, // -> Whether the checkbox is required for form submission
+  disabled: false, // -> Whether the checkbox is disabled or not
+  onsave: x => {
+    x.name; // -> The name of the checkbox
+    x.checked; // -> true or false
+    x.value; // -> The value of the checkbox
+  }
+});
+
+Sidebar();
+Sidebar.section();
 const Div = s`div
   bc hotpink
   p 10

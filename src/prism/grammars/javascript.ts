@@ -402,7 +402,7 @@ export function JavaScript() {
       global: true
     },
     object: {
-      pattern: /([a-zA-Z_$][\w$]+)(?=[.])/i,
+      pattern: /([a-zA-Z_$][\w$]+|[\w$])(?=[.])/i,
       global: true,
       inside: {
         this: /\b(this)\b/,
