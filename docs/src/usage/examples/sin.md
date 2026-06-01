@@ -56,6 +56,18 @@ s`
   'Hover me to see tooltip!'
 );
 
+Checkbox`label.checkbox
+
+  .label {}                 /* Target the { label: '' } */
+  .content {}               /* Target the children[] */
+`;
+
+s`label.checkbox
+
+  .label {}                 /* Target the { label: '' } */
+  .content {}               /* Target the children[] */
+`;
+
 Checkbox({
   label: 'Checkbox Label', // -> Text rendered beside the checkbox, use children for multiline labels
   id: 'checkbox_id', // -> Optional id, defaults to name when omitted

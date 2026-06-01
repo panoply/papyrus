@@ -151,7 +151,34 @@ export function JavaScript() {
   ].join('|');
 
   const { color, unit, number } = colors();
-
+  const sinCssInside = {
+    'element-name': {
+      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=[ \\t]*\\{)`, 'g'),
+      lookbehind: true
+    },
+    property: {
+      pattern: /(^[ \t]*|\n[ \t]*)[a-zA-Z-]+(?=[ \t])/g,
+      lookbehind: true,
+    },
+    'class-name': {
+      pattern: /(^[ \t]*|\n[ \t]*)(?:\.[a-zA-Z-]+)+(?=[ \t]*(?:\{|$|\n))/g,
+      lookbehind: true
+    },
+    variable: { pattern: /\$[a-zA-Z-]+/g },
+    mixin: { pattern: /\@[a-zA-Z]+/g },
+    comment: /\/\*[\s\S]*?\*\//,
+    punctuation: /[(){},:;]/,
+    value: {
+      pattern: /(^[ \t]*|\n[ \t]*[a-zA-Z]*[ \t]*)(\S+)/g,
+      lookbehind: true,
+      inside: {
+        hexcode: { pattern: /\B#[a-f\d]{3,8}\b/i, alias: 'color' },
+        color,
+        unit,
+        number
+      }
+    }
+  };
   languages.javascript = languages.js = Object.assign(javascript, {
     'doc-comment': {
       pattern: /\/\*\*(?!\/)[\s\S]*?(?:\*\/|$)/g,
@@ -166,12 +193,15 @@ export function JavaScript() {
       alias: 'comment'
     },
     'template-sin': {
-      pattern: new RegExp(`(?:(?:(s)\`(?:${markuptags}|\\s+)\\b)|([A-Z][a-zA-Z]+)\\b\`\\n\\s*)(?:\\[\\s\\S]|\\$\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\`])*\``, 'g'),
+      pattern: new RegExp(
+        `(?:(?:(s)\`(?:${markuptags}|\\s+)\\b)|([A-Z][a-zA-Z]+)\`(?:\\n\\s*)?)` +
+        `(?:\\[\\s\\S]|\\$\\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\\\`])*\``,
+        'g'
+      ),
       greedy: true,
-      lookbehind: true,
       inside: {
         'function': {
-          pattern: /[a-zA-Z]+(?=\`\n\s*)/,
+          pattern: /[a-zA-Z]+(?=`)/,
         },
         'template-punctuation': {
           pattern: /^`|`$/,
@@ -191,47 +221,7 @@ export function JavaScript() {
         },
         'sin-css': {
           pattern: /[\s\S]*/,
-          inside: {
-            'element-name': {
-              pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=[ \\t]*\\{)`, 'g'),
-              lookbehind: true
-            },
-            property: {
-              pattern: /(^[ \t]*|\n[ \t]*)[a-zA-Z-]+(?=[ \t])/g,
-              lookbehind: true,
-              inside: {
-                'element-name': {
-                  pattern: new RegExp(`(?:${markuptags})\\b\\s+(?=\\{)`, 'g'),
-                  lookbehind: true
-                },
-              }
-            },
-            variable: {
-              pattern: /\$[a-zA-Z-]+/g
-            },
-            mixin: {
-              pattern: /\@[a-zA-Z]+/g
-            },
-            'class-name': {
-              pattern: /(^[ \t]*|\n[ \t]*)\.[a-zA-Z-]+(?=[ \t]*\{)/g,
-              lookbehind: true
-            },
-            comment: /\/\*[\s\S]*?\*\//,
-            punctuation: /[(){},:;]/,
-            value: {
-              pattern: /(^[ \t]*|\n[ \t]*[a-zA-Z]*[ \t]*)(\S+)/g,
-              lookbehind: true,
-              inside: {
-                hexcode: {
-                  pattern: /\B#[a-f\d]{3,8}\b/i,
-                  alias: 'color'
-                },
-                color,
-                unit,
-                number
-              }
-            }
-          }
+          inside: sinCssInside  // ← shared, so both branches get identical treatment
         }
       }
     },
@@ -242,7 +232,7 @@ export function JavaScript() {
     },
     'literal-func': /[a-zA-Z]+(?=`)/,
     'template-string': {
-      pattern: /(?!s)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
+      pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
       greedy: true,
       inside: {
         'template-punctuation': {
