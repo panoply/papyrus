@@ -165,12 +165,8 @@ export function JavaScript() {
       greedy: true,
       alias: 'comment'
     },
-    sin: {
-      pattern: new RegExp(`([ \t]*)\\bs(?=(?:[\`(]|\\.(?:[a-z]+)))`, 'g'),
-      lookbehind: true
-    },
     'template-sin': {
-      pattern: new RegExp(`(?:(?:(s)\`(?:${markuptags}| +)\\b)|([A-Z][a-zA-Z]+)\\b\`\\n\\s*)(?:\\[\\s\\S]|\\$\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\`])*\``, 'g'),
+      pattern: new RegExp(`(?:(?:(s)\`(?:${markuptags}|\\s+)\\b)|([A-Z][a-zA-Z]+)\\b\`\\n\\s*)(?:\\[\\s\\S]|\\$\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\`])*\``, 'g'),
       greedy: true,
       lookbehind: true,
       inside: {
@@ -194,7 +190,7 @@ export function JavaScript() {
           }
         },
         'sin-css': {
-          pattern: /[\s\S]+/,
+          pattern: /[\s\S]*/,
           inside: {
             'element-name': {
               pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=[ \\t]*\\{)`, 'g'),
@@ -239,9 +235,14 @@ export function JavaScript() {
         }
       }
     },
+    sin: {
+      pattern: new RegExp(`([ \\t]*)\\bs(?=(?:\\.(?:[a-z]+)|[\`(]))`, 'g'),
+      lookbehind: true,
+      greedy: true
+    },
     'literal-func': /[a-zA-Z]+(?=`)/,
     'template-string': {
-      pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
+      pattern: /(?!s)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
       greedy: true,
       inside: {
         'template-punctuation': {

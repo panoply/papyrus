@@ -10,6 +10,52 @@ description: ''
 Syntax highlighting support for the [SIN](https://sinjs.com) full stack JavaScript framework.
 
 ```js
+s`
+  w 100
+`;
+s`
+  w 100
+`;
+s`div
+  bc hotpink
+  p 10
+  br 4
+  ta center
+  ff system-ui
+
+  input {}
+  p {}      /* some comment */
+
+  .class {}
+  .something {}
+`;
+
+s`
+  w 100
+`;
+s`
+  w 200
+`(
+  {
+    dom: Tooltip(
+      {
+        position: 'top',
+        arrow: true,
+        adapt: true,
+        gap: 8,
+        margin: 12,
+        padding: [4, 8],
+        delay: 120,
+        container: window,
+        offset: 0,
+        trigger: dom => []
+      },
+      'Hello World!'
+    )
+  },
+  'Hover me to see tooltip!'
+);
+
 Checkbox({
   label: 'Checkbox Label', // -> Text rendered beside the checkbox, use children for multiline labels
   id: 'checkbox_id', // -> Optional id, defaults to name when omitted
@@ -25,6 +71,30 @@ Checkbox({
     x.value; // -> The value of the checkbox
   }
 });
+
+import { Tooltip } from '@beat/ui';
+s`
+  w 200
+`(
+  {
+    dom: Tooltip(
+      {
+        position: 'top',
+        arrow: true,
+        adapt: true,
+        gap: 8,
+        margin: 12,
+        padding: [4, 8],
+        delay: 120,
+        container: window,
+        offset: 0,
+        trigger: dom => []
+      },
+      'Hello World!'
+    )
+  },
+  'Hover me to see tooltip!'
+);
 
 Sidebar();
 Sidebar.section();
@@ -48,6 +118,10 @@ s`div
 
   .class {}
   .something {}
+`;
+
+s`
+  w 100
 `;
 
 const List = s`ul
