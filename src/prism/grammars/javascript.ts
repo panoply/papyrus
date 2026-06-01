@@ -159,6 +159,7 @@ export function JavaScript() {
     property: {
       pattern: /(^[ \t]*|\n[ \t]*)[a-zA-Z-]+(?=[ \t])/g,
       lookbehind: true,
+      greedy: true
     },
     'class-name': {
       pattern: /(^[ \t]*|\n[ \t]*)(?:\.[a-zA-Z-]+)+(?=[ \t]*(?:\{|$|\n))/g,

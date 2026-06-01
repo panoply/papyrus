@@ -10,6 +10,15 @@ description: ''
 Syntax highlighting support for the [SIN](https://sinjs.com) full stack JavaScript framework.
 
 ```js
+Copy`
+
+  fd row-reverse   /* Places copy icon on the right */
+  fs inherit       /* Override the font-size */
+
+  .icon {}         /* Target the icon */
+  .text {}         /* Target the visual text content */
+`;
+
 s`
   w 100
 `;
