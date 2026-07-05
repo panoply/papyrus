@@ -5,7 +5,7 @@ import { assign, getLanguageName, has, uuid } from './helpers';
 /**
  * The `data-papyrus=""` object options which are compressed
  */
-export function setAttributeHint (options: Options.Default) {
+export function setAttributeHint(options: Options.Default) {
 
   const config = assign({}, options);
 
@@ -20,7 +20,7 @@ export function setAttributeHint (options: Options.Default) {
  * The inline options for method `papyrus.inline` - this applied to
  * `{js some.method()}` in markup.
  */
-export function setInlineOptions (options?: Options.Inline) {
+export function setInlineOptions(options?: Options.Inline) {
 
   const config: Options.Inline = {
     language: null,
@@ -45,10 +45,54 @@ export function setInlineOptions (options?: Options.Inline) {
 
 }
 
+function dedent(strings: TemplateStringsArray, ...values: Array<string>) {
+
+  const raw = typeof strings === 'string' ? [strings] : strings.raw;
+  const len = raw.length;
+
+  // first, perform interpolation
+  let result = '';
+  let mindent: number | null = null;
+
+  for (let i = 0; i < len; i++) {
+
+    result += raw[i]
+      .replace(/\\\n[ \t]*/g, '')
+      .replace(/\\`/g, '`');
+
+    if (i < values.length) result += values[i];
+
+  }
+
+  // now strip indentation
+  const lines = result.split('\n');
+  const size = lines.length;
+
+  for (let i = 0; i < size; i++) {
+
+    const m = lines[i].match(/^(\s+)\S+/);
+
+    if (m) {
+      const indent = m[1].length;
+      mindent = !mindent ? indent : Math.min(mindent, indent);
+    }
+
+  }
+
+  if (mindent !== null) {
+    const m = mindent;
+    result = lines.map(l => l[0] === ' ' ? l.slice(m) : l).join('\n');
+  }
+
+  return result.trim().replace(/\\n/g, '\n');
+
+};
+
+
 /**
  * The inline options for method `papyrus.highlight`
  */
-export function setHighlightOptions (options?: Options.Highlight) {
+export function setHighlightOptions(options?: Options.Highlight) {
 
   const config: Options.Highlight = {
     language: null,
@@ -95,7 +139,7 @@ export function setHighlightOptions (options?: Options.Highlight) {
 /**
  * The options for method `papyrus.editor`
  */
-export function setOptions (type: 'editor' | 'mount' | 'static', options?: Options.Static) {
+export function setOptions(type: 'editor' | 'mount' | 'static', options?: Options.Static) {
 
   const config: Options.Default = {
     type,
