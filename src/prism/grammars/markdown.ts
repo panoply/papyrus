@@ -1,13 +1,13 @@
 import { languages, tokenizeText, tokenize, withoutTokenizer, Token } from 'prism-code-editor/prism';
 import { insertBefore, clone, } from 'prism-code-editor/prism/utils';
-import { regex, replace} from '../helpers';
+import { regex, replace } from '../helpers';
 
 
-export function Markdown () {
+export function Markdown() {
 
   // Allow only one line break
   var inner = [/(?:\\.|[^\\\n]|\n(?!\n))/.source];
-  var createInline = pattern => regex(`((?:^|[^\\\\])(?:\\\\\\\\)*)(?:${pattern})`, inner, 'g');
+  var createInline = (pattern: string) => regex(`((?:^|[^\\\\])(?:\\\\\\\\)*)(?:${pattern})`, inner, 'g');
   var tableCell = /(?:\\.|``(?:[^\n`]|`(?!`))+``|`[^\n`]+`|[^\\\n|`])+/;
   var tableRow = replace(/\|?<0>(?:\|<0>)+\|?(?:\n|(?![\s\S]))/.source, [tableCell.source]);
   var tableLine = /\|?[ \t]*:?-{3,}:?[ \t]*(?:\|[ \t]*:?-{3,}:?[ \t]*)+\|?\n/.source;
@@ -83,8 +83,8 @@ export function Markdown () {
           'punctuation': /^`+|`+$/,
           'code-language': /^.+/,
           'code-block': /(?!^)[\s\S]+(?=\n)/,
-          [tokenize as unknown as string](code, grammar) {
-            var tokens = withoutTokenizer(code, grammar) as unknown as Token;
+          [tokenize as unknown as string](code: any, grammar: any) {
+            var tokens: any = withoutTokenizer(code, grammar) as unknown as Token;
             var language;
 
             if (tokens[5]) {

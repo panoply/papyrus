@@ -150,10 +150,21 @@ export function JavaScript() {
     'wbr'
   ].join('|');
 
+  // sinjs components may open with a css class name chain, e.g. s`.foo` or Component`.foo.bar`.
+  // Only treat s`` as sin when the chain closes the template, opens a block or is interpolated,
+  // so plain tagged strings like s`.hello there` are left alone.
+  const sinclass = `(?:\\.[a-zA-Z][\\w-]*)+(?=\`|\\n|\\$\\{|[ \\t]*\\{)`;
+
+  // sinjs component tags, either bare (Component``) or member access (Tabs.tab``)
+  const sintag = `[A-Z][a-zA-Z]+(?:\\.[a-zA-Z][\\w$]*)*`;
+
+  // Selector suffixes a sin css selector may carry, e.g. ::after, :not(.x), [active]
+  const sinsuffix = `(?:::?[a-zA-Z-]+(?:\\([^)\\n]*\\))?|\\[[^\\]\\n]*\\])`;
+
   const { color, unit, number } = colors();
   const sinCssInside = {
     'element-name': {
-      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=[ \\t]*\\{)`, 'g'),
+      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*)\\b(?:${markuptags})\\b(?=(?:\\.[a-zA-Z][\\w-]*)*${sinsuffix}*[ \\t]*\\{)`, 'g'),
       lookbehind: true
     },
     property: {
@@ -162,8 +173,18 @@ export function JavaScript() {
       greedy: true
     },
     'class-name': {
-      pattern: /(^[ \t]*|\n[ \t]*)(?:\.[a-zA-Z-]+)+(?=[ \t]*(?:\{|$|\n))/g,
+      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*|(?<=[\\w\\])]))(?:\\.[a-zA-Z][\\w-]*)+(?=${sinsuffix}*[ \\t]*(?:\\{|$|\\n))`, 'g'),
       lookbehind: true
+    },
+    'pseudo-selector': {
+      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*|(?<=[\\w\\])]))(?:::?[a-zA-Z-]+(?:\\([^)\\n]*\\))?)+(?=${sinsuffix}*[ \\t]*(?:\\{|$|\\n))`, 'g'),
+      lookbehind: true,
+      alias: 'class-name'
+    },
+    'attr-selector': {
+      pattern: new RegExp(`(^[ \\t]*|\\n[ \\t]*|(?<=[\\w\\)]))\\[[^\\]\\n]*\\](?=${sinsuffix}*[ \\t]*(?:\\{|$|\\n))`, 'g'),
+      lookbehind: true,
+      alias: 'class-name'
     },
     variable: { pattern: /\$[a-zA-Z-]+/g },
     mixin: { pattern: /\@[a-zA-Z]+/g },
@@ -193,16 +214,51 @@ export function JavaScript() {
       greedy: true,
       alias: 'comment'
     },
+    'template-sql': {
+      pattern: /\b(?:sql|SQL)`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
+      greedy: true,
+      inside: {
+        'literal-func': {
+          pattern: /^(?:sql|SQL)/
+        },
+        'template-punctuation': {
+          pattern: /^`|`$/,
+          alias: 'string'
+        },
+        interpolation: {
+          pattern: /((?:^|[^\\])(?:\\\\)*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}/,
+          lookbehind: true,
+          inside: {
+            'interpolation-punctuation': {
+              pattern: /^\$\{|\}$/,
+              alias: 'punctuation'
+            },
+            [rest]: javascript
+          }
+        },
+        sql: {
+          pattern: /[\s\S]+/,
+          alias: 'language-sql',
+          inside: 'sql'
+        }
+      }
+    },
     'template-sin': {
       pattern: new RegExp(
-        `(?:(?:(s)\`(?:${markuptags}|\\s+)\\b)|([A-Z][a-zA-Z]+)\`(?:\\n\\s*)?)` +
+        `(?:(?:\\b(s)\`(?:(?:${markuptags})\\b|\\s+|(?=${sinclass})))|(${sintag})\`(?:\\n\\s*)?)` +
         `(?:\\[\\s\\S]|\\$\\{(?:[^{}]|\\{(?:[^{}]|\\{[^}]*\\})*\\})*\\}|(?!\\$\\{)[^\\\\\`])*\``,
         'g'
       ),
       greedy: true,
       inside: {
-        'function': {
-          pattern: /[a-zA-Z]+(?=`)/,
+        'sin-func': {
+          pattern: /^[a-zA-Z]+(?:\.[a-zA-Z][\w$]*)*(?=`)/,
+          inside: {
+            // Trailing segment is the tag function, anything before it is member access
+            'function': /[a-zA-Z][\w$]*$/,
+            punctuation: /\./,
+            object: /[a-zA-Z][\w$]*/
+          }
         },
         'template-punctuation': {
           pattern: /^`|`$/,
