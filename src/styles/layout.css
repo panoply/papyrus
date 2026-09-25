@@ -223,6 +223,15 @@ pre.papyrus,
     grid: 1fr / 0 1fr;
   }
 
+  /*
+   * The gutter pseudo element must stay in flow: it occupies the first
+   * (zero width) grid column so the code lands in the second column.
+   */
+  &.line-numbers::before,
+  &.show-line-numbers::before {
+    content: "";
+  }
+
   &.line-numbers::before,
   &.line-numbers .line-no::before,
   &.show-line-numbers::before,
@@ -231,16 +240,6 @@ pre.papyrus,
     left: 0;
     width: var(--padding-left);
     height: 100%;
-  }
-
-  &.line-numbers::before,
-  &.show-line-numbers::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    content: "";
   }
 
   /* WRAP --------------------------------------- */
