@@ -1,0 +1,47 @@
+/* Non colour token formatting */
+
+.token.markup-bracket {
+  color: inherit;
+}
+
+.language-markdown .token.title,
+.language-md .token.title {
+  font-weight: 700;
+  font-size: large;
+}
+
+.language-markdown .token.bold,
+.language-md .token.bold,
+.language-markdown .token.table-header,
+.language-md .token.table-header,
+.language-markdown .token.strike > .token.punctuation,
+.language-md .token.strike > .token.punctuation {
+  font-weight: 600;
+}
+
+.language-markdown .token.italic,
+.language-md .token.italic {
+  font-style: italic;
+}
+
+.language-markdown .token.strike,
+.language-md .token.strike {
+  text-decoration: none;
+}
+
+.language-markdown .token.strike > .token.content,
+.language-md .token.strike > .token.content {
+  text-decoration: line-through;
+}
+
+/* sin template literals */
+
+.token.template-sin > .token.template-punctuation {
+  font-weight: bolder;
+}
+
+.token.sin {
+  background: linear-gradient(to bottom, #d3eaff 0%, #65b4ff 35%, #b4769d 50%, #f32933 65%, #ff9901 85%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

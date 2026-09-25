@@ -1,0 +1,17 @@
+/*
+ * Layout settings. These are not part of a theme, override them on
+ * `:root` or on a code block element.
+ */
+:root {
+  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --papyrus-font-size: 1em;
+  --papyrus-line-height: 1.6;
+  --papyrus-radius: 0.5em;
+  --papyrus-padding-x: 0.75em;
+  --papyrus-padding-y: 0.5em;
+  --papyrus-number-spacing: 2em;
+  --papyrus-fence-width: 0.01rem;
+  --papyrus-scrollbar-width: 4px;
+  --papyrus-scrollbar-padding: 8px;
+  --papyrus-treeview-line-width: 0.05em;
+}

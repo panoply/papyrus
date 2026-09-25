@@ -3,11 +3,13 @@ import { createStatic } from './modes/static';
 import { createInline } from './modes/inline';
 import { createHighlight } from './modes/highlight';
 import { grammars } from './prism/grammar';
+import { theme } from './theme';
 
 grammars();
 
-export default <Papyrus.Node>{
+export default <Papyrus.Node><unknown>{
   highlight: createHighlight,
   inline: createInline,
-  static: createStatic
+  static: createStatic,
+  theme
 };

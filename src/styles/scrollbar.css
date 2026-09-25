@@ -1,0 +1,37 @@
+@media (hover: hover) {
+  pre.papyrus::-webkit-scrollbar,
+  .prism-code-editor::-webkit-scrollbar {
+    display: none;
+    width: var(--papyrus-scrollbar-width);
+    height: var(--papyrus-scrollbar-width);
+  }
+  pre.papyrus::-webkit-scrollbar-corner, pre.papyrus::-webkit-scrollbar-track,
+  .prism-code-editor::-webkit-scrollbar-corner,
+  .prism-code-editor::-webkit-scrollbar-track {
+    background: var(--papyrus-bg);
+    border-radius: var(--papyrus-radius);
+  }
+  pre.papyrus::-webkit-scrollbar-thumb:vertical,
+  .prism-code-editor::-webkit-scrollbar-thumb:vertical {
+    border-top: var(--papyrus-scrollbar-padding) solid var(--papyrus-bg);
+    border-bottom: var(--papyrus-scrollbar-padding) solid var(--papyrus-bg);
+    border-top-right-radius: var(--papyrus-radius);
+    border-bottom-right-radius: var(--papyrus-radius);
+  }
+  pre.papyrus::-webkit-scrollbar-thumb:horizontal,
+  .prism-code-editor::-webkit-scrollbar-thumb:horizontal {
+    display: none;
+    border-right: var(--papyrus-scrollbar-padding) solid var(--papyrus-bg);
+    border-left: var(--papyrus-scrollbar-padding) solid var(--papyrus-bg);
+    border-bottom-right-radius: var(--papyrus-radius);
+    border-bottom-left-radius: var(--papyrus-radius);
+  }
+  pre.papyrus::-webkit-scrollbar-thumb,
+  .prism-code-editor::-webkit-scrollbar-thumb {
+    background: var(--papyrus-scrollbar-thumb);
+  }
+  pre.papyrus::-webkit-scrollbar-thumb:hover,
+  .prism-code-editor::-webkit-scrollbar-thumb:hover {
+    background: var(--papyrus-scrollbar-thumb-hover);
+  }
+}

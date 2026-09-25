@@ -1,0 +1,318 @@
+pre.papyrus,
+pre.prism-code-editor {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  user-select: auto !important;
+}
+
+pre.papyrus:not(.prism-code-editor) {
+  text-shadow: none;
+  user-select: auto !important;
+}
+
+pre.papyrus ::selection,
+.prism-code-editor textarea::selection {
+  text-shadow: none;
+  background-color: var(--papyrus-selection);
+}
+
+pre.papyrus,
+.prism-code-editor {
+  --_pse: var(--papyrus-padding-x);
+  --_ns: var(--papyrus-number-spacing);
+  --padding-left: var(--_pse);
+  /* bridge for the prism-code-editor indent guides extension */
+  --bg-guide-indent: var(--papyrus-guide);
+
+  display: grid;
+  overflow: auto;
+  color: var(--papyrus-fg);
+  font-size: var(--papyrus-font-size);
+  font-family: var(--papyrus-font-family);
+  line-height: var(--papyrus-line-height);
+  white-space: pre;
+  word-wrap: normal;
+  word-break: normal;
+  word-spacing: normal;
+  background-color: var(--papyrus-bg);
+  border: var(--papyrus-fence-width) solid var(--papyrus-fence);
+  border-radius: var(--papyrus-radius);
+  color-scheme: var(--papyrus-scheme);
+  isolation: isolate;
+  user-select: none;
+  scroll-padding-left: var(--padding-left);
+
+  & textarea {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: var(--papyrus-padding-y) var(--_pse) var(--papyrus-padding-y) var(--padding-left);
+    overflow: hidden;
+    color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    resize: none !important;
+    user-select: auto;
+    pointer-events: auto;
+    caret-color: var(--papyrus-caret);
+  }
+
+  & .pce-no-selection textarea:focus {
+    z-index: 1;
+  }
+
+  /* OVERLAYS ----------------------------------- */
+
+  & .overlays,
+  & .overlays > *,
+  & .pce-overlays,
+  & .pce-overlays > *,
+  & .pce-no-selection {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+  }
+
+  & .overlays,
+  & .pce-overlays {
+    display: grid;
+
+    & > .guide-indents > * {
+      margin-top: var(--papyrus-padding-y);
+    }
+  }
+
+  & .guide-indents .active {
+    --bg-guide-indent: var(--papyrus-guide-active);
+  }
+
+  &.line-fence .overlays::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: fit-content;
+    height: 100%;
+    padding-left: var(--padding-left);
+    border-right: var(--papyrus-fence-width) solid var(--papyrus-fence);
+    content: "";
+  }
+
+  /* MATCHES ------------------------------------ */
+
+  & .selection-matches span {
+    background: var(--papyrus-match-selection);
+  }
+
+  & .pce-matches span {
+    background: var(--papyrus-match-search);
+  }
+
+  & .pce-matches .match {
+    background: var(--papyrus-match-search-active);
+  }
+
+  & .active-tagname,
+  & .word-matches span {
+    background: var(--papyrus-match-tag);
+  }
+
+  & .active-bracket {
+    box-shadow:
+      inset 0 0 0 1px var(--papyrus-bracket-active),
+      inset 0 0 0 9in var(--papyrus-bracket-active-bg);
+  }
+
+  & .pce-nowrap .active-bracket {
+    display: inline-block;
+  }
+
+  /* WRAPPER ------------------------------------ */
+
+  & > code:not(.pce-wrapper) {
+    position: relative;
+    margin: 0;
+    padding: 0.75em 0;
+    text-size-adjust: none;
+  }
+
+  & > .pce-wrapper {
+    position: relative;
+    margin: 0;
+    padding: var(--papyrus-padding-y) 0;
+    pointer-events: none;
+    text-size-adjust: none;
+  }
+
+  /* READONLY ----------------------------------- */
+
+  &.pce-readonly textarea {
+    caret-color: transparent;
+  }
+
+  /* LINE NUMBERS ------------------------------- */
+
+  & code > .line-no,
+  & .pce-line {
+    position: relative;
+    margin: 0 0 0 var(--padding-left);
+    padding: 0 var(--_pse) 0 0;
+
+    &:hover {
+      cursor: pointer;
+      pointer-events: fill;
+    }
+
+    &::before {
+      position: absolute;
+      z-index: 3;
+      display: inline-flex;
+      justify-content: end;
+      box-sizing: border-box;
+      margin: 0 0 0 calc(-1 * var(--padding-left));
+      padding: 0 calc(var(--_ns) / 1.5) 0 0;
+      color: var(--papyrus-line-number);
+      text-align: end;
+      content: attr(data-line);
+    }
+  }
+
+  & code > .line-no::before {
+    margin-right: var(--_pse);
+  }
+
+  /* ACTIVE LINE -------------------------------- */
+
+  & .pce-line.active-line {
+    &::before {
+      z-index: 3;
+      color: var(--papyrus-line-number-active);
+    }
+
+    &::after,
+    &.match-highlight::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: "";
+    }
+
+    &::after {
+      background-color: var(--papyrus-line-active);
+    }
+  }
+
+  /* SHOW LINE NUMBERS -------------------------- */
+
+  &.show-line-numbers {
+    --padding-left: calc(var(--_pse) + var(--number-width) + var(--_ns));
+    grid: 1fr / 0 1fr;
+  }
+
+  /* highlight only */
+  &.line-numbers {
+    --padding-left: calc(var(--_pse) + var(--number-width, 2.001ch) + var(--_ns));
+    grid: 1fr / 0 1fr;
+  }
+
+  &.line-numbers::before,
+  &.line-numbers .line-no::before,
+  &.show-line-numbers::before,
+  &.show-line-numbers .pce-line::before {
+    position: relative;
+    left: 0;
+    width: var(--padding-left);
+    height: 100%;
+  }
+
+  &.line-numbers::before,
+  &.show-line-numbers::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+  }
+
+  /* WRAP --------------------------------------- */
+
+  &.pce-wrap {
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    & .pce-line::before {
+      position: absolute;
+    }
+  }
+
+  /* ERROR -------------------------------------- */
+
+  &.error {
+    padding: calc(var(--papyrus-padding-x) * 3) !important;
+
+    &::before {
+      display: none !important;
+    }
+
+    & .pce-wrapper {
+      display: none !important;
+    }
+  }
+
+  & .error {
+    z-index: 4;
+    display: block;
+    width: 100%;
+    padding: 20px;
+    font-size: x-small;
+    text-wrap: wrap;
+    background-color: var(--papyrus-bg);
+  }
+
+  & .error-title,
+  & .error-message,
+  & .error-stack {
+    display: block;
+    color: var(--papyrus-error-fg);
+  }
+
+  & .error-title {
+    font-weight: 600;
+  }
+
+  & .error-message {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  & .error-stack {
+    margin-top: 20px;
+    color: var(--papyrus-error-muted);
+  }
+
+  & .error-heading {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 5px;
+    color: var(--papyrus-error-fg);
+    font-weight: 600;
+    font-size: x-small;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: var(--papyrus-error-accent);
+  }
+}

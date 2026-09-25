@@ -335,406 +335,220 @@ window.papyrus: Map<string, Model>;
 
 # Theming
 
-The current theming is made available via CSS and SCSS.
+Themes are plain objects. Every colour in Papyrus is a `--papyrus-*` CSS custom property and the stylesheet, the theme files and the TypeScript types are all generated from a single scope map (`src/theme/scopes.ts`). Nothing is hand written in CSS twice, and a theme never needs to know which selectors a language uses.
 
-### SCSS Variables
+The stylesheet ships in 4 parts:
 
-You can import the SCSS file using `@import "papyrus";`
+| File                            | Contents                                                              |
+| ------------------------------- | --------------------------------------------------------------------- |
+| `papyrus/papyrus.css`           | Layout, widgets, token rules and the default `potion` (dark) theme     |
+| `papyrus/themes/potion.css`     | The default theme on its own, for switching back to it by name        |
+| `papyrus/themes/potion-light.css` | A light variant of the default theme                                |
+| `papyrus/themes/github-light.css` | A light theme based on the GitHub Primer palette                    |
+
+### Using a theme
+
+Load `papyrus.css` and any additional theme files, then select a theme with the `data-papyrus-theme` attribute. The attribute can be placed on `<html>` to apply everywhere, or on a single `<pre>` to theme one code block.
 
 <!--prettier-ignore-->
-```scss
-/* -------------------------------------------- */
-/* BASE STYLES                                  */
-/* -------------------------------------------- */
+```html
+<link href="papyrus/papyrus.css" rel="stylesheet">
+<link href="papyrus/themes/potion-light.css" rel="stylesheet">
 
-// FONT FAMILY
-$papyrus-font-family:                    consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace !default;
-$papyrus-font-size-root:                 15px !default;
-$papyrus-font-size:                      1em !default;
-$papyrus-line-height:                    1.7 !default;
+<!-- everything light -->
+<html data-papyrus-theme="potion-light">
 
-// EDITOR SIZING
-$papyrus-height:                         auto !default;
-$papyrus-width:                          100% !default;
-
-// SELECTION
-$papyrus-selection-bg:           255, 255, 255 !default;
-$papyrus-selection-alpha:                  0.3 !default;
-
-// CODE REGION
-$papyrus-code-padding-y:                 0.3em !default;
-$papyrus-code-padding-x:                 0.5em !default;
-$papyrus-code-border-radius:             0.5em !default;
-
-$papyrus-code-color:                   #fafafa !default;
-$papyrus-code-bg:                      #181b20 !default;
-$papyrus-code-inline-bg:               #eeebeb !default;
-$papyrus-code-caret-color:             #ffffff !default;
-
-// SCROLLBAR
-$papyrus-scrollbar-width:                  2px !default;
-$papyrus-scrollbar-track:              #181b20 !default;
-$papyrus-scrollbar-bg:                 #384355 !default;
-$papyrus-scrollbar-thumb:              #384355 !default;
-
-// INVISIBLE CHARACTERS
-$papyrus-invisible-space-color:         #42454D !default;
-$papyrus-invisible-tab-color:           #808080 !default;
-$papyrus-invisible-lf-color:            #808080 !default;
-$papyrus-invisible-cr-color:            #808080 !default;
-$papyrus-invisible-crlf-color:          #808080 !default;
-
-// LINE NUMBERS
-$papyrus-line-number-width:               3.3em !default;
-$papyrus-line-number-color:             #363d49 !default;
-
-// LINE NUMBER FENCE
-$papyrus-line-fence-width:               0.01em !default;
-$papyrus-line-scroll-left:                    0 !default;
-$papyrus-line-fence-color:              #363d49 !default;
-
-// LINE HIGHLIGHT
-$papyrus-line-highlight-alpha:             0.05 !default;
-$papyrus-line-highlight-bg:        171, 190, 206 !default;
-$papyrus-line-highlight-number:         #fafafa !default;
-
-
-/* -------------------------------------------- */
-/* XML LANGUAGE                                 */
-/* -------------------------------------------- */
-
-$papyrus-xml-prolog:                   #BECAFF !default;
-$papyrus-xml-name:                     #FF93BC !default;
-$papyrus-xml-prefix:                   #BECAFF !default;
-$papyrus-xml-delimiter:                #BECAFF !default;
-$papyrus-xml-tag-name:                 #FF93BC !default;
-$papyrus-xml-equals:                   #FF93BC !default;
-$papyrus-xml-attr-name:                #91EBC2 !default;
-$papyrus-xml-attr-value:               #FFF9A6 !default;
-$papyrus-xml-comment:                  #888888 !default;
-
-/* -------------------------------------------- */
-/* HTML LANGUAGE                                */
-/* -------------------------------------------- */
-
-$papyrus-html-text-content:            #FAFAFA !default;
-$papyrus-html-doctype:                 #FAFAFA !default;
-$papyrus-html-delimiter:               #BECAFF !default;
-$papyrus-html-tag-name:                #FF93BC !default;
-$papyrus-html-equals:                  #FF93BC !default;
-$papyrus-html-attr-name:               #91EBC2 !default;
-$papyrus-html-attr-value:              #FFF9A6 !default;
-$papyrus-html-comment:                 #888888 !default;
-
-/* -------------------------------------------- */
-/* CSS LANGUAGE                                 */
-/* -------------------------------------------- */
-
-$papyrus-css-selector:                #a5d447 !default;
-$papyrus-css-tag-selector:            #FF93BC !default;
-$papyrus-css-colon:                   #91EBC2 !default;
-$papyrus-css-function:                #a5d447 !default;
-$papyrus-css-variable:                #b594d9 !default;
-$papyrus-css-operator:                #E91E63 !default;
-$papyrus-css-punctuation:             #fafafa !default;
-$papyrus-css-important:               #E91E63 !default;
-$papyrus-css-atrule:                  #E91E63 !default;
-$papyrus-css-property:                #81D4FA !default;
-$papyrus-css-property-value:          #FFF9A6 !default;
-$papyrus-css-number:                  #F48FB1 !default;
-$papyrus-css-hexcode:                 #F48FB1 !default;
-$papyrus-css-combinator:              #E91E63 !default;
-$papyrus-css-unit:                    #E91E63 !default;
-$papyrus-css-attr-name:               #91EBC2 !default;
-$papyrus-css-attr-value:              #FFF9A6 !default;
-$papyrus-css-attr-punctuation:        #FF93BC !default;
-$papyrus-css-pseudo-element:          #e18d27 !default;
-
-/* -------------------------------------------- */
-/* CSS LANGUAGE                                 */
-/* -------------------------------------------- */
-
-$papyrus-scss-selector:               #a5d447 !default;
-$papyrus-scss-tag-selector:           #FF93BC !default;
-$papyrus-scss-colon:                  #91EBC2 !default;
-$papyrus-scss-function:               #a5d447 !default;
-$papyrus-scss-variable:               #b594d9 !default;
-$papyrus-scss-operator:               #E91E63 !default;
-$papyrus-scss-punctuation:            #fafafa !default;
-$papyrus-scss-important:              #E91E63 !default;
-$papyrus-scss-atrule:                 #E91E63 !default;
-$papyrus-scss-property:               #81D4FA !default;
-$papyrus-scss-property-value:         #FFF9A6 !default;
-$papyrus-scss-number:                 #F48FB1 !default;
-$papyrus-scss-hexcode:                #F48FB1 !default;
-$papyrus-scss-combinator:             #E91E63 !default;
-$papyrus-scss-unit:                   #E91E63 !default;
-$papyrus-scss-attr-name:              #91EBC2 !default;
-$papyrus-scss-attr-value:             #FFF9A6 !default;
-$papyrus-scss-attr-punctuation:       #FF93BC !default;
-$papyrus-scss-pseudo-element:         #e18d27 !default;
-
-/* -------------------------------------------- */
-/* LIQUID LANGUAGE                              */
-/* -------------------------------------------- */
-
-$papyrus-liquid-fallback:             #fafafa !default;
-$papyrus-liquid-delimiters:           #fafafa !default;
-$papyrus-liquid-tag:                  #E91E63 !default;
-$papyrus-liquid-output:               #81d4fa !default;
-$papyrus-liquid-boolean:              #ff80f4 !default;
-$papyrus-liquid-number:               #935eff !default;
-$papyrus-liquid-punctuation:          #E91E63 !default;
-$papyrus-liquid-operator:             #E91E63 !default;
-$papyrus-liquid-parameter:            #ff953c !default;
-$papyrus-liquid-object-name:          #81d4fa !default;
-$papyrus-liquid-object-prop:          #fafafa !default;
-$papyrus-liquid-filter-name:          #3defb9 !default;
-$papyrus-liquid-string:               #FFF9A6 !default;
-$papyrus-liquid-comment:              #888888 !default;
-$papyrus-liquid-string-delimiters:    #888888 !default;
-$papyrus-liquid-string-object-name:   #81d4fa !default;
-
-/* -------------------------------------------- */
-/* JSON LANGUAGE                                */
-/* -------------------------------------------- */
-
-$papyrus-json-punctuation:            #fafafa !default;
-$papyrus-json-property:               #81D4FA !default;
-$papyrus-json-string:                 #FFF9A6 !default;
-$papyrus-json-boolean:                #FF80F4 !default;
-$papyrus-json-number:                 #9753fd !default;
-$papyrus-json-operator:               #E91E63 !default;
-
-/* -------------------------------------------- */
-/* JAVASCRIPT LANGUAGE                          */
-/* -------------------------------------------- */
-
-$papyrus-js-fallback:                 #fafafa !default;
-$papyrus-js-keyword:                  #E91E63 !default;
-$papyrus-js-function:                 #9EE34F !default;
-$papyrus-js-class-name:               #9EE34F !default;
-$papyrus-js-function-name:            #81D4FA !default;
-$papyrus-js-punctuation:              #FAFAFA !default;
-$papyrus-js-special-chars:            #E91E63 !default;
-$papyrus-js-parameter:                #FFAB40 !default;
-$papyrus-js-variable:                 #81D4FA !default;
-$papyrus-js-operator:                 #E91E63 !default;
-$papyrus-js-operation:                #E91E63 !default;
-$papyrus-js-module:                   #E91E63 !default;
-$papyrus-js-semi:                     #fafafa !default;
-$papyrus-js-flow:                     #E91E63 !default;
-$papyrus-js-number:                   #F48FB1 !default;
-$papyrus-js-boolean:                  #F48FB1 !default;
-$papyrus-js-string:                   #F5EC70 !default;
-$papyrus-js-regex:                    #F5EC70 !default;
-$papyrus-js-regex-flags:              #E91E63 !default;
-$papyrus-js-literal-property:         #22c0cb !default;
-$papyrus-js-comment:                  #888888 !default;
-
-
-/* -------------------------------------------- */
-/* TYPESCRIPT                                   */
-/* -------------------------------------------- */
-
-$papyrus-ts-fallback:                #fafafa !default;
-$papyrus-ts-types:                   #177fd4 !default;
-$papyrus-ts-boolean:                 #ff80f4 !default;
-$papyrus-ts-number:                  #935eff !default;
-$papyrus-ts-operator:                #E91E63 !default;
-$papyrus-ts-parameter:               #ff953c !default;
-$papyrus-ts-method:                  #7ef0ff !default;
-$papyrus-ts-function-name:           #9EE34F !default;
-$papyrus-ts-filter-name:             #3defb9 !default;
-$papyrus-ts-string:                  #FFF9A6 !default;
-$papyrus-ts-comment:                 #888888 !default;
-
+<!-- a single light block on a dark page -->
+<pre class="papyrus" data-papyrus-theme="potion-light">
+  <code class="language-html"></code>
+</pre>
 ```
 
-### CSS Variables
+The same can be done from JavaScript with the `theme` option, which is available on every method:
+
+```ts
+import papyrus from 'papyrus';
+
+papyrus.mount(document.querySelector('pre'), {
+  language: 'html',
+  theme: 'potion-light'
+});
+
+papyrus.highlight(code, { language: 'css', theme: 'potion-light' });
+```
+
+### Overriding colours
+
+Variables cascade in 3 tiers, so you can override as little or as much as you like from your own CSS:
 
 <!--prettier-ignore-->
 ```css
 :root {
-  /* PRE ELEMENT -------------------------------- */
+  /* editor chrome */
+  --papyrus-bg: #0b0d10;
+  --papyrus-line-number: #444;
 
-  --papyrus-font-size-root: 15px;
-  --papyrus-font-size: 1em;
-  --papyrus-font-family: consolas, monaco, andale mono, ubuntu mono, monospace;
-  --papyrus-line-height: 1.7;
-  --papyrus-height: auto;
-  --papyrus-width: 100%;
+  /* semantic scopes, every language follows */
+  --papyrus-keyword: #ff79c6;
+  --papyrus-string: #f1fa8c;
 
-  /* CODE ELEMENT ------------------------------- */
-
-  --papyrus-code-color: #fafafa;
-  --papyrus-code-padding-y: 0.3em;
-  --papyrus-code-padding-x: 0.5em;
-  --papyrus-code-bg: #181b20;
-  --papyrus-code-inline-bg: #eeebeb;
-  --papyrus-code-border-radius: 0.5em;
-  --papyrus-code-caret-color: #ffffff;
-
-  /* SELECTED TEXT ------------------------------ */
-
-  --papyrus-selection-bg: 255, 255, 255;
-  --papyrus-selection-alpha: 0.3;
-
-  /* SCROLLBARS --------------------------------- */
-
-  --papyrus-scrollbar-width: 2px;
-  --papyrus-scrollbar-track: #181b20;
-  --papyrus-scrollbar-bg: #384355;
-  --papyrus-scrollbar-thumb: #384355;
-
-  /* INVISIBLE CHARACTERS ----------------------- */
-
-  --papyrus-invisible-space-color: #42454d;
-  --papyrus-invisible-tab-color: #808080;
-  --papyrus-invisible-lf-color: #808080;
-  --papyrus-invisible-cr-color: #808080;
-  --papyrus-invisible-crlf-color: #808080;
-
-  /* LINE NUMBERS ------------------------------- */
-
-  --papyrus-line-number-width: 3.3em;
-  --papyrus-line-number-color: #363d49;
-  --papyrus-line-fence-color: #363d49;
-  --papyrus-line-fence-width: 0.01em;
-  --papyrus-line-scroll-left: 0;
-
-  /* LINE HIGHLIGHT ----------------------------- */
-
-  --papyrus-line-highlight-alpha: 0.05;
-  --papyrus-line-highlight-bg: 171, 190, 206;
-  --papyrus-line-highlight-number: #fafafa;
-
-  /* -------------------------------------------- */
-  /* XML                                          */
-  /* -------------------------------------------- */
-
-  --papyrus-xml-prolog: #becaff;
-  --papyrus-xml-name: #ff93bc;
-  --papyrus-xml-prefix: #becaff;
-  --papyrus-xml-comment: #888888;
-  --papyrus-xml-delimiter: #becaff;
-  --papyrus-xml-tag-name: #ff93bc;
-  --papyrus-xml-equals: #ff93bc;
-  --papyrus-xml-attr-name: #91ebc2;
-  --papyrus-xml-attr-value: #fff9a6;
-
-  /* -------------------------------------------- */
-  /* HTML                                         */
-  /* -------------------------------------------- */
-
-  --papyrus-html-text-content: #fafafa;
-  --papyrus-html-doctype: #fafafa;
-  --papyrus-html-delimiter: #becaff;
-  --papyrus-html-tag-name: #ff93bc;
-  --papyrus-html-equals: #ff93bc;
-  --papyrus-html-attr-name: #91ebc2;
-  --papyrus-html-attr-value: #fff9a6;
-  --papyrus-html-comment: #888888;
-
-  /* -------------------------------------------- */
-  /* LIQUID                                       */
-  /* -------------------------------------------- */
-
-  --papyrus-liquid-fallback: #fafafa;
-  --papyrus-liquid-delimiters: #fafafa;
-  --papyrus-liquid-tag: #e91e63;
-  --papyrus-liquid-output: #81d4fa;
-  --papyrus-liquid-boolean: #ff80f4;
-  --papyrus-liquid-number: #935eff;
-  --papyrus-liquid-punctuation: #e91e63;
-  --papyrus-liquid-operator: #e91e63;
-  --papyrus-liquid-parameter: #ff953c;
-  --papyrus-liquid-object-name: #81d4fa;
-  --papyrus-liquid-object-prop: #fafafa;
-  --papyrus-liquid-filter-name: #3defb9;
-  --papyrus-liquid-string: #fff9a6;
-  --papyrus-liquid-comment: #888888;
-  --papyrus-liquid-string-delimiters: #888888;
-  --papyrus-liquid-string-object-name: #81d4fa;
-
-  /* -------------------------------------------- */
-  /* CSS                                          */
-  /* -------------------------------------------- */
-
-  --papyrus-css-selector: #a5d447;
-  --papyrus-css-tag-selector: #ff93bc;
-  --papyrus-css-colon: #91ebc2;
-  --papyrus-css-function: #a5d447;
-  --papyrus-css-variable: #b594d9;
-  --papyrus-css-operator: #e91e63;
-  --papyrus-css-punctuation: #fafafa;
-  --papyrus-css-important: #e91e63;
-  --papyrus-css-atrule: #e91e63;
-  --papyrus-css-property: #81d4fa;
-  --papyrus-css-property-value: #fff9a6;
-  --papyrus-css-number: #f48fb1;
-  --papyrus-css-hexcode: #f48fb1;
-  --papyrus-css-combinator: #e91e63;
-  --papyrus-css-unit: #e91e63;
-  --papyrus-css-attr-name: #91ebc2;
-  --papyrus-css-attr-value: #fff9a6;
-  --papyrus-css-attr-punctuation: #ff93bc;
-  --papyrus-css-pseudo-element: #e18d27;
-
-  /* -------------------------------------------- */
-  /* JSON                                         */
-  /* -------------------------------------------- */
-
-  --papyrus-json-punctuation: #fafafa;
-  --papyrus-json-property: #81d4fa;
-  --papyrus-json-string: #fff9a6;
-  --papyrus-json-boolean: #ff80f4;
-  --papyrus-json-number: #9753fd;
-  --papyrus-json-operator: #e91e63;
-
-  /* -------------------------------------------- */
-  /* JAVASCRIPT                                   */
-  /* -------------------------------------------- */
-
-  --papyrus-js-fallback: #fafafa;
-  --papyrus-js-keyword: #e91e63;
-  --papyrus-js-function: #9ee34f;
-  --papyrus-js-class-name: #9ee34f;
-  --papyrus-js-function-name: #81d4fa;
-  --papyrus-js-punctuation: #fafafa;
-  --papyrus-js-special-chars: #e91e63;
-  --papyrus-js-parameter: #ffab40;
-  --papyrus-js-variable: #81d4fa;
-  --papyrus-js-operator: #e91e63;
-  --papyrus-js-operation: #e91e63;
-  --papyrus-js-module: #e91e63;
-  --papyrus-js-semi: #fafafa;
-  --papyrus-js-flow: #e91e63;
-  --papyrus-js-number: #f48fb1;
-  --papyrus-js-boolean: #f48fb1;
-  --papyrus-js-string: #f5ec70;
-  --papyrus-js-regex: #f5ec70;
-  --papyrus-js-regex-flags: #e91e63;
-  --papyrus-js-literal-property: #22c0cb;
-  --papyrus-js-comment: #888888;
-
-  /* -------------------------------------------- */
-  /* TYPESCRIPT                                   */
-  /* -------------------------------------------- */
-
-  --papyrus-ts-fallback: #fafafa;
-  --papyrus-ts-types: #177fd4;
-  --papyrus-ts-boolean: #ff80f4;
-  --papyrus-ts-number: #935eff;
-  --papyrus-ts-operator: #e91e63;
-  --papyrus-ts-parameter: #ff953c;
-  --papyrus-ts-method: #7ef0ff;
-  --papyrus-ts-function-name: #9ee34f;
-  --papyrus-ts-filter-name: #3defb9;
-  --papyrus-ts-string: #fff9a6;
-  --papyrus-ts-comment: #888888;
+  /* language tokens, only that language follows */
+  --papyrus-liquid-tag: #bd93f9;
+  --papyrus-css-property: #8be9fd;
 }
 ```
+
+Language tokens are named `--papyrus-<language>-<token>` and always fall back to the semantic scope they belong to, which means a theme only sets them when a language should look different from the rest. The complete list, with the scope each token falls back to, is documented on every property in `theme.d.ts`.
+
+### Defining a theme
+
+Themes can be defined at runtime. Omitted values are inherited from the theme being extended (`potion` by default), so a new theme is usually just a handful of overrides. In the browser `papyrus.theme()` injects the generated CSS into `<head>` and returns a handle.
+
+```ts
+import papyrus from 'papyrus';
+
+const dusk = papyrus.theme({
+  name: 'dusk',
+  extends: 'potion',
+  scheme: 'dark',
+  editor: {
+    bg: '#1a1030',
+    lineActive: '#ffffff0a'
+  },
+  syntax: {
+    keyword: '#ff79c6',
+    string: '#f1fa8c'
+  },
+  languages: {
+    liquid: { tag: '#bd93f9' }
+  }
+});
+
+dusk.use();                          // <html data-papyrus-theme="dusk">
+dusk.use(document.querySelector('pre')); // one block only
+dusk.css;                            // the generated CSS
+dusk.remove();                       // remove the injected <style>
+```
+
+A theme has the following shape (see `theme.d.ts` for the full documented type):
+
+```ts
+interface Theme {
+  name: string;
+  scheme: 'dark' | 'light';
+  editor: {   // background, text, caret, selection, line numbers, guides, matches, scrollbar...
+    bg: string;
+    fg: string;
+    caret: string;
+    // ...
+  };
+  widget: {   // search, copy and folding widgets
+    bg: string;
+    fg: string;
+    border: string;
+    // ...
+  };
+  brackets: string[]; // 6 bracket pair colours
+  syntax: {   // semantic scopes shared by every language
+    comment: string;
+    keyword: string;
+    string: string;
+    // ...
+  };
+  languages?: {  // optional per language overrides
+    liquid?: { tag?: string; filter?: string; /* ... */ };
+    javascript?: { interpolation?: string; /* ... */ };
+    // ...
+  };
+}
+```
+
+### Generating CSS
+
+The theme API is also available without the editor, for writing theme stylesheets at build time or in Node. The `auto` option additionally applies the theme when the users `prefers-color-scheme` matches and no explicit theme attribute is set, which is how to get automatic light and dark switching.
+
+```ts
+import { theme, potionLight } from 'papyrus/theme';
+import { writeFileSync } from 'node:fs';
+
+writeFileSync('dusk.css', theme.css({
+  name: 'dusk',
+  extends: 'potion',
+  syntax: { keyword: '#ff79c6' }
+}));
+
+// apply potion-light automatically for users who prefer a light scheme
+writeFileSync('potion-light.css', theme.css(potionLight, { auto: true }));
+
+theme.extend('potion', { name: 'dusk', syntax: { keyword: '#ff79c6' } }); // => Theme
+theme.vars(potionLight);   // => { '--papyrus-bg': '#fbfbfc', ... }
+theme.scopes;              // the scope maps, for building theme editors
+```
+
+### Layout settings
+
+Sizing is not part of a theme. These variables are defined on `:root` and can be overridden globally or per block:
+
+<!--prettier-ignore-->
+```css
+:root {
+  --papyrus-font-family: consolas, monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --papyrus-font-size: 1em;
+  --papyrus-line-height: 1.6;
+  --papyrus-radius: 0.5em;
+  --papyrus-padding-x: 0.75em;
+  --papyrus-padding-y: 0.5em;
+  --papyrus-number-spacing: 2em;
+  --papyrus-fence-width: 0.01rem;
+  --papyrus-scrollbar-width: 4px;
+  --papyrus-scrollbar-padding: 8px;
+  --papyrus-treeview-line-width: 0.05em;
+}
+```
+
+### Semantic scopes
+
+| Scope         | Variable                  | Covers                                                    |
+| ------------- | ------------------------- | --------------------------------------------------------- |
+| `comment`     | `--papyrus-comment`       | Comments, prologs, CDATA, doc comments                    |
+| `important`   | `--papyrus-important`     | `!important`, YAML anchors and other emphasised tokens    |
+| `url`         | `--papyrus-url`           | URLs                                                      |
+| `punctuation` | `--papyrus-punctuation`   | Brackets, commas, semicolons                              |
+| `delimiter`   | `--papyrus-delimiter`     | Markup angle brackets, template and interpolation delimiters |
+| `operator`    | `--papyrus-operator`      | Operators, arrows, combinators                            |
+| `keyword`     | `--papyrus-keyword`       | Keywords, Liquid tag names, regex flags                   |
+| `control`     | `--papyrus-control`       | `return`, `await`, `if`, `for`                            |
+| `module`      | `--papyrus-module`        | `import`, `export`, `from`, `as`                          |
+| `atrule`      | `--papyrus-atrule`        | `@media`, `@import`, YAML directives                      |
+| `string`      | `--papyrus-string`        | Strings and template strings                              |
+| `regex`       | `--papyrus-regex`         | Regular expressions                                       |
+| `number`      | `--papyrus-number`        | Numbers and dates                                         |
+| `boolean`     | `--papyrus-boolean`       | `true`, `false`                                           |
+| `nil`         | `--papyrus-nil`           | `null`, `undefined`, `nil`                                |
+| `constant`    | `--papyrus-constant`      | `UPPER_CASE` constants, SQL aliases                       |
+| `variable`    | `--papyrus-variable`      | Variables, objects, Liquid output                         |
+| `parameter`   | `--papyrus-parameter`     | Function parameters, shell arguments                      |
+| `property`    | `--papyrus-property`      | Object keys, CSS properties, YAML and TOML keys           |
+| `function`    | `--papyrus-function`      | Functions, methods, Liquid filters                        |
+| `className`   | `--papyrus-class-name`    | Class names                                               |
+| `type`        | `--papyrus-type`          | Types, type constructors, SQL casts                       |
+| `builtin`     | `--papyrus-builtin`       | `window`, `document`, `console`, language builtins        |
+| `this`        | `--papyrus-this`          | `this`                                                    |
+| `tag`         | `--papyrus-tag`           | Markup tag names                                          |
+| `attrName`    | `--papyrus-attr-name`     | Attribute names                                           |
+| `attrValue`   | `--papyrus-attr-value`    | Attribute values                                          |
+| `selector`    | `--papyrus-selector`      | CSS selectors                                             |
+| `pseudo`      | `--papyrus-pseudo`        | Pseudo elements and classes                               |
+| `unit`        | `--papyrus-unit`          | CSS units                                                 |
+| `color`       | `--papyrus-color`         | Hex codes and named colours                               |
+| `entity`      | `--papyrus-entity`        | HTML entities                                             |
+| `heading`     | `--papyrus-heading`       | Markdown titles, shell headings, doctype                  |
+| `invalid`     | `--papyrus-invalid`       | Unmatched brackets                                        |
+
+### Migrating from 0.8
+
+The Sass variables and the old `--papyrus-*` names (`--papyrus-code-bg`, `--papyrus-js-keyword` and friends) are gone. Import `papyrus/papyrus.css` instead of `index.scss`, and map any overrides you had onto the editor, semantic or language variables above. Per-language names follow the full language id, so `--papyrus-js-keyword` becomes `--papyrus-javascript-keyword` (or just `--papyrus-keyword` if every language should follow).
+
 
 # How it works?
 

@@ -1,0 +1,9 @@
+/* Inline code produced by papyrus.inline() */
+:not(pre) > code[class*="language-"] {
+  padding: 0.1em 0.3em;
+  color: var(--papyrus-inline-fg);
+  font-family: var(--papyrus-font-family);
+  white-space: normal;
+  background: var(--papyrus-inline-bg);
+  border-radius: 0.3em;
+}

@@ -1,0 +1,16 @@
+/*
+ * 𓁁 Papyrus
+ *
+ * Layout and widget styles. Every colour is a `--papyrus-*` custom property
+ * provided by a theme, see src/theme for the theme system.
+ */
+@import "./settings.css";
+@import "./layout.css";
+@import "./scrollbar.css";
+@import "./rtl.css";
+@import "./copy.css";
+@import "./search.css";
+@import "./folding.css";
+@import "./inline.css";
+@import "./format.css";
+@import "./treeview.css";

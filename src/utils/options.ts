@@ -97,6 +97,7 @@ export function setHighlightOptions(options?: Options.Highlight) {
   const config: Options.Highlight = {
     language: null,
     flems: null,
+    theme: null,
     lineFence: true,
     lineNumbers: true,
     autoHeight: true,
@@ -146,6 +147,7 @@ export function setOptions(type: 'editor' | 'mount' | 'static', options?: Option
     id: null,
     language: null,
     flems: null,
+    theme: null,
     lineFence: false,
     lineNumbers: true,
     autoHeight: true,
