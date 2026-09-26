@@ -520,6 +520,7 @@ export const languages = {
       functionKeyword: t('keyword', 'Function Keyword', '.token.function-name'),
       variable: t('variable', 'Variable', '.token.variable'),
       object: t('variable', 'Object', '.token.object'),
+      objectChain: t('punctuation', 'Chained Object', '.token.object + .token.punctuation-chars + .token.object'),
       property: t('property', 'Property', '.token.literal-property', '.token.string-property'),
       propertyAccess: t('property', 'Property Access', '.token.property-access'),
       bracketProperty: t('property', 'Bracket Property', '.token.bracket > .token.keyword'),

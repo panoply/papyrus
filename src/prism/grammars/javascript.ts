@@ -457,6 +457,13 @@ export function JavaScript() {
         punctuation: /[({]/g
       }
     },
+    // Trailing member of a property chain, e.g. `session_id` in `context.api.user.session_id`.
+    // Declared ahead of `punctuation-chars` so the leading dot is still available to the
+    // lookbehind. Calls (`foo.bar()`) are left to the function token and spread is excluded.
+    'property-access': {
+      pattern: /((?:^|[^.])\.\s*)#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?!\s*[(`\w$])/,
+      lookbehind: true
+    },
     'props': {
       pattern: /(?:\w+)(?:\.)(\w+)(?=\.\w+[.])/i,
       global: true,

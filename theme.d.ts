@@ -1714,6 +1714,14 @@ export interface ThemeLanguages {
      */
       object?: string;
     /**
+     * Chained Object
+     *
+     * Falls back to `punctuation`
+     *
+     * CSS: `--papyrus-typescript-object-chain`
+     */
+      objectChain?: string;
+    /**
      * Property
      *
      * Falls back to `property`

@@ -97,11 +97,15 @@ export const githubLight: Theme = {
       function: '#005cc5'
     },
     javascript: {
-      object: '#24292e',
+      object: '#0f6e79',
+      objectChain: '#3a7ca5',
+      propertyAccess: '#005cc5',
       interpolation: '#032f62'
     },
     typescript: {
-      object: '#24292e',
+      object: '#0f6e79',
+      objectChain: '#3a7ca5',
+      propertyAccess: '#005cc5',
       interpolation: '#032f62'
     },
     markdown: {
