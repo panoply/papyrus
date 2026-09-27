@@ -14,18 +14,18 @@ Papyrus extends upon the default grammars provided by Prism which allows for mor
 
 Papyrus is tiny, it's only 12kb ~ gzip and supports the following languages
 
-- XML
-- HTML
-- Liquid
-- CSS
-- SCSS
-- JSON
-- YAML
 - Bash (Shell)
+- CSS
 - JavaScript
+- JSON
+- Markdown
+- Markup (HTML)
+- SQL
+- TOML
 - TypeScript
-- JSX
-- TSX
+- XML
+- YAML
+- Treeview
 
 ### Limitations
 
@@ -335,154 +335,72 @@ window.papyrus: Map<string, Model>;
 
 # Theming
 
-Themes are plain objects. Every colour in Papyrus is a `--papyrus-*` CSS custom property and the stylesheet, the theme files and the TypeScript types are all generated from a single scope map (`src/theme/scopes.ts`). Nothing is hand written in CSS twice, and a theme never needs to know which selectors a language uses.
-
-The stylesheet ships in 4 parts:
-
-| File                            | Contents                                                              |
-| ------------------------------- | --------------------------------------------------------------------- |
-| `papyrus/papyrus.css`           | Layout, widgets, token rules and the default `potion` (dark) theme     |
-| `papyrus/themes/potion.css`     | The default theme on its own, for switching back to it by name        |
-| `papyrus/themes/potion-light.css` | A light variant of the default theme                                |
-| `papyrus/themes/github-light.css` | A light theme based on the GitHub Primer palette                    |
-
-### Using a theme
-
-Load `papyrus.css` and any additional theme files, then select a theme with the `data-papyrus-theme` attribute. The attribute can be placed on `<html>` to apply everywhere, or on a single `<pre>` to theme one code block.
+Load `papyrus.css` and one theme stylesheet, that's it. `papyrus.css` holds the layout and token rules and carries no colours, the theme stylesheet provides every colour as a `--papyrus-*` custom property.
 
 <!--prettier-ignore-->
 ```html
 <link href="papyrus/papyrus.css" rel="stylesheet">
-<link href="papyrus/themes/potion-light.css" rel="stylesheet">
+<link href="papyrus/themes/github-light.css" rel="stylesheet">
+```
 
-<!-- everything light -->
-<html data-papyrus-theme="potion-light">
+The available themes are `github-light`, `potion` (dark) and `potion-light`.
 
-<!-- a single light block on a dark page -->
-<pre class="papyrus" data-papyrus-theme="potion-light">
+### Theme attribute
+
+A theme stylesheet applies globally and to any element carrying the `theme` attribute. The attribute is only needed when more than one theme stylesheet is loaded and a block should use a specific one. The `theme` option sets it for you.
+
+<!--prettier-ignore-->
+```html
+<pre class="papyrus" theme="github-light">
   <code class="language-html"></code>
 </pre>
 ```
 
-The same can be done from JavaScript with the `theme` option, which is available on every method:
-
 ```ts
-import papyrus from 'papyrus';
-
-papyrus.mount(document.querySelector('pre'), {
-  language: 'html',
-  theme: 'potion-light'
-});
-
-papyrus.highlight(code, { language: 'css', theme: 'potion-light' });
+papyrus.highlight(code, { language: 'css', theme: 'github-light' });
 ```
 
 ### Overriding colours
 
-Variables cascade in 3 tiers, so you can override as little or as much as you like from your own CSS:
+Variables cascade in 3 tiers, override as little or as much as you like in your own CSS:
 
 <!--prettier-ignore-->
 ```css
 :root {
   /* editor chrome */
-  --papyrus-bg: #0b0d10;
-  --papyrus-line-number: #444;
+  --papyrus-bg: #ffffff;
+  --papyrus-line-number: #999;
 
   /* semantic scopes, every language follows */
-  --papyrus-keyword: #ff79c6;
-  --papyrus-string: #f1fa8c;
+  --papyrus-keyword: #d73a49;
+  --papyrus-string: #032f62;
 
   /* language tokens, only that language follows */
-  --papyrus-liquid-tag: #bd93f9;
-  --papyrus-css-property: #8be9fd;
+  --papyrus-javascript-object: #0f6e79;
+  --papyrus-yaml-key: #22863a;
 }
 ```
 
-Language tokens are named `--papyrus-<language>-<token>` and always fall back to the semantic scope they belong to, which means a theme only sets them when a language should look different from the rest. The complete list, with the scope each token falls back to, is documented on every property in `theme.d.ts`.
+Language tokens are named `--papyrus-<language>-<token>` and fall back to the semantic scope they belong to. The scopes, tokens and their selectors are defined in `src/theme/scopes.ts`.
 
-### Defining a theme
+### Adding a theme
 
-Themes can be defined at runtime. Omitted values are inherited from the theme being extended (`potion` by default), so a new theme is usually just a handful of overrides. In the browser `papyrus.theme()` injects the generated CSS into `<head>` and returns a handle.
+A theme is a plain object. Create a file in `src/theme/themes`, list it in `src/theme/index.ts` and run the build, the stylesheet is written to `dist/themes/<name>.css`.
 
 ```ts
-import papyrus from 'papyrus';
+import type { Theme } from '../generate';
 
-const dusk = papyrus.theme({
+export const dusk: Theme = {
   name: 'dusk',
-  extends: 'potion',
   scheme: 'dark',
-  editor: {
-    bg: '#1a1030',
-    lineActive: '#ffffff0a'
-  },
-  syntax: {
-    keyword: '#ff79c6',
-    string: '#f1fa8c'
-  },
+  editor: { bg: '#1a1030', fg: '#fafafa' /* ... */ },
+  widget: { bg: '#21222c', fg: '#f8f8f2' /* ... */ },
+  brackets: [ '#f8f8f2', '#ff79c6', '#8be9fd', '#50fa7b', '#bd93f9', '#ffb86c' ],
+  syntax: { comment: '#888888', keyword: '#ff79c6' /* ... */ },
   languages: {
-    liquid: { tag: '#bd93f9' }
+    javascript: { object: '#8bd3fd' }
   }
-});
-
-dusk.use();                          // <html data-papyrus-theme="dusk">
-dusk.use(document.querySelector('pre')); // one block only
-dusk.css;                            // the generated CSS
-dusk.remove();                       // remove the injected <style>
-```
-
-A theme has the following shape (see `theme.d.ts` for the full documented type):
-
-```ts
-interface Theme {
-  name: string;
-  scheme: 'dark' | 'light';
-  editor: {   // background, text, caret, selection, line numbers, guides, matches, scrollbar...
-    bg: string;
-    fg: string;
-    caret: string;
-    // ...
-  };
-  widget: {   // search, copy and folding widgets
-    bg: string;
-    fg: string;
-    border: string;
-    // ...
-  };
-  brackets: string[]; // 6 bracket pair colours
-  syntax: {   // semantic scopes shared by every language
-    comment: string;
-    keyword: string;
-    string: string;
-    // ...
-  };
-  languages?: {  // optional per language overrides
-    liquid?: { tag?: string; filter?: string; /* ... */ };
-    javascript?: { interpolation?: string; /* ... */ };
-    // ...
-  };
-}
-```
-
-### Generating CSS
-
-The theme API is also available without the editor, for writing theme stylesheets at build time or in Node. The `auto` option additionally applies the theme when the users `prefers-color-scheme` matches and no explicit theme attribute is set, which is how to get automatic light and dark switching.
-
-```ts
-import { theme, potionLight } from 'papyrus/theme';
-import { writeFileSync } from 'node:fs';
-
-writeFileSync('dusk.css', theme.css({
-  name: 'dusk',
-  extends: 'potion',
-  syntax: { keyword: '#ff79c6' }
-}));
-
-// apply potion-light automatically for users who prefer a light scheme
-writeFileSync('potion-light.css', theme.css(potionLight, { auto: true }));
-
-theme.extend('potion', { name: 'dusk', syntax: { keyword: '#ff79c6' } }); // => Theme
-theme.vars(potionLight);   // => { '--papyrus-bg': '#fbfbfc', ... }
-theme.scopes;              // the scope maps, for building theme editors
+};
 ```
 
 ### Layout settings
@@ -505,50 +423,6 @@ Sizing is not part of a theme. These variables are defined on `:root` and can be
   --papyrus-treeview-line-width: 0.05em;
 }
 ```
-
-### Semantic scopes
-
-| Scope         | Variable                  | Covers                                                    |
-| ------------- | ------------------------- | --------------------------------------------------------- |
-| `comment`     | `--papyrus-comment`       | Comments, prologs, CDATA, doc comments                    |
-| `important`   | `--papyrus-important`     | `!important`, YAML anchors and other emphasised tokens    |
-| `url`         | `--papyrus-url`           | URLs                                                      |
-| `punctuation` | `--papyrus-punctuation`   | Brackets, commas, semicolons                              |
-| `delimiter`   | `--papyrus-delimiter`     | Markup angle brackets, template and interpolation delimiters |
-| `operator`    | `--papyrus-operator`      | Operators, arrows, combinators                            |
-| `keyword`     | `--papyrus-keyword`       | Keywords, Liquid tag names, regex flags                   |
-| `control`     | `--papyrus-control`       | `return`, `await`, `if`, `for`                            |
-| `module`      | `--papyrus-module`        | `import`, `export`, `from`, `as`                          |
-| `atrule`      | `--papyrus-atrule`        | `@media`, `@import`, YAML directives                      |
-| `string`      | `--papyrus-string`        | Strings and template strings                              |
-| `regex`       | `--papyrus-regex`         | Regular expressions                                       |
-| `number`      | `--papyrus-number`        | Numbers and dates                                         |
-| `boolean`     | `--papyrus-boolean`       | `true`, `false`                                           |
-| `nil`         | `--papyrus-nil`           | `null`, `undefined`, `nil`                                |
-| `constant`    | `--papyrus-constant`      | `UPPER_CASE` constants, SQL aliases                       |
-| `variable`    | `--papyrus-variable`      | Variables, objects, Liquid output                         |
-| `parameter`   | `--papyrus-parameter`     | Function parameters, shell arguments                      |
-| `property`    | `--papyrus-property`      | Object keys, CSS properties, YAML and TOML keys           |
-| `function`    | `--papyrus-function`      | Functions, methods, Liquid filters                        |
-| `className`   | `--papyrus-class-name`    | Class names                                               |
-| `type`        | `--papyrus-type`          | Types, type constructors, SQL casts                       |
-| `builtin`     | `--papyrus-builtin`       | `window`, `document`, `console`, language builtins        |
-| `this`        | `--papyrus-this`          | `this`                                                    |
-| `tag`         | `--papyrus-tag`           | Markup tag names                                          |
-| `attrName`    | `--papyrus-attr-name`     | Attribute names                                           |
-| `attrValue`   | `--papyrus-attr-value`    | Attribute values                                          |
-| `selector`    | `--papyrus-selector`      | CSS selectors                                             |
-| `pseudo`      | `--papyrus-pseudo`        | Pseudo elements and classes                               |
-| `unit`        | `--papyrus-unit`          | CSS units                                                 |
-| `color`       | `--papyrus-color`         | Hex codes and named colours                               |
-| `entity`      | `--papyrus-entity`        | HTML entities                                             |
-| `heading`     | `--papyrus-heading`       | Markdown titles, shell headings, doctype                  |
-| `invalid`     | `--papyrus-invalid`       | Unmatched brackets                                        |
-
-### Migrating from 0.8
-
-The Sass variables and the old `--papyrus-*` names (`--papyrus-code-bg`, `--papyrus-js-keyword` and friends) are gone. Import `papyrus/papyrus.css` instead of `index.scss`, and map any overrides you had onto the editor, semantic or language variables above. Per-language names follow the full language id, so `--papyrus-js-keyword` becomes `--papyrus-javascript-keyword` (or just `--papyrus-keyword` if every language should follow).
-
 
 # How it works?
 

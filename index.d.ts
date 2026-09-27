@@ -9,13 +9,6 @@ import { IndentGuides } from 'prism-code-editor/guides';
 import { ReadOnlyCodeFolding } from 'prism-code-editor/code-folding';
 import { EditHistory } from 'prism-code-editor/commands';
 import { TokenStream } from 'prism-code-editor/prism';
-import type {
-  Theme as ThemeType,
-  ThemeInput as ThemeInputType,
-  ThemeCSSOptions as ThemeCSSOptionsType,
-  ThemeHandle as ThemeHandleType,
-  ThemeAPI
-} from './theme';
 
 /**
  * List of supported options
@@ -30,6 +23,9 @@ type Language = LiteralUnion<(
   | 'typescript'
   | 'markdown'
   | 'yaml'
+  | 'toml'
+  | 'sql'
+  | 'markup'
   | 'plaintext'
   | 'treeview'
 ), string>
@@ -46,9 +42,9 @@ interface ISharedOptions {
    */
   id?: string;
   /**
-   * Theme name to apply to this code block. Sets `data-papyrus-theme` on the
-   * `<pre>` element. Themes are defined in CSS (`papyrus/themes/*.css`) or at
-   * runtime with `papyrus.theme()`. When omitted the default theme applies.
+   * Theme name to apply to this code block. Sets the `theme` attribute on the
+   * `<pre>` element, matching the `[theme="name"]` selector of a theme stylesheet
+   * (`papyrus/themes/*.css`). Not required when a single theme stylesheet is loaded.
    *
    * @default null
    */
@@ -908,25 +904,6 @@ interface API<T extends Cache | Instance> {
    * });
    */
   inline(code: string, options: Options.Inline): string;
-  /**
-   * #### Theme 𓁁
-   *
-   * Define, extend and generate themes. Themes are plain objects, the CSS custom
-   * properties are generated from them. In the browser `papyrus.theme()` injects
-   * the CSS, in Node use `papyrus.theme.css()` to write a stylesheet.
-   *
-   * @example
-   * import papyrus from 'papyrus';
-   *
-   * const dusk = papyrus.theme({
-   *   name: 'dusk',
-   *   extends: 'potion',
-   *   syntax: { keyword: '#ff79c6' }
-   * });
-   *
-   * dusk.use();
-   */
-  theme: ThemeAPI;
 }
 
 interface BrowserAPI extends API<Instance> {
@@ -1008,34 +985,6 @@ export declare namespace Papyrus {
    * default export of `papyrus`
    */
   type Options = Options.Default;
-
-  /**
-   * #### PAPYRUS 𓁁
-   *
-   * A complete theme definition
-   */
-  type Theme = ThemeType;
-
-  /**
-   * #### PAPYRUS 𓁁
-   *
-   * A partial theme, inherits omitted values from the theme it extends
-   */
-  type ThemeInput = ThemeInputType;
-
-  /**
-   * #### PAPYRUS 𓁁
-   *
-   * Options for generating theme CSS
-   */
-  type ThemeCSSOptions = ThemeCSSOptionsType;
-
-  /**
-   * #### PAPYRUS 𓁁
-   *
-   * The handle returned by `papyrus.theme()`
-   */
-  type ThemeHandle = ThemeHandleType;
 
   /**
    * #### PAPYRUS 𓁁

@@ -1,49 +1,22 @@
-import {
-  editor,
-  widget,
-  syntax,
-  languages,
-  BRACKET_LEVELS,
-  PREFIX,
-  kebab,
-  SyntaxScope,
-  LanguageId
-} from './scopes';
-
-/* -------------------------------------------- */
-/* TYPES                                        */
-/* -------------------------------------------- */
-
-export type ThemeScheme = 'dark' | 'light';
-
-export type ThemeEditor = Record<keyof typeof editor, string>;
-
-export type ThemeWidget = Record<keyof typeof widget, string>;
-
-export type ThemeSyntax = Record<SyntaxScope, string>;
-
-export type ThemeLanguages = {
-  [L in LanguageId]?: Partial<Record<keyof (typeof languages)[L]['tokens'], string>>
-};
+import { editor, widget, syntax, languages, BRACKET_LEVELS, PREFIX, kebab, SyntaxScope, LanguageId } from './scopes';
 
 export interface Theme {
   /**
-   * The theme name, used in `data-papyrus-theme="name"`
+   * The theme name, used by the `theme="name"` attribute
    */
   name: string;
   /**
-   * Whether the theme is dark or light. Applied as the `color-scheme`
-   * of the editor and used for `prefers-color-scheme` matching.
+   * Applied as the `color-scheme` of the editor
    */
-  scheme: ThemeScheme;
+  scheme: 'dark' | 'light';
   /**
    * Editor chrome colours
    */
-  editor: ThemeEditor;
+  editor: Record<(typeof editor)[number], string>;
   /**
    * Search, copy and folding widget colours
    */
-  widget: ThemeWidget;
+  widget: Record<(typeof widget)[number], string>;
   /**
    * Bracket pair colours, one per nesting level (6 levels, repeating)
    */
@@ -51,219 +24,73 @@ export interface Theme {
   /**
    * Semantic syntax colours shared by all languages
    */
-  syntax: ThemeSyntax;
+  syntax: Record<SyntaxScope, string>;
   /**
-   * Optional per-language overrides. Omitted tokens fall back to the
+   * Optional per-language overrides, omitted tokens fall back to the
    * semantic scope they belong to.
    */
-  languages?: ThemeLanguages;
+  languages?: {
+    [L in LanguageId]?: Partial<Record<keyof (typeof languages)[L]['tokens'], string>>
+  };
 }
-
-/**
- * A partial theme. Anything omitted is inherited from the theme it
- * extends (the default `potion` theme when `extends` is omitted).
- */
-export interface ThemeInput {
-  name: string;
-  extends?: string | Theme;
-  scheme?: ThemeScheme;
-  editor?: Partial<ThemeEditor>;
-  widget?: Partial<ThemeWidget>;
-  brackets?: string[];
-  syntax?: Partial<ThemeSyntax>;
-  languages?: ThemeLanguages;
-}
-
-export interface ThemeCSSOptions {
-  /**
-   * Emit the variables on `:root` so the theme applies without a
-   * `data-papyrus-theme` attribute (the default theme in `papyrus.css`).
-   *
-   * @default false
-   */
-  root?: boolean;
-  /**
-   * Also apply the theme automatically when the users `prefers-color-scheme`
-   * matches the theme scheme and no explicit `data-papyrus-theme` is set.
-   *
-   * @default false
-   */
-  auto?: boolean;
-  /**
-   * Custom selector to scope the variables to, replaces the generated
-   * `[data-papyrus-theme]` selectors.
-   */
-  selector?: string;
-  /**
-   * Minify the output
-   *
-   * @default false
-   */
-  minify?: boolean;
-}
-
-/* -------------------------------------------- */
-/* HELPERS                                      */
-/* -------------------------------------------- */
 
 const keys = <T extends object>(o: T) => Object.keys(o) as Array<keyof T & string>;
 
-/**
- * Custom property name for an editor key
- */
-export const editorVar = (key: string) => `${PREFIX}-${kebab(key)}`;
+const languageVar = (language: string, token: string) => `${PREFIX}-${language}-${kebab(token)}`;
+
+const rule = (selectors: string[], body: string[], minify: boolean) => minify
+  ? `${selectors.join(',')}{${body.join(';')}}`
+  : `${selectors.join(',\n')} {\n  ${body.join(';\n  ')};\n}\n`;
 
 /**
- * Custom property name for a widget key
+ * Generates a theme stylesheet. The variables are applied globally and to
+ * any element carrying the `theme="name"` attribute.
  */
-export const widgetVar = (key: string) => `${PREFIX}-widget-${kebab(key)}`;
+export function themeCSS (theme: Theme, minify = false): string {
 
-/**
- * Custom property name for a bracket level (1 based)
- */
-export const bracketVar = (level: number) => `${PREFIX}-bracket-${level}`;
+  const body: string[] = [ `${PREFIX}-scheme: ${theme.scheme}` ];
 
-/**
- * Custom property name for a semantic scope
- */
-export const syntaxVar = (scope: string) => `${PREFIX}-${kebab(scope)}`;
-
-/**
- * Custom property name for a language token
- */
-export const languageVar = (language: string, token: string) => `${PREFIX}-${language}-${kebab(token)}`;
-
-function block (selector: string, body: string[], minify: boolean) {
-
-  if (body.length === 0) return '';
-
-  return minify
-    ? `${selector}{${body.join(';')}}`
-    : `${selector} {\n  ${body.join(';\n  ')};\n}\n`;
-
-}
-
-function rule (selectors: string[], declaration: string, minify: boolean) {
-
-  return minify
-    ? `${selectors.join(',')}{${declaration}}`
-    : `${selectors.join(',\n')} {\n  ${declaration};\n}\n`;
-
-}
-
-/* -------------------------------------------- */
-/* VARIABLES                                    */
-/* -------------------------------------------- */
-
-/**
- * Returns a flat map of custom property names to values for the theme.
- */
-export function vars (theme: Theme): Record<string, string> {
-
-  const map: Record<string, string> = {};
-
-  map[`${PREFIX}-scheme`] = theme.scheme;
-
-  for (const key of keys(editor)) map[editorVar(key)] = theme.editor[key];
-  for (const key of keys(widget)) map[widgetVar(key)] = theme.widget[key];
+  for (const key of editor) body.push(`${PREFIX}-${kebab(key)}: ${theme.editor[key]}`);
+  for (const key of widget) body.push(`${PREFIX}-widget-${kebab(key)}: ${theme.widget[key]}`);
 
   for (let i = 0; i < BRACKET_LEVELS; i++) {
-    map[bracketVar(i + 1)] = theme.brackets[i % theme.brackets.length];
+    body.push(`${PREFIX}-bracket-${i + 1}: ${theme.brackets[i % theme.brackets.length]}`);
   }
 
-  for (const scope of keys(syntax)) map[syntaxVar(scope)] = theme.syntax[scope];
+  for (const scope of keys(syntax)) body.push(`${PREFIX}-${kebab(scope)}: ${theme.syntax[scope]}`);
 
-  if (theme.languages) {
-    for (const language of keys(theme.languages)) {
-      const tokens = theme.languages[language];
-      if (!tokens) continue;
-      for (const token of keys(tokens)) {
-        const value = (tokens as Record<string, string>)[token];
-        if (value) map[languageVar(language, token)] = value;
-      }
-    }
-  }
-
-  return map;
-
-}
-
-/* -------------------------------------------- */
-/* THEME CSS                                    */
-/* -------------------------------------------- */
-
-/**
- * Generates the CSS custom property declarations for a theme.
- */
-export function themeCSS (theme: Theme, options: ThemeCSSOptions = {}): string {
-
-  const minify = options.minify === true;
-  const map = vars(theme);
-  const body = keys(map).map(name => `${name}: ${map[name]}`);
-
-  // Reset every language token the theme does not define, otherwise a
-  // language override from another theme (e.g. the default on `:root`)
-  // would leak through instead of the semantic fallback applying.
+  // Language tokens the theme does not define are reset so they fall back
+  // to their semantic scope rather than inheriting from another theme.
   for (const language of keys(languages)) {
+    const tokens: Record<string, string> = theme.languages?.[language] || {};
     for (const token of keys(languages[language].tokens)) {
-      const name = languageVar(language, token);
-      if (!(name in map)) body.push(`${name}: initial`);
+      body.push(`${languageVar(language, token)}: ${tokens[token] || 'initial'}`);
     }
   }
-  const name = JSON.stringify(theme.name);
-  const selectors: string[] = [];
 
-  if (options.selector) {
-    selectors.push(options.selector);
-  } else {
-    if (options.root) selectors.push(':root');
-    selectors.push(`:root[data-papyrus-theme=${name}]`, `[data-papyrus-theme=${name}]`);
-  }
-
-  let css = block(selectors.join(minify ? ',' : ',\n'), body, minify);
-
-  if (options.auto) {
-    const inner = block(':root:not([data-papyrus-theme])', body, minify);
-    css += minify
-      ? `@media (prefers-color-scheme:${theme.scheme}){${inner}}`
-      : `\n@media (prefers-color-scheme: ${theme.scheme}) {\n${inner.replace(/^/gm, '  ')}}\n`;
-  }
-
-  return css;
+  return rule([ ':root', `[theme="${theme.name}"]` ], body, minify);
 
 }
 
-/* -------------------------------------------- */
-/* TOKEN CSS                                    */
-/* -------------------------------------------- */
-
 /**
- * Generates the theme independent token rules. Every rule references a
- * custom property, so this only needs to ship once (it is part of
- * `papyrus.css`).
+ * Generates the theme independent token rules shipped in `papyrus.css`
  */
-export function tokenCSS (options: { minify?: boolean } = {}): string {
+export function tokenCSS (minify = false): string {
 
-  const minify = options.minify === true;
   const out: string[] = [];
 
-  // Semantic scopes
   for (const scope of keys(syntax)) {
-    const def = syntax[scope];
-    if (def.selectors.length === 0) continue;
-    out.push(rule(def.selectors, `color: var(${syntaxVar(scope)})`, minify));
+    out.push(rule(syntax[scope].selectors, [ `color: var(${PREFIX}-${kebab(scope)})` ], minify));
   }
 
-  // Bracket levels
   for (let i = 0; i < BRACKET_LEVELS; i++) {
     out.push(rule(
       [ `.token.bracket-level-${i}`, `.token.bracket-level-${i + BRACKET_LEVELS}` ],
-      `color: var(${bracketVar(i + 1)})`,
+      [ `color: var(${PREFIX}-bracket-${i + 1})` ],
       minify
     ));
   }
 
-  // Language tokens
   for (const language of keys(languages)) {
 
     const def = languages[language];
@@ -274,13 +101,11 @@ export function tokenCSS (options: { minify?: boolean } = {}): string {
 
       if (selectors.length === 0) continue;
 
-      const list: string[] = [];
-
-      for (const container of def.selectors) {
-        for (const selector of selectors) list.push(`${container} ${selector}`);
-      }
-
-      out.push(rule(list, `color: var(${languageVar(language, token)}, var(${syntaxVar(scope)}))`, minify));
+      out.push(rule(
+        def.selectors.flatMap(container => selectors.map(selector => `${container} ${selector}`)),
+        [ `color: var(${languageVar(language, token)}, var(${PREFIX}-${kebab(scope)}))` ],
+        minify
+      ));
 
     }
   }

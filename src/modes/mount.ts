@@ -81,8 +81,8 @@ export function mount (element: HTMLElement, options: Options.Default) {
   }
 
   // carry over a theme attribute applied to the placeholder element
-  if (!config.theme && element.hasAttribute('data-papyrus-theme')) {
-    config.theme = element.getAttribute('data-papyrus-theme');
+  if (!config.theme && element.hasAttribute('theme')) {
+    config.theme = element.getAttribute('theme');
   }
 
   if (config.language === 'treeview') return;

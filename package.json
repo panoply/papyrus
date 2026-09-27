@@ -21,11 +21,6 @@
       "import": "./dist/node.esm.js",
       "require": "./dist/node.cjs.js"
     },
-    "./theme": {
-      "types": "./theme.d.ts",
-      "import": "./dist/theme.esm.js",
-      "require": "./dist/theme.cjs.js"
-    },
     "./papyrus.css": "./dist/papyrus.css",
     "./themes/*": "./dist/themes/*",
     "./dist/*": "./dist/*",

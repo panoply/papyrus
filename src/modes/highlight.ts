@@ -48,7 +48,7 @@ export function createHighlight (codeInput: string, options: Papyrus.Options) {
   const preClass = [ 'papyrus', ...config.preClass ];
   const preAttrs = [ ...config.preAttrs ];
 
-  if (config.theme) preAttrs.push(`data-papyrus-theme="${config.theme}"`);
+  if (config.theme) preAttrs.push(`theme="${config.theme}"`);
   const codeAttrs = glue(config.codeAttrs);
   const codeClass = [ `language-${config.language}`, ...config.codeClass ];
 

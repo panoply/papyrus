@@ -100,15 +100,6 @@ export const potion: Theme = {
       doctypeName: '#becaff',
       equals: '#ff93bc'
     },
-    liquid: {
-      delimiter: '#fafafa',
-      property: '#fafafa',
-      filter: '#3defb9',
-      number: '#935eff',
-      parameter: '#ff953c',
-      punctuation: '#e91e63',
-      stringDelimiter: '#888888'
-    },
     markdown: {
       blockquote: '#ff93bc',
       list: '#ffab40',
@@ -130,13 +121,6 @@ export const potion: Theme = {
       function: '#a5d447',
       variable: '#ca99ff',
       attrPunctuation: '#ff93bc'
-    },
-    scss: {
-      number: '#bc85ff',
-      operator: '#ff93bc',
-      pseudoClass: '#91ebc2',
-      function: '#a5d447',
-      variable: '#ca99ff'
     },
     javascript: {
       class: '#8bd3fd',

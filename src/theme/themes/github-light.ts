@@ -93,9 +93,6 @@ export const githubLight: Theme = {
     css: {
       function: '#005cc5'
     },
-    scss: {
-      function: '#005cc5'
-    },
     javascript: {
       object: '#0f6e79',
       objectChain: '#3a7ca5',

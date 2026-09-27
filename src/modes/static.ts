@@ -47,7 +47,7 @@ export function createStatic (codeInput: string, options: Options.Static) {
   const codeAttrs = glue(config.codeAttrs);
   const preAttrs = [ `id="${config.id}"`, `data-papyrus="${setAttributeHint(config)}"`, ...config.preAttrs ];
 
-  if (config.theme) preAttrs.push(`data-papyrus-theme="${config.theme}"`);
+  if (config.theme) preAttrs.push(`theme="${config.theme}"`);
 
   if (config.lineNumbers) {
     preClass.push('show-line-numbers');

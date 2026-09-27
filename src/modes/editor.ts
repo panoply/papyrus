@@ -87,7 +87,7 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
   editor.scrollContainer.id = config.id;
   editor.textarea.name = config.id;
 
-  if (config.theme) editor.scrollContainer.setAttribute('data-papyrus-theme', config.theme);
+  if (config.theme) editor.scrollContainer.setAttribute('theme', config.theme);
 
   if (config.lineFence) {
     editor.scrollContainer.style.setProperty('--line-fence', 'block');
@@ -320,9 +320,9 @@ export function setEditor (element: HTMLElement, value: string, config: Papyrus.
 
       if (has('theme', opts)) {
         if (opts.theme) {
-          editor.scrollContainer.setAttribute('data-papyrus-theme', opts.theme);
+          editor.scrollContainer.setAttribute('theme', opts.theme);
         } else {
-          editor.scrollContainer.removeAttribute('data-papyrus-theme');
+          editor.scrollContainer.removeAttribute('theme');
         }
       }
 

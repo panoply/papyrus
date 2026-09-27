@@ -85,12 +85,15 @@ export function getLanguageName(language: string): Papyrus.Languages | null {
 
   const map = {
     html: 'html',
+    markup: 'html',
     shell: 'bash',
     bash: 'bash',
     cli: 'bash',
     css: 'css',
     xml: 'xml',
     json: 'json',
+    sql: 'sql',
+    toml: 'toml',
     javascript: 'javascript',
     js: 'javascript',
     typescript: 'typescript',

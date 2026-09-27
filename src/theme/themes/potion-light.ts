@@ -100,15 +100,6 @@ export const potionLight: Theme = {
       doctypeName: '#6f7ab8',
       equals: '#d12b6f'
     },
-    liquid: {
-      delimiter: '#24292f',
-      property: '#24292f',
-      filter: '#1a8a5c',
-      number: '#6f42c1',
-      parameter: '#b35900',
-      punctuation: '#cf1f5e',
-      stringDelimiter: '#8b949e'
-    },
     markdown: {
       blockquote: '#d12b6f',
       list: '#b35900',
@@ -128,11 +119,6 @@ export const potionLight: Theme = {
       function: '#3d8a1f',
       variable: '#6f42c1',
       attrPunctuation: '#d12b6f'
-    },
-    scss: {
-      pseudoClass: '#1a8a5c',
-      function: '#3d8a1f',
-      variable: '#6f42c1'
     },
     javascript: {
       class: '#0a6ea8',
